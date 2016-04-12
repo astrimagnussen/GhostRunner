@@ -5,5 +5,5 @@
     <string name="title_activity_display_coordinates">DisplayCoordinates</string>
     <string name="save_loc_btn">Save Location</string>
     <string name="calc_dist_btn">Calculate distance</string>
-    <string name="title_activity_calculate_distance">calculateDistance</string>
+    <string name="title_activity_calculate_distance">CalculateDistance</string>
 </resources>

@@ -3,8 +3,9 @@
     package="mycompany.ghostrunner">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,6 +25,10 @@
         <activity
             android:name=".DisplayCoordinates"
             android:label="@string/title_activity_display_coordinates"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CalculateDistance"
+            android:label="@string/title_activity_calculate_distance"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -1,6 +1,7 @@
 package mycompany.ghostrunner;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
+    private Location lastLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,15 @@ public class MainActivity extends AppCompatActivity {
     }
     public void coordinate(View view){
         Intent intent =new Intent(this, DisplayCoordinates.class);
+        startActivity(intent);
+    }
+
+    public void saveLocation(Location location) {
+        lastLocation = location;
+    }
+
+    public void calcDistance(View view) {
+        Intent intent = new Intent(this, CalculateDistance.class);
         startActivity(intent);
     }
 }

@@ -22,4 +22,17 @@
         android:layout_height="wrap_content"
         android:hint="Coordinate"
         android:onClick="coordinate"/>
+
+    <Button android:id="@+id/saveLocBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/save_loc_btn"
+        android:onClick="saveLocation" />
+
+    <Button android:id="@+id/calcDist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/calc_dist_btn"
+        android:onClick="calcDistance" />
+
 </LinearLayout>

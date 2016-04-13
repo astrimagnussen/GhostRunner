@@ -58,12 +58,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void saveLocation(Location location) {
-        lastLocation = location;
+    public void saveLocation(View view ) {
+        //lastLocation = location;  Spara ner vår location
     }
 
     public void calcDistance(View view) {
-       // Intent intent = new Intent(this, CalculateDistance.class);
-        //startActivity(intent);
+        Intent intent = new Intent(this, CalculateDistance.class);
+        startActivity(intent);
     }
 }

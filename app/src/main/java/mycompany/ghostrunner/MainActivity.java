@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void calcDistance(View view) {
-        Intent intent = new Intent(this, CalculateDistance.class);
-        startActivity(intent);
+       // Intent intent = new Intent(this, CalculateDistance.class);
+        //startActivity(intent);
     }
 }

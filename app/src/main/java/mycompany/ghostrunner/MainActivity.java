@@ -1,18 +1,31 @@
 package mycompany.ghostrunner;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    private Location lastLocation;
+    private LocationManager locationManager;
+    private String provider;
+    private Location startLocation;
+    private Location stopLocation;
+    private float distance;
+    TextView textView;
+    TextView distText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, false);
     }
 
     @Override
@@ -59,11 +75,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void saveLocation(View view ) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        startLocation = locationManager.getLastKnownLocation(provider);
+        textView = (TextView) findViewById(R.id.startDistance);
+        textView.setText(Location.convert(startLocation.getLatitude(),Location.FORMAT_DEGREES) +" "+ Location.convert(startLocation.getLongitude(),Location.FORMAT_DEGREES));
         //lastLocation = location;  Spara ner vår location
     }
 
     public void calcDistance(View view) {
-        Intent intent = new Intent(this, CalculateDistance.class);
-        startActivity(intent);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        stopLocation = locationManager.getLastKnownLocation(provider);
+        distance = stopLocation.distanceTo(startLocation);
+        distText = (TextView) findViewById(R.id.showDistance);
+        distText.setText(Float.toString(distance));
+      //  Intent intent = new Intent(this, CalculateDistance.class);
+      //  intent.putExtra("distance" , distance);
+      //  startActivity(intent);
+
     }
 }

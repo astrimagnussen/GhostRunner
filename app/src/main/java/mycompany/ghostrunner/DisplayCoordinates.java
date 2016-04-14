@@ -75,8 +75,8 @@ public class DisplayCoordinates extends Activity implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        int lat = (int) (location.getLatitude()); //vi borde använda android.gms.location ist för location
-        int lng = (int) (location.getLongitude());
+        double lat = (double) (location.getLatitude()); //vi borde använda android.gms.location ist för location
+        double lng = (double) (location.getLongitude());
         latituteField.setText(String.valueOf(lat));
         longituteField.setText(String.valueOf(lng));
     }

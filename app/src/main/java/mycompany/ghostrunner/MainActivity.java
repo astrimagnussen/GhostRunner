@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        textView = (TextView) findViewById(R.id.startDistance);
 
         fab.setOnClickListener(new View.OnClickListener() {
 
@@ -103,35 +102,5 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         // ...
     }
 
-   public void saveLocation(View view ) {
-       startLocation = DisplayCoordinates.mLastLocation;
-       textView.setText(String.valueOf(startLocation.getLatitude()) + " " + String.valueOf(startLocation.getLongitude()));
-//       textView.setText(Location.convert(startLocation.getLatitude(),Location.FORMAT_DEGREES) +" "+ Location.convert(startLocation.getLongitude(),Location.FORMAT_DEGREES));
-       /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        startLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
 
-        if (startLocation != null) {
-            textView.setText(Location.convert(startLocation.getLatitude(),Location.FORMAT_DEGREES) +" "+ Location.convert(startLocation.getLongitude(),Location.FORMAT_DEGREES));
-        }else{
-            textView.setText("StartLocation var null");
-        }*/
-         //lastLocation = location;  Spara ner vår location
-    }
-
-    public void calcDistance(View view) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        stopLocation = locationManager.getLastKnownLocation(provider);
-        distance = stopLocation.distanceTo(startLocation);
-        distText = (TextView) findViewById(R.id.showDistance);
-        distText.setText(Float.toString(distance));
-      //  Intent intent = new Intent(this, CalculateDistance.class);
-      //  intent.putExtra("distance" , distance);
-      //  startActivity(intent);
-
-    }
 }

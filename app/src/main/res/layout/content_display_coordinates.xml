@@ -20,6 +20,39 @@
         android:layout_marginTop="40dip"
         android:orientation="horizontal" >
 
+        <Button android:id="@+id/saveLocBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/save_loc_btn"
+            android:onClick="saveLocation" />
+
+        <Button android:id="@+id/calcDist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/calc_dist_btn"
+            android:layout_below="@id/saveLocBtn"
+            android:onClick="calcDistance" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView android:id="@+id/showsaved"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/calcDist" />
+
+        <TextView android:id="@+id/showdistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/showsaved"/>
+
+
         <TextView
             android:id="@+id/TextView01"
             android:layout_width="wrap_content"
@@ -27,7 +60,8 @@
             android:layout_marginLeft="10dip"
             android:layout_marginRight="5dip"
             android:text="Latitude: "
-            android:textSize="20dip" >
+            android:textSize="20dip"
+            android:layout_below="@id/showdistance">
         </TextView>
 
         <TextView
@@ -37,13 +71,6 @@
             android:text="unknown"
             android:textSize="20dip" >
         </TextView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
         <TextView
             android:id="@+id/TextView03"
             android:layout_width="wrap_content"

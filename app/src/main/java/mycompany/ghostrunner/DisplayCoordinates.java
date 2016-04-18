@@ -17,6 +17,7 @@ import com.google.android.gms.location.LocationRequest;
 
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
@@ -43,7 +44,6 @@ public class DisplayCoordinates extends Activity implements GoogleApiClient.Conn
 
     private GoogleApiClient mGoogleApiClient;
 
-    public static Location mLastLocation;
     private Location mCurrentLocation;
     private TextView mLatitudeTextView;
     private TextView mLongitudeTextView;
@@ -53,12 +53,22 @@ public class DisplayCoordinates extends Activity implements GoogleApiClient.Conn
     private LocationManager locationManager;
 
 
+    public Location startLocation;
+    private Location stopLocation;
+    private float distance;
+    private TextView distText;
+    private TextView showsaved;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_coordinates);
         mLatitudeTextView = (TextView) findViewById(R.id.TextView02);
         mLongitudeTextView = (TextView) findViewById(R.id.TextView04);
+        showsaved = (TextView) findViewById(R.id.showsaved);
+        distText = (TextView) findViewById(R.id.showdistance);
         createLocationRequest();
 
         // Create an instance of GoogleAPIClient.
@@ -86,11 +96,11 @@ public class DisplayCoordinates extends Activity implements GoogleApiClient.Conn
                 //locationManager.removeUpdates(GPSListener.this);
             }
         }
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+        mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
-        if (mLastLocation != null) {
-            mLatitudeTextView.setText(String.valueOf(mLastLocation.getLatitude()));
-            mLongitudeTextView.setText(String.valueOf(mLastLocation.getLongitude()));
+        if (mCurrentLocation != null) {
+            mLatitudeTextView.setText(String.valueOf(mCurrentLocation.getLatitude()));
+            mLongitudeTextView.setText(String.valueOf(mCurrentLocation.getLongitude()));
         }
         if (mRequestingLocationUpdates) {
             startLocationUpdates();
@@ -139,15 +149,22 @@ public class DisplayCoordinates extends Activity implements GoogleApiClient.Conn
 
     //  @Override
     public void onLocationChanged(Location location) {
+
+        if (locationManager != null) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                //locationManager.removeUpdates(GPSListener.this);
+            }
+        }
+       // mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
         mCurrentLocation = location;
        // mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         updateUI();
-        float lat = (float) (location.getLatitude());
-        float lng = (float) (location.getLongitude());
+        float lat = (float) (mCurrentLocation.getLatitude());
+        float lng = (float) (mCurrentLocation.getLongitude());
         mLatitudeTextView.setText(String.valueOf(lat));
         mLongitudeTextView.setText(String.valueOf(lng));
     }
-
 
 
     //@Override
@@ -173,51 +190,12 @@ public class DisplayCoordinates extends Activity implements GoogleApiClient.Conn
 
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setInterval(5000);
+        mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(mLocationRequest);
-
-        PendingResult<LocationSettingsResult> result =
-                LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient,
-                        builder.build()); // kankse mGoogleApiClient stod mGoogleClient i koden innan dock...
-
-
-        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
-
-            public void onResult(LocationSettingsResult result) {
-                final Status status = result.getStatus();
-                final LocationSettingsStates lss = result.getLocationSettingsStates();
-                switch (status.getStatusCode()) {
-                    case LocationSettingsStatusCodes.SUCCESS:
-                        // All location settings are satisfied. The client can
-                        // initialize location requests here.
-                       // ...
-                        break;
-                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                        // Location settings are not satisfied, but this can be fixed
-                        // by showing the user a dialog.
-                        try {
-                            // Show the dialog by calling startResolutionForResult(),
-                            // and check the result in onActivityResult().
-                            status.startResolutionForResult(
-                                    DisplayCoordinates.this,
-                                    10);
-                        } catch (IntentSender.SendIntentException e) {
-                            // Ignore the error.
-                        }
-                        break;
-                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                        // Location settings are not satisfied. However, we have no way
-                        // to fix the settings so we won't show the dialog.
-                        //...
-                        break;
-                }
-            }
-        });
 
     }
 
@@ -276,44 +254,39 @@ public class DisplayCoordinates extends Activity implements GoogleApiClient.Conn
         }
     }
 
-  /*
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putBoolean(REQUESTING_LOCATION_UPDATES_KEY,
-                mRequestingLocationUpdates);
-        savedInstanceState.putParcelable(LOCATION_KEY, mCurrentLocation);
-        savedInstanceState.putString(LAST_UPDATED_TIME_STRING_KEY, mLastUpdateTime);
-        super.onSaveInstanceState(savedInstanceState);
+
+
+    public void saveLocation(View view ) {
+        if (locationManager != null) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                //locationManager.removeUpdates(GPSListener.this);
+            }
+        }
+        startLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if(startLocation != null) {
+            showsaved.setText(String.valueOf(startLocation.getLatitude()) + " " + String.valueOf(startLocation.getLongitude()));
+        }else{
+            showsaved.setText("startLocation är null");
+        }
+
     }
 
-private void updateValuesFromBundle(Bundle savedInstanceState) {
-    if (savedInstanceState != null) {
-        // Update the value of mRequestingLocationUpdates from the Bundle, and
-        // make sure that the Start Updates and Stop Updates buttons are
-        // correctly enabled or disabled.
-        if (savedInstanceState.keySet().contains(REQUESTING_LOCATION_UPDATES_KEY)) {
-            mRequestingLocationUpdates = savedInstanceState.getBoolean(
-                    REQUESTING_LOCATION_UPDATES_KEY);
-            setButtonsEnabledState();
+    public void calcDistance(View view) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        stopLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if(stopLocation != null) {
+            distance = stopLocation.distanceTo(startLocation);
+            distText = (TextView) findViewById(R.id.showdistance);
+            distText.setText(Float.toString(distance));
+        }else{
+            distText.setText("stoplocation är null");
         }
 
-        // Update the value of mCurrentLocation from the Bundle and update the
-        // UI to show the correct latitude and longitude.
-        if (savedInstanceState.keySet().contains(LOCATION_KEY)) {
-            // Since LOCATION_KEY was found in the Bundle, we can be sure that
-            // mCurrentLocationis not null.
-            mCurrentLocation = savedInstanceState.getParcelable(LOCATION_KEY);
-        }
-
-        // Update the value of mLastUpdateTime from the Bundle and update the UI.
-        if (savedInstanceState.keySet().contains(LAST_UPDATED_TIME_STRING_KEY)) {
-            mLastUpdateTime = savedInstanceState.getString(
-                    LAST_UPDATED_TIME_STRING_KEY);
-        }
-        updateUI();
     }
-}
 
-    */
+
 }
-// vad vi vill göra men måste kolla permission:  LocationServices.FusedLocationApi.requestLocationUpdates(
-// mGoogleApiClient, mLocationRequest, this);

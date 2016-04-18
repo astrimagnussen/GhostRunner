@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -18,10 +19,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
     private LocationManager locationManager;
+    GoogleApiClient mGoogleApiClient;
     private String provider;
-    private Location startLocation;
+    public Location startLocation;
     private Location stopLocation;
     private float distance;
     TextView textView;
@@ -35,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        textView = (TextView) findViewById(R.id.startDistance);
+
         fab.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -46,6 +54,15 @@ public class MainActivity extends AppCompatActivity {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         provider = locationManager.getBestProvider(criteria, false);
+
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+
     }
 
     @Override
@@ -74,14 +91,34 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void saveLocation(View view ) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+    public void onConnected( Bundle bun ){
+
+    }
+    public void onConnectionSuspended( int i ){}
+    public void onConnectionFailed(ConnectionResult result) {
+        // An unresolvable error has occurred and a connection to Google APIs
+        // could not be established. Display an error message, or handle
+        // the failure silently
+
+        // ...
+    }
+
+   public void saveLocation(View view ) {
+       startLocation = DisplayCoordinates.mLastLocation;
+       textView.setText(String.valueOf(startLocation.getLatitude()) + " " + String.valueOf(startLocation.getLongitude()));
+//       textView.setText(Location.convert(startLocation.getLatitude(),Location.FORMAT_DEGREES) +" "+ Location.convert(startLocation.getLongitude(),Location.FORMAT_DEGREES));
+       /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        startLocation = locationManager.getLastKnownLocation(provider);
-        textView = (TextView) findViewById(R.id.startDistance);
-        textView.setText(Location.convert(startLocation.getLatitude(),Location.FORMAT_DEGREES) +" "+ Location.convert(startLocation.getLongitude(),Location.FORMAT_DEGREES));
-        //lastLocation = location;  Spara ner vår location
+        startLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+
+        if (startLocation != null) {
+            textView.setText(Location.convert(startLocation.getLatitude(),Location.FORMAT_DEGREES) +" "+ Location.convert(startLocation.getLongitude(),Location.FORMAT_DEGREES));
+        }else{
+            textView.setText("StartLocation var null");
+        }*/
+         //lastLocation = location;  Spara ner vår location
     }
 
     public void calcDistance(View view) {

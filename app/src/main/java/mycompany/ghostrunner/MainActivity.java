@@ -7,16 +7,20 @@ import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -62,6 +66,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     .build();
         }
 
+       /* final MediaPlayer saved = MediaPlayer.create(this, R.raw.saved);
+        Button playSound = (Button) this.findViewById(R.id.coordinate_button);
+        
+        playSound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                saved.start();
+            }
+        });
+        */
     }
 
     @Override
@@ -85,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         return super.onOptionsItemSelected(item);
     }
+    //går från coordinate knappen till nästa view (display coordinates)
     public void coordinate(View view){
         Intent intent =new Intent(this, DisplayCoordinates.class);
         startActivity(intent);

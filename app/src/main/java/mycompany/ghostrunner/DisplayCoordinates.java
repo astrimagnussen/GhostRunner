@@ -16,6 +16,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -25,6 +26,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,11 +61,15 @@ public class DisplayCoordinates extends Activity implements GoogleApiClient.Conn
     private TextView distText;
     private TextView showsaved;
 
+    MediaPlayer save;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
+        save = MediaPlayer.create(getApplicationContext(), R.raw.saved);
         setContentView(R.layout.activity_display_coordinates);
         mLatitudeTextView = (TextView) findViewById(R.id.TextView02);
         mLongitudeTextView = (TextView) findViewById(R.id.TextView04);
@@ -86,7 +92,6 @@ public class DisplayCoordinates extends Activity implements GoogleApiClient.Conn
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
             return;
         }
-
     }
 
     // @Override
@@ -257,15 +262,16 @@ public class DisplayCoordinates extends Activity implements GoogleApiClient.Conn
 
 
     public void saveLocation(View view ) {
+
         if (locationManager != null) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 //locationManager.removeUpdates(GPSListener.this);
             }
         }
-        startLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
+        startLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if(startLocation != null) {
             showsaved.setText(String.valueOf(startLocation.getLatitude()) + " " + String.valueOf(startLocation.getLongitude()));
+            save.start();
         }else{
             showsaved.setText("startLocation är null");
         }

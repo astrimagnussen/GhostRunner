@@ -2,67 +2,79 @@ package mycompany.ghostrunner;
 // mycket kod från här: https://developer.android.com/training/location/retrieve-current.html
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
-import android.location.Location;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 
-import com.google.android.gms.location.LocationRequest;
-
-import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.View;
+
+import android.content.Context;
+import android.content.pm.PackageManager;
+
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-
-import android.view.View;
 
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.location.Location;
+import android.location.LocationManager;
+
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
-
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 
 
 
 public class DisplayCoordinates extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
+    //Used to access the API
     private GoogleApiClient mGoogleApiClient;
 
     private Location mCurrentLocation;
+
+    //Shows the coordinates
     private TextView mLatitudeTextView;
     private TextView mLongitudeTextView;
-   // private String mLastUpdateTime;
+
+    //If we should request loctionUpdates
     private boolean mRequestingLocationUpdates = true;
+
     private LocationRequest mLocationRequest;
     private LocationManager locationManager;
 
-
+    //Start and stop locations for distance calculations
     public Location startLocation;
     private Location stopLocation;
     private float distance;
+
+    //Shows the distance and the saved values
     private TextView distText;
     private TextView showsaved;
 
-    MediaPlayer save;
+    //The audio for save
+    private MediaPlayer save;
 
 
-    @Override
+    @Override //Runs when the Activity starts
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
-        save = MediaPlayer.create(getApplicationContext(), R.raw.saved);
         setContentView(R.layout.activity_display_coordinates);
+
+
+        //Creates the mediaPlayer
+        save = MediaPlayer.create(getApplicationContext(), R.raw.saved);
+
+        //Finds all the objects by Id
         mLatitudeTextView = (TextView) findViewById(R.id.TextView02);
         mLongitudeTextView = (TextView) findViewById(R.id.TextView04);
         showsaved = (TextView) findViewById(R.id.showsaved);
         distText = (TextView) findViewById(R.id.showdistance);
+
+        //Creates locationRequests
         createLocationRequest();
 
         // Create an instance of GoogleAPIClient.
@@ -73,28 +85,31 @@ public class DisplayCoordinates extends Activity implements GoogleApiClient.Conn
                     .addApi(LocationServices.API)
                     .build();
         }
-        //updateValuesFromBundle(savedInstanceState);
 
+        //Gets the locationManager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-            return;
-        }
     }
 
-    // @Override
+    //Runs when GoogleApiClient connects
     public void onConnected(Bundle connectionHint) {
+        //checks the locationManager
         if (locationManager != null) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 //locationManager.removeUpdates(GPSListener.this);
             }
         }
+
+        //Gets the currentlocation
         mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
+
+        //Displays the currentlocation
         if (mCurrentLocation != null) {
             mLatitudeTextView.setText(String.valueOf(mCurrentLocation.getLatitude()));
             mLongitudeTextView.setText(String.valueOf(mCurrentLocation.getLongitude()));
         }
+
+        //Starts the locationUpdates
         if (mRequestingLocationUpdates) {
             startLocationUpdates();
         }
@@ -140,19 +155,10 @@ public class DisplayCoordinates extends Activity implements GoogleApiClient.Conn
     }
 
 
-    //  @Override
+    //When the location is changed
     public void onLocationChanged(Location location) {
-
-        if (locationManager != null) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                //locationManager.removeUpdates(GPSListener.this);
-            }
-        }
-       // mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
+        //displays the currentLocation
         mCurrentLocation = location;
-       // mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        updateUI();
         float lat = (float) (mCurrentLocation.getLatitude());
         float lng = (float) (mCurrentLocation.getLongitude());
         mLatitudeTextView.setText(String.valueOf(lat));
@@ -172,19 +178,20 @@ public class DisplayCoordinates extends Activity implements GoogleApiClient.Conn
                 Toast.LENGTH_SHORT).show();
     }
 
+    //Have to exist and do nothing...
     public void onConnectionSuspended( int i ){}
 
-    private void updateUI() {
-        mLatitudeTextView.setText(String.valueOf(mCurrentLocation.getLatitude()));
-        mLongitudeTextView.setText(String.valueOf(mCurrentLocation.getLongitude()));
-//        mLastUpdateTimeTextView.setText(mLastUpdateTime);
-    }
-
-
+    //Creates a locationRequest
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
+
+        //Sets the intervall for updating
         mLocationRequest.setInterval(5000);
+
+        //Sets a max limit of how fast it can be updated without overflow of data
         mLocationRequest.setFastestInterval(1000);
+
+        //Sets priority on accuracy
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
@@ -194,69 +201,29 @@ public class DisplayCoordinates extends Activity implements GoogleApiClient.Conn
 
     protected void startLocationUpdates() {
 
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.INTERNET}, 10);
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-
-            }
+        //Checks permissions
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        //Requests for updates
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, this);
-        }
     }
-
-
-
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        switch (requestCode) {
-            case 10: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    finish();
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
-    }
-
 
 
     public void saveLocation(View view ) {
 
+        //Checks permissions
         if (locationManager != null) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 //locationManager.removeUpdates(GPSListener.this);
             }
         }
+
+        //Gets the last location
         startLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        //Displays the location
         if(startLocation != null) {
             showsaved.setText(String.valueOf(startLocation.getLatitude()) + " " + String.valueOf(startLocation.getLongitude()));
             save.start();
@@ -267,12 +234,18 @@ public class DisplayCoordinates extends Activity implements GoogleApiClient.Conn
     }
 
     public void calcDistance(View view) {
+        //Checks permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+
+        //Gets the last location
         stopLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
+
+        //Displays the distance
         if(stopLocation != null) {
+            //Calculate the distance
             distance = stopLocation.distanceTo(startLocation);
             distText = (TextView) findViewById(R.id.showdistance);
             distText.setText(Float.toString(distance));

@@ -9,10 +9,10 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="mycompany.ghostrunner.CalculateDistance"
-    tools:showIn="@layout/activity_calculate_distance">
+    tools:context=".GhostRun"
+    tools:showIn="@layout/activity_ghost_run">
 
-    <TextView android:id="@+id/distanceBetween"
+    <TextView android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>

@@ -1,10 +1,11 @@
 package mycompany.ghostrunner;
 // mycket kod från här: https://developer.android.com/training/location/retrieve-current.html
 import android.Manifest;
-import android.app.Activity;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import android.content.Context;
@@ -29,7 +30,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 
 
-public class DisplayCoordinates extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class NewRun extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     //Used to access the API
     private GoogleApiClient mGoogleApiClient;
@@ -62,7 +63,10 @@ public class DisplayCoordinates extends Activity implements GoogleApiClient.Conn
     @Override //Runs when the Activity starts
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_coordinates);
+        setContentView(R.layout.activity_new_run);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setTitle("New Run");
 
 
         //Creates the mediaPlayer

@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +59,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     //The audio for save
     private MediaPlayer save;
+    
 
 
     @Override //Runs when the Activity starts

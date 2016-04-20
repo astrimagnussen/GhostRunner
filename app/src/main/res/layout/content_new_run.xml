@@ -20,18 +20,18 @@
         android:layout_marginTop="40dip"
         android:orientation="horizontal" >
 
-        <Button android:id="@+id/saveLocBtn"
+        <Button android:id="@+id/startBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/save_loc_btn"
-            android:onClick="saveLocation" />
+            android:hint="@string/start_btn"
+            android:onClick="startRun" />
 
-        <Button android:id="@+id/calcDist"
+        <Button android:id="@+id/stopBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/calc_dist_btn"
-            android:layout_below="@id/saveLocBtn"
-            android:onClick="calcDistance" />
+            android:hint="@string/stop_btn"
+            android:layout_below="@id/startBtn"
+            android:onClick="stopRun" />
 
 
     </LinearLayout>
@@ -45,12 +45,17 @@
         <TextView android:id="@+id/showsaved"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/calcDist" />
+            android:layout_below="@id/stopBtn" />
 
         <TextView android:id="@+id/showdistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/showsaved"/>
+
+        <TextView android:id="@+id/showTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/showdistance"/>
 
 
         <TextView

@@ -59,8 +59,12 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     //The audio for save
     private MediaPlayer save;
+    private boolean calculateRun;
     
-
+    //for the time counting
+    private long startTime;
+    private long stopTime;
+    private TextView showTime;
 
     @Override //Runs when the Activity starts
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +73,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setTitle("New Run");
-
+        calculateRun = false;
 
         //Creates the mediaPlayer
         save = MediaPlayer.create(getApplicationContext(), R.raw.saved);
@@ -77,6 +81,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         //Finds all the objects by Id
         mLatitudeTextView = (TextView) findViewById(R.id.TextView02);
         mLongitudeTextView = (TextView) findViewById(R.id.TextView04);
+        showTime = (TextView) findViewById(R.id.showTime);
         showsaved = (TextView) findViewById(R.id.showsaved);
         distText = (TextView) findViewById(R.id.showdistance);
 
@@ -169,6 +174,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         float lng = (float) (mCurrentLocation.getLongitude());
         mLatitudeTextView.setText(String.valueOf(lat));
         mLongitudeTextView.setText(String.valueOf(lng));
+        if(calculateRun) {
+            calcDist();
+        }
     }
 
 
@@ -217,8 +225,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     }
 
 
-    public void saveLocation(View view ) {
-
+    public void startRun(View view) {
+        calculateRun = true;
+        startTime = System.currentTimeMillis();
         //Checks permissions
         if (locationManager != null) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -230,18 +239,24 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         startLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         //Displays the location
-        if(startLocation != null) {
+        /*if(startLocation != null) {
             showsaved.setText(String.valueOf(startLocation.getLatitude()) + " " + String.valueOf(startLocation.getLongitude()));
-            save.start();
+
         }else{
             showsaved.setText("startLocation är null");
-        }
+        }*/
 
     }
 
-    public void calcDistance(View view) {
+    public void stopRun(View view) {
+        calculateRun= false;
+        save.start();
+        stopTime = System.currentTimeMillis() - startTime;
+        stopTime = stopTime/1000;
+        showTime.setText(Long.toString(stopTime));
+
         //Checks permission
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+       /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
@@ -257,8 +272,14 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             distText.setText(Float.toString(distance));
         }else{
             distText.setText("stoplocation är null");
-        }
+        }*/
 
+    }
+    public void calcDist (){
+       distance += mCurrentLocation.distanceTo(startLocation);
+        startLocation = mCurrentLocation;
+        distText = (TextView) findViewById(R.id.showdistance);
+        distText.setText(Float.toString(distance));
     }
 
 

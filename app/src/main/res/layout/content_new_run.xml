@@ -34,6 +34,12 @@
             android:layout_below="@id/startBtn"
             android:onClick="stopRun" />
 
+        <Button android:id="@+id/showBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/show_btn"
+            android:layout_below="@id/startBtn"
+            android:onClick="showStuff" />
 
     </LinearLayout>
 

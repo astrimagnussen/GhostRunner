@@ -179,19 +179,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         }
     }
 
-/*
-    //@Override
-    public void onProviderEnabled(String provider) {
-        Toast.makeText(this, "Enabled new provider " + provider,
-                Toast.LENGTH_SHORT).show();
-    }
-
-    //@Override
-    public void onProviderDisabled(String provider) {
-        Toast.makeText(this, "Disabled provider " + provider,
-                Toast.LENGTH_SHORT).show();
-    }
-    */
 
     //Have to exist and do nothing...
     public void onConnectionSuspended( int i ){}
@@ -254,26 +241,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         save.start();
         stopTime = System.currentTimeMillis() - startTime;
         stopTime = stopTime/1000;
-        showTime.setText(Long.toString(stopTime));
 
-        //Checks permission
-       /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-
-        //Gets the last location
-        stopLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-
-        //Displays the distance
-        if(stopLocation != null) {
-            //Calculate the distance
-            distance = stopLocation.distanceTo(startLocation);
-            distText = (TextView) findViewById(R.id.showdistance);
-            distText.setText(Float.toString(distance));
-        }else{
-            distText.setText("stoplocation är null");
-        }*/
 
     }
     public void calcDist (){
@@ -281,6 +249,10 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         startLocation = mCurrentLocation;
         distText = (TextView) findViewById(R.id.showdistance);
         distText.setText(Float.toString(distance));
+    }
+
+    public void showStuff(View view){
+        //showTime.setText(Long.toString(stopTime));
     }
 
 

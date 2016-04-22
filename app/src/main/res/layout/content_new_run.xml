@@ -21,26 +21,6 @@
         android:layout_marginTop="40dip"
         android:orientation="horizontal" >
 
-        <Button android:id="@+id/startBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/start_btn"
-            android:onClick="startRun" />
-
-        <Button android:id="@+id/stopBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/stop_btn"
-            android:layout_below="@id/startBtn"
-            android:onClick="stopRun" />
-
-        <Button android:id="@+id/showBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/show_btn"
-            android:layout_below="@id/startBtn"
-            android:onClick="showStuff" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -49,56 +29,91 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView android:id="@+id/showsaved"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/stopBtn" />
-
-        <TextView android:id="@+id/showdistance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/showsaved"/>
-
-        <TextView android:id="@+id/showTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/showdistance"/>
-
 
         <TextView
-            android:id="@+id/TextView01"
+            android:id="@+id/distanceTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="5dip"
-            android:text="Latitude: "
-            android:textSize="20dip"
-            android:layout_below="@id/showdistance">
+            android:text="@string/distance_title"
+            android:textSize="20dip">
         </TextView>
 
         <TextView
-            android:id="@+id/TextView02"
+            android:id="@+id/showDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="unknown"
+            android:layout_below="@id/distanceTitle"
+            android:text="0"
             android:textSize="20dip" >
         </TextView>
+
         <TextView
-            android:id="@+id/TextView03"
+            android:id="@+id/timeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="5dip"
-            android:text="Longitute: "
+            android:text="@string/time_title"
             android:textSize="20dip" >
         </TextView>
 
         <TextView
-            android:id="@+id/TextView04"
+            android:id="@+id/showTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="unknown"
+            android:layout_below="@id/timeTitle"
+            android:text="0"
+            android:textSize="20dip" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/speedTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="5dip"
+            android:text="@string/speed_title"
+            android:textSize="20dip" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/showSpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/speedTitle"
+            android:text="0"
             android:textSize="20dip" >
         </TextView>
     </LinearLayout>
+
+    <Button android:id="@+id/startBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/start_btn"
+        android:background="#2edf15"
+        android:onClick="startRun" />
+
+    <Button android:id="@+id/stopBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/stop_btn"
+        android:background="#df1529"
+        android:onClick="stopRun" />
+
+    <Button android:id="@+id/saveRun"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/save_btn"
+        android:background="#1583c7"
+        android:onClick="saveRun" />
+
+    <Button android:id="@+id/showStuff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/show_btn"
+        android:background="#2ea4ec"
+        android:onClick="showStuff" />
+
 </LinearLayout>

@@ -179,7 +179,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         }
     }
 
-
+/*
     //@Override
     public void onProviderEnabled(String provider) {
         Toast.makeText(this, "Enabled new provider " + provider,
@@ -191,6 +191,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         Toast.makeText(this, "Disabled provider " + provider,
                 Toast.LENGTH_SHORT).show();
     }
+    */
 
     //Have to exist and do nothing...
     public void onConnectionSuspended( int i ){}

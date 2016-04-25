@@ -48,7 +48,6 @@
             android:text="0"
             android:textSize="20dip" >
         </TextView>
-
         <TextView
             android:id="@+id/timeTitle"
             android:layout_width="wrap_content"

@@ -4,6 +4,7 @@ import android.Manifest;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -38,7 +39,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 public class NewRun extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     //Used to access the API
@@ -67,8 +67,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     private boolean calculateRun;
     
     //for the time counting
-    private long startTime;
-    private long stopTime;
+    //private long startTime;
+   // private long stopTime;
 
     private String date;
 
@@ -77,6 +77,29 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     private Button startBtn;
     private Button showBtn;
 
+    //for time calc from http://stackoverflow.com/questions/4597690/android-timer-how
+    private TextView timerTextView;
+    private long startTime = 0;
+    private Handler handler = new Handler();
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            long millis = System.currentTimeMillis() - startTime;
+            int seconds = (int) (millis/1000);
+            int minutes = seconds/60;
+            seconds = seconds%60;
+            int hour = minutes/60;
+            if (hour>0){
+                timerTextView.setText(String.format("%d:%02d:%03d", hour, minutes, seconds));
+            }
+            else {
+                timerTextView.setText(String.format("%d:%02d", minutes, seconds));
+            }
+
+            handler.postDelayed(this, 500);
+
+        }
+    };
 
     @Override //Runs when the Activity starts
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +112,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
         //Creates the mediaPlayer
         save = MediaPlayer.create(getApplicationContext(), R.raw.saved);
+
+        //Finds all the objects by Id
+        distText = (TextView) findViewById(R.id.showDistance);
+        timerTextView = (TextView) findViewById(R.id.showTime);
+
 
         //Finds TextViews the objects by Id
         timeText = (TextView) findViewById(R.id.showTime);
@@ -229,7 +257,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         stopBtn.setVisibility(View.VISIBLE);
         startBtn.setVisibility(View.GONE);
         calculateRun = true;
-        startTime = System.currentTimeMillis();
         //Checks permissions
         if (locationManager != null) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -238,6 +265,12 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
         //Gets the last location
         startLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+
+        //for time calculation start
+        startTime = System.currentTimeMillis();
+        handler.postDelayed(runnable, 0);
+
     }
 
     // spara saker globalt
@@ -245,8 +278,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         saveBtn.setVisibility(View.VISIBLE);
         stopBtn.setVisibility(View.GONE);
         calculateRun= false;
-        stopTime = System.currentTimeMillis() - startTime;
-        stopTime = stopTime/1000;
+        save.start();
+
+        //for time calculation stop
+        handler.removeCallbacks(runnable);
+
 
         Toast.makeText(getApplicationContext(), "Run stopped", Toast.LENGTH_SHORT).show();
         //showTime.setText(Long.toString(stopTime));

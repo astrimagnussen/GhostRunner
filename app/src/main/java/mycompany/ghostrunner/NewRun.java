@@ -4,6 +4,7 @@ import android.Manifest;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -29,10 +30,30 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 
-
-
 public class NewRun extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+   //for time calc from http://stackoverflow.com/questions/4597690/android-timer-how
+    TextView timerTextView;
+    long startTime = 0;
+    Handler handler = new Handler();
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            long millis = System.currentTimeMillis() - startTime;
+            int seconds = (int) (millis/1000);
+            int minutes = seconds/60;
+            seconds = seconds%60;
+            int hour = minutes/60;
+            if (hour>0){
+                timerTextView.setText(String.format("%d:%02d:%03d", hour, minutes, seconds));
+            }
+            else {
+                timerTextView.setText(String.format("%d:%02d", minutes, seconds));
+            }
 
+            handler.postDelayed(this, 500);
+
+        }
+    };
     //Used to access the API
     private GoogleApiClient mGoogleApiClient;
 
@@ -60,11 +81,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     //The audio for save
     private MediaPlayer save;
     private boolean calculateRun;
-    
-    //for the time counting
-    private long startTime;
-    private long stopTime;
-    private TextView showTime;
 
     @Override //Runs when the Activity starts
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +97,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         //Finds all the objects by Id
         mLatitudeTextView = (TextView) findViewById(R.id.TextView02);
         mLongitudeTextView = (TextView) findViewById(R.id.TextView04);
-        showTime = (TextView) findViewById(R.id.showTime);
         showsaved = (TextView) findViewById(R.id.showsaved);
         distText = (TextView) findViewById(R.id.showdistance);
+        timerTextView = (TextView) findViewById(R.id.showHour);
+
+
 
         //Creates locationRequests
         createLocationRequest();
@@ -227,7 +245,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     public void startRun(View view) {
         calculateRun = true;
-        startTime = System.currentTimeMillis();
         //Checks permissions
         if (locationManager != null) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -238,41 +255,18 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         //Gets the last location
         startLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-        //Displays the location
-        /*if(startLocation != null) {
-            showsaved.setText(String.valueOf(startLocation.getLatitude()) + " " + String.valueOf(startLocation.getLongitude()));
-
-        }else{
-            showsaved.setText("startLocation är null");
-        }*/
+        //for time calculation start
+        startTime = System.currentTimeMillis();
+        handler.postDelayed(runnable, 0);
 
     }
 
     public void stopRun(View view) {
         calculateRun= false;
         save.start();
-        stopTime = System.currentTimeMillis() - startTime;
-        stopTime = stopTime/1000;
-        showTime.setText(Long.toString(stopTime));
 
-        //Checks permission
-       /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-
-        //Gets the last location
-        stopLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-
-        //Displays the distance
-        if(stopLocation != null) {
-            //Calculate the distance
-            distance = stopLocation.distanceTo(startLocation);
-            distText = (TextView) findViewById(R.id.showdistance);
-            distText.setText(Float.toString(distance));
-        }else{
-            distText.setText("stoplocation är null");
-        }*/
+        //for time calculation stop
+        handler.removeCallbacks(runnable);
 
     }
     public void calcDist (){
@@ -281,6 +275,5 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         distText = (TextView) findViewById(R.id.showdistance);
         distText.setText(Float.toString(distance));
     }
-
 
 }

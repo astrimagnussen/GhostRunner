@@ -29,13 +29,59 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class NewRun extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
-   //for time calc from http://stackoverflow.com/questions/4597690/android-timer-how
-    TextView timerTextView;
-    long startTime = 0;
-    Handler handler = new Handler();
-    Runnable runnable = new Runnable() {
+
+    //Used to access the API
+    private GoogleApiClient mGoogleApiClient;
+
+    private Location mCurrentLocation;
+
+    //If we should request loctionUpdates
+    private boolean mRequestingLocationUpdates = true;
+
+    private LocationRequest mLocationRequest;
+    private LocationManager locationManager;
+
+    //Start and stop locations for distance calculations
+    public Location startLocation;
+    private int distance;
+
+    //Shows the distance and the saved values
+    private TextView distText;
+    private TextView timeText;
+    private TextView speedText;
+   // private TextView showsaved;
+
+    //The audio for save
+    private MediaPlayer save;
+    private boolean calculateRun;
+    
+    //for the time counting
+    //private long startTime;
+   // private long stopTime;
+
+    private String date;
+
+    private Button saveBtn;
+    private Button stopBtn;
+    private Button startBtn;
+    private Button showBtn;
+
+    //for time calc from http://stackoverflow.com/questions/4597690/android-timer-how
+    private TextView timerTextView;
+    private long startTime = 0;
+    private Handler handler = new Handler();
+    private Runnable runnable = new Runnable() {
         @Override
         public void run() {
             long millis = System.currentTimeMillis() - startTime;
@@ -54,33 +100,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
         }
     };
-    //Used to access the API
-    private GoogleApiClient mGoogleApiClient;
-
-    private Location mCurrentLocation;
-
-    //Shows the coordinates
-    private TextView mLatitudeTextView;
-    private TextView mLongitudeTextView;
-
-    //If we should request loctionUpdates
-    private boolean mRequestingLocationUpdates = true;
-
-    private LocationRequest mLocationRequest;
-    private LocationManager locationManager;
-
-    //Start and stop locations for distance calculations
-    public Location startLocation;
-    private Location stopLocation;
-    private float distance;
-
-    //Shows the distance and the saved values
-    private TextView distText;
-    private TextView showsaved;
-
-    //The audio for save
-    private MediaPlayer save;
-    private boolean calculateRun;
 
     @Override //Runs when the Activity starts
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,13 +114,27 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         save = MediaPlayer.create(getApplicationContext(), R.raw.saved);
 
         //Finds all the objects by Id
-        mLatitudeTextView = (TextView) findViewById(R.id.TextView02);
-        mLongitudeTextView = (TextView) findViewById(R.id.TextView04);
-        showsaved = (TextView) findViewById(R.id.showsaved);
-        distText = (TextView) findViewById(R.id.showdistance);
-        timerTextView = (TextView) findViewById(R.id.showHour);
+        distText = (TextView) findViewById(R.id.showDistance);
+        timerTextView = (TextView) findViewById(R.id.showTime);
 
 
+        //Finds TextViews the objects by Id
+        timeText = (TextView) findViewById(R.id.showTime);
+        //showsaved = (TextView) findViewById(R.id.showsaved);
+        distText = (TextView) findViewById(R.id.showDistance);
+        speedText = (TextView) findViewById(R.id.showSpeed);
+
+        //Find Buttons from id
+        saveBtn = (Button) findViewById(R.id.saveRun);
+        stopBtn = (Button) findViewById(R.id.stopBtn);
+        startBtn = (Button) findViewById(R.id.startBtn);
+        showBtn = (Button) findViewById(R.id.showStuff);
+
+        //Sets visibility for buttons
+        saveBtn.setVisibility(View.GONE);
+        stopBtn.setVisibility(View.GONE);
+        startBtn.setVisibility(View.VISIBLE);
+        showBtn.setVisibility(View.GONE);
 
         //Creates locationRequests
         createLocationRequest();
@@ -127,16 +160,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
                 //locationManager.removeUpdates(GPSListener.this);
             }
         }
-
         //Gets the currentlocation
         mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
-
-        //Displays the currentlocation
-        if (mCurrentLocation != null) {
-            mLatitudeTextView.setText(String.valueOf(mCurrentLocation.getLatitude()));
-            mLongitudeTextView.setText(String.valueOf(mCurrentLocation.getLongitude()));
-        }
 
         //Starts the locationUpdates
         if (mRequestingLocationUpdates) {
@@ -186,29 +212,13 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     //When the location is changed
     public void onLocationChanged(Location location) {
-        //displays the currentLocation
+        //updates the currentLocation
         mCurrentLocation = location;
-        float lat = (float) (mCurrentLocation.getLatitude());
-        float lng = (float) (mCurrentLocation.getLongitude());
-        mLatitudeTextView.setText(String.valueOf(lat));
-        mLongitudeTextView.setText(String.valueOf(lng));
         if(calculateRun) {
             calcDist();
         }
     }
 
-
-    //@Override
-    public void onProviderEnabled(String provider) {
-        Toast.makeText(this, "Enabled new provider " + provider,
-                Toast.LENGTH_SHORT).show();
-    }
-
-    //@Override
-    public void onProviderDisabled(String provider) {
-        Toast.makeText(this, "Disabled provider " + provider,
-                Toast.LENGTH_SHORT).show();
-    }
 
     //Have to exist and do nothing...
     public void onConnectionSuspended( int i ){}
@@ -218,7 +228,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         mLocationRequest = new LocationRequest();
 
         //Sets the intervall for updating
-        mLocationRequest.setInterval(5000);
+        mLocationRequest.setInterval(2000);
 
         //Sets a max limit of how fast it can be updated without overflow of data
         mLocationRequest.setFastestInterval(1000);
@@ -244,16 +254,18 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
 
     public void startRun(View view) {
+        stopBtn.setVisibility(View.VISIBLE);
+        startBtn.setVisibility(View.GONE);
         calculateRun = true;
         //Checks permissions
         if (locationManager != null) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                //locationManager.removeUpdates(GPSListener.this);
             }
         }
 
         //Gets the last location
         startLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
 
         //for time calculation start
         startTime = System.currentTimeMillis();
@@ -261,19 +273,74 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     }
 
+    // spara saker globalt
     public void stopRun(View view) {
+        saveBtn.setVisibility(View.VISIBLE);
+        stopBtn.setVisibility(View.GONE);
         calculateRun= false;
         save.start();
 
         //for time calculation stop
         handler.removeCallbacks(runnable);
 
+
+        Toast.makeText(getApplicationContext(), "Run stopped", Toast.LENGTH_SHORT).show();
+        //showTime.setText(Long.toString(stopTime));
     }
     public void calcDist (){
-       distance += mCurrentLocation.distanceTo(startLocation);
+        distance += mCurrentLocation.distanceTo(startLocation);
         startLocation = mCurrentLocation;
-        distText = (TextView) findViewById(R.id.showdistance);
+        distText = (TextView) findViewById(R.id.showDistance);
         distText.setText(Float.toString(distance));
+    }
+
+    private String getDateTime() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+    //Spara till fil
+    public void saveRun(View view){
+        saveBtn.setVisibility(View.GONE);
+        showBtn.setVisibility(View.VISIBLE);
+
+        date =  getDateTime();
+
+        String file_name = "runs";
+        try {
+            FileOutputStream fileOutputStream = openFileOutput(file_name, MODE_PRIVATE);
+            fileOutputStream.write( Integer.toString(distance).getBytes());
+            fileOutputStream.close();
+            Toast.makeText(getApplicationContext(), "Run saved", Toast.LENGTH_LONG).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        save.start();
+
+    }
+
+    //Läser in från fil och visa stuff
+    public void showStuff(View view){
+        try {
+            String input;
+            FileInputStream fileInputStream = openFileInput("runs");
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            StringBuffer stringBuffer = new StringBuffer();
+
+            while((input = bufferedReader.readLine()) != null){
+                stringBuffer.append(input);
+            }
+            distText.setText(stringBuffer.toString());
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

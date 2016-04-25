@@ -5,5 +5,10 @@
     <string name="title_activity_display_coordinates">DisplayCoordinates</string>
     <string name="start_btn">Start</string>
     <string name="stop_btn">Stop</string>
+    <string name="save_btn">Save</string>
+    <string name="show_btn">Show stuff</string>
     <string name="title_activity_calculate_distance">CalculateDistance</string>
+    <string name="distance_title">Distance: </string>
+    <string name="time_title">Time elapsed: </string>
+    <string name="speed_title">Velocity: </string>
 </resources>

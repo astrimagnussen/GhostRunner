@@ -59,7 +59,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     //Shows the distance and the saved values
     private TextView distText;
     private TextView timeText;
-    private TextView speedText;
+    private TextView paceText;
    // private TextView showsaved;
 
     //The audio for save
@@ -67,8 +67,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     private boolean calculateRun;
     
     //for the time counting
-    //private long startTime;
-   // private long stopTime;
+   private Integer milliSeconds;
 
     private String date;
 
@@ -78,22 +77,22 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     private Button showBtn;
 
     //for time calc from http://stackoverflow.com/questions/4597690/android-timer-how
-    private TextView timerTextView;
     private long startTime = 0;
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
             long millis = System.currentTimeMillis() - startTime;
+            milliSeconds =  (int) millis;
             int seconds = (int) (millis/1000);
             int minutes = seconds/60;
             seconds = seconds%60;
             int hour = minutes/60;
             if (hour>0){
-                timerTextView.setText(String.format("%d:%02d:%03d", hour, minutes, seconds));
+                timeText.setText(String.format("%d:%02d:%03d", hour, minutes, seconds));
             }
             else {
-                timerTextView.setText(String.format("%d:%02d", minutes, seconds));
+                timeText.setText(String.format("%d:%02d", minutes, seconds));
             }
 
             handler.postDelayed(this, 500);
@@ -113,16 +112,13 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         //Creates the mediaPlayer
         save = MediaPlayer.create(getApplicationContext(), R.raw.saved);
 
-        //Finds all the objects by Id
-        distText = (TextView) findViewById(R.id.showDistance);
-        timerTextView = (TextView) findViewById(R.id.showTime);
 
 
         //Finds TextViews the objects by Id
         timeText = (TextView) findViewById(R.id.showTime);
         //showsaved = (TextView) findViewById(R.id.showsaved);
         distText = (TextView) findViewById(R.id.showDistance);
-        speedText = (TextView) findViewById(R.id.showSpeed);
+        paceText = (TextView) findViewById(R.id.showSpeed);
 
         //Find Buttons from id
         saveBtn = (Button) findViewById(R.id.saveRun);
@@ -216,6 +212,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         mCurrentLocation = location;
         if(calculateRun) {
             calcDist();
+            calcAvgPace();
         }
     }
 
@@ -289,9 +286,17 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     }
     public void calcDist (){
         distance += mCurrentLocation.distanceTo(startLocation);
+        int tenMeters = (distance/10)%100;
+        int km = distance/1000;
         startLocation = mCurrentLocation;
-        distText = (TextView) findViewById(R.id.showDistance);
-        distText.setText(Float.toString(distance));
+        distText.setText(String.format("%d.%02d", km, tenMeters));
+    }
+    public void calcAvgPace (){
+        int avgPaceSec = milliSeconds/distance;
+        int avgPaceMin = avgPaceSec/60;
+        avgPaceSec = avgPaceSec%60;
+        paceText.setText(String.format("%d:%02d", avgPaceMin, avgPaceSec));
+
     }
 
     private String getDateTime() {

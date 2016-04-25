@@ -68,6 +68,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     
     //for the time counting
    private Integer milliSeconds;
+    Integer hourToSave= 0;
+    Integer minutesToSave = 0;
+    Integer secToSave = 0;
 
     private String date;
 
@@ -88,6 +91,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             int minutes = seconds/60;
             seconds = seconds%60;
             int hour = minutes/60;
+
+            hourToSave = hour;
+            minutesToSave = minutes;
+            secToSave = seconds;
+
             if (hour>0){
                 timeText.setText(String.format("%d:%02d:%03d", hour, minutes, seconds));
             }
@@ -275,10 +283,12 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         saveBtn.setVisibility(View.VISIBLE);
         stopBtn.setVisibility(View.GONE);
         calculateRun= false;
-        save.start();
+
 
         //for time calculation stop
         handler.removeCallbacks(runnable);
+
+
 
 
         Toast.makeText(getApplicationContext(), "Run stopped", Toast.LENGTH_SHORT).show();
@@ -314,8 +324,19 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
         String file_name = "runs";
         try {
+            //Skickas, distans, new line, hour, new line, min, new line, sec, new line, date
             FileOutputStream fileOutputStream = openFileOutput(file_name, MODE_PRIVATE);
+
             fileOutputStream.write( Integer.toString(distance).getBytes());
+            fileOutputStream.write("\n".getBytes());
+            fileOutputStream.write(Integer.toString(hourToSave).getBytes());
+            fileOutputStream.write("\n".getBytes());
+            fileOutputStream.write(Integer.toString(minutesToSave).getBytes());
+            fileOutputStream.write("\n".getBytes());
+            fileOutputStream.write(Integer.toString(secToSave).getBytes());
+            fileOutputStream.write("\n".getBytes());
+            fileOutputStream.write((date).getBytes());
+
             fileOutputStream.close();
             Toast.makeText(getApplicationContext(), "Run saved", Toast.LENGTH_LONG).show();
         } catch (FileNotFoundException e) {
@@ -329,7 +350,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     //Läser in från fil och visa stuff
     public void showStuff(View view){
-        try {
+       /* try {
             String input;
             FileInputStream fileInputStream = openFileInput("runs");
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
@@ -345,7 +366,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             e.printStackTrace();
         }catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
 }

@@ -44,7 +44,6 @@
             android:id="@+id/showDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/distanceTitle"
             android:text="0"
             android:textSize="20dip" >
         </TextView>
@@ -56,6 +55,7 @@
             android:layout_marginLeft="10dip"
             android:layout_marginRight="5dip"
             android:text="@string/time_title"
+            android:layout_below="@id/showDistance"
             android:textSize="20dip" >
         </TextView>
 
@@ -63,7 +63,6 @@
             android:id="@+id/showTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/timeTitle"
             android:text="0"
             android:textSize="20dip" >
         </TextView>
@@ -75,6 +74,7 @@
             android:layout_marginLeft="10dip"
             android:layout_marginRight="5dip"
             android:text="@string/speed_title"
+            android:layout_below="@id/showTime"
             android:textSize="20dip" >
         </TextView>
 

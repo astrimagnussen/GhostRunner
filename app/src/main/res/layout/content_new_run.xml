@@ -14,14 +14,6 @@
     tools:showIn="@layout/activity_new_run"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dip"
-        android:orientation="horizontal" >
-
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -88,32 +80,53 @@
         </TextView>
     </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
     <Button android:id="@+id/startBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/start_btn"
-        android:background="#2edf15"
-        android:onClick="startRun" />
+        android:text="@string/start_btn"
+        android:onClick="startRun"
+        android:textColor="#1c3920"
+        android:background="@drawable/round_shape_button"
+        android:layout_alignParentBottom ="true"
+        android:layout_margin="50dp"/>
 
     <Button android:id="@+id/stopBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/stop_btn"
-        android:background="#df1529"
-        android:onClick="stopRun" />
+        android:text="@string/stop_btn"
+        android:onClick="stopRun"
+        android:textColor="#1c3920"
+        android:background="@drawable/round_shape_button"
+        android:layout_alignParentBottom ="true"
+        android:layout_margin="50dp"/>
 
-    <Button android:id="@+id/saveRun"
+        <Button android:id="@+id/menuBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_btn"
+            android:onClick="menu"
+            android:textColor="#1c3920"
+            android:background="@drawable/round_shape_button"
+            android:layout_alignParentBottom ="true"
+            android:layout_margin="50dp"/>
+
+        <Button android:id="@+id/saveRunBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/save_btn"
-        android:background="#1583c7"
-        android:onClick="saveRun" />
+        android:text="@string/save_btn"
+            android:layout_above="@id/menuBtn"
+            android:onClick="saveRun"
+        android:textColor="#1c3920"
+        android:background="@drawable/round_shape_button"
+        android:layout_alignParentBottom ="true"
+        android:layout_margin="50dp"/>
 
-    <Button android:id="@+id/goHome"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/menu_btn"
-        android:background="#2ea4ec"
-        android:onClick="goHome" />
 
+    </RelativeLayout>
 </LinearLayout>

@@ -52,8 +52,5 @@ Thumbs.db
 # OSX files
 .DS_Store
 
-<<<<<<< Updated upstream
-.idea/
-=======
-.idea/
->>>>>>> Stashed changes
+*.idea/
+.idea/misc.xml

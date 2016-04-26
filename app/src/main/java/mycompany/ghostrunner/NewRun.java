@@ -2,6 +2,7 @@ package mycompany.ghostrunner;
 // mycket kod från här: https://developer.android.com/training/location/retrieve-current.html
 import android.Manifest;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,12 +30,9 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -76,7 +74,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     private Button saveBtn;
     private Button stopBtn;
     private Button startBtn;
-    private Button showBtn;
+    private Button menuBtn;
 
     //for time calc from http://stackoverflow.com/questions/4597690/android-timer-how
     private TextView timerTextView;
@@ -126,7 +124,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
         //Finds TextViews the objects by Id
         timeText = (TextView) findViewById(R.id.showTime);
-        //showsaved = (TextView) findViewById(R.id.showsaved);
         distText = (TextView) findViewById(R.id.showDistance);
         speedText = (TextView) findViewById(R.id.showSpeed);
 
@@ -134,13 +131,13 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         saveBtn = (Button) findViewById(R.id.saveRun);
         stopBtn = (Button) findViewById(R.id.stopBtn);
         startBtn = (Button) findViewById(R.id.startBtn);
-        showBtn = (Button) findViewById(R.id.showStuff);
+        menuBtn = (Button) findViewById(R.id.goHome);
 
         //Sets visibility for buttons
         saveBtn.setVisibility(View.GONE);
         stopBtn.setVisibility(View.GONE);
         startBtn.setVisibility(View.VISIBLE);
-        showBtn.setVisibility(View.GONE);
+        menuBtn.setVisibility(View.GONE);
 
         //Creates locationRequests
         createLocationRequest();
@@ -282,6 +279,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     // spara saker globalt
     public void stopRun(View view) {
         saveBtn.setVisibility(View.VISIBLE);
+        menuBtn.setVisibility(View.VISIBLE);
         stopBtn.setVisibility(View.GONE);
         calculateRun= false;
 
@@ -311,7 +309,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     //Spara till fil
     public void saveRun(View view){
         saveBtn.setVisibility(View.GONE);
-        showBtn.setVisibility(View.VISIBLE);
+        menuBtn.setVisibility(View.VISIBLE);
 
         date =  getDateTime();
 
@@ -342,24 +340,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     }
 
     //Läser in från fil och visa stuff
-    public void showStuff(View view){
-       /* try {
-            String input;
-            FileInputStream fileInputStream = openFileInput("runs");
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            StringBuffer stringBuffer = new StringBuffer();
+    public void goHome(View view){
 
-            while((input = bufferedReader.readLine()) != null){
-                stringBuffer.append(input);
-            }
-            distText.setText(stringBuffer.toString());
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }*/
     }
 
 }

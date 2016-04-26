@@ -109,11 +109,11 @@
         android:background="#1583c7"
         android:onClick="saveRun" />
 
-    <Button android:id="@+id/showStuff"
+    <Button android:id="@+id/goHome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/show_btn"
+        android:hint="@string/menu_btn"
         android:background="#2ea4ec"
-        android:onClick="showStuff" />
+        android:onClick="goHome" />
 
 </LinearLayout>

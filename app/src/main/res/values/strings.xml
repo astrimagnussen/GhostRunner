@@ -6,7 +6,7 @@
     <string name="start_btn">Start</string>
     <string name="stop_btn">Stop</string>
     <string name="save_btn">Save</string>
-    <string name="show_btn">Show stuff</string>
+    <string name="menu_btn">Menu</string>
     <string name="title_activity_calculate_distance">CalculateDistance</string>
     <string name="distance_title">Distance: </string>
     <string name="time_title">Time elapsed: </string>

@@ -32,7 +32,7 @@ public class GhostRun extends AppCompatActivity {
         timeText = (TextView) findViewById(R.id.timeTextGhost);
 
         if(!read()){
-            dateText.setText("Kaos");
+            //dateText.setText("Kaos");
         }
 
     }
@@ -52,44 +52,57 @@ public class GhostRun extends AppCompatActivity {
             int hour = 0;
             int min = 0;
             int sec = 0;
+            int distance = 0;
+            String date = "";
 
             while ((input = bufferedReader.readLine()) != null) {
                 switch (counter) {
+
                     case 0:
-                        dateText.setText(input);
+                        distance = Integer.parseInt(input);
+                       // distText.setText(input);
                         break;
                     case 1:
-                        distText.setText(input);
-                        break;
-                    case 2:
                         try {
                             hour = Integer.parseInt(input);
                         } catch (NumberFormatException e) {
+                          //  dateText.setText("Kaos hour");
+                            return false;
+                        }
+                        break;
+                    case 2:
+                        try {
+                            min = Integer.parseInt(input);
+                        } catch (NumberFormatException e) {
+                           // dateText.setText("Kaos min");
                             return false;
                         }
                         break;
                     case 3:
                         try {
-                            min = Integer.parseInt(input);
+                            sec = Integer.parseInt(input);
+                            if (hour > 0) {
+                                // timeText.setText(String.format("%d:%02d:%03d", hour, min, sec));
+                            } else {
+                               // timeText.setText(String.format("%d:%02d", min, sec));
+                            }
                         } catch (NumberFormatException e) {
+                            //dateText.setText("Kaos sec");
                             return false;
                         }
                         break;
                     case 4:
-                        try {
-                            sec = Integer.parseInt(input);
-                            if (hour > 0) {
-                                timeText.setText(String.format("%d:%02d:%03d", hour, min, sec));
-                            } else {
-                                timeText.setText(String.format("%d:%02d", min, sec));
-                            }
-                        } catch (NumberFormatException e) {
-                            return false;
-                        }
+                        byte[] bytes = input.getBytes("UTF-8");
+                        date = new String(bytes, "UTF-8");
+                     //   dateText.setText(input);
                         break;
                 }
+
                 counter ++;
             }
+            Run run = new Run(hour, min, sec, distance, date);
+            dateText.setText(run.getDate());
+
             return true;
 
         } catch (FileNotFoundException e) {

@@ -9,6 +9,6 @@
     <string name="menu_btn">Menu</string>
     <string name="title_activity_calculate_distance">CalculateDistance</string>
     <string name="distance_title">Distance: </string>
-    <string name="time_title">Time elapsed: </string>
-    <string name="speed_title">Velocity: </string>
+    <string name="time_title">Time: </string>
+    <string name="speed_title">Current pace: </string>
 </resources>

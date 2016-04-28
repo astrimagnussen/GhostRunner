@@ -1,20 +1,43 @@
-<resources>>
+<resources>
 
-    <style name="AppTheme.NoActionBar">
+    <!-- Base application theme. -->
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:textColorPrimary">@color/colorTitle</item>
+        <item name="android:windowBackground">@color/colorWindowBackground</item>
+
+        <item name="colorPrimaryDark">@color/colorStatusBar</item>
+        <item name="android:statusBarColor">@color/colorStatusBar</item>
+
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorActionBar</item>
+        <item name="android:colorForeground">@android:color/holo_blue_dark</item>
+
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+
+        <item name="android:buttonStyle">@style/myButtons</item>
+
+        <item name="android:textViewStyle">@style/displayRun</item>
+
     </style>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="android:textColorPrimary">#f7f7f7</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorPrimary">@color/holo_green_dark</item>
-        <item name="android:colorForeground">@android:color/holo_blue_dark</item>
-        <item name="android:navigationBarColor">@color/design_textinput_error_color_light</item>
-        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+
+    <!-- Customize your button theme here. -->
+    <style name="myButtons" parent="android:style/Widget.Material.Light.Button">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/colorButtonText</item>
+        <item name="android:background">@drawable/round_shape_button</item>
     </style>
+
+    <style name="displayRun" parent="android:style/Widget.Material.Light.TextView">
+        <item name="android:textSize">25dp</item>
+        <item name="android:textColor">@color/colorDisplayRunText</item>
+    </style>
+
+
+
+
+
 </resources>
+

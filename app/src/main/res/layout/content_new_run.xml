@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:text="@string/distance_title"
             android:layout_marginTop="20dp"
-            android:textSize="40dip">
+            android:textViewStyle="@style/displayRun">
         </TextView>
 
         <TextView
@@ -39,7 +39,7 @@
             android:layout_marginTop="20dp"
             android:layout_alignParentRight ="true"
             android:text="0"
-            android:textSize="40dip" >
+            android:textViewStyle="@style/displayRun">
         </TextView>
 
         <TextView
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:text="@string/time_title"
             android:layout_below="@id/distanceTitle"
-            android:textSize="40dip" >
+            android:textViewStyle="@style/displayRun" >
         </TextView>
 
         <TextView
@@ -58,7 +58,7 @@
             android:layout_alignParentRight ="true"
             android:layout_below="@id/showDistance"
             android:text="0"
-            android:textSize="40dip" >
+            android:textViewStyle="@style/displayRun" >
         </TextView>
 
         <TextView
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:text="@string/speed_title"
             android:layout_below="@id/timeTitle"
-            android:textSize="40dip" >
+            android:textViewStyle="@style/displayRun" >
         </TextView>
 
         <TextView
@@ -77,7 +77,7 @@
             android:layout_alignParentRight ="true"
             android:layout_below="@id/showTime"
             android:text="0"
-            android:textSize="40dip" >
+            android:textViewStyle="@style/displayRun" >
         </TextView>
     </RelativeLayout>
 
@@ -85,33 +85,27 @@
         android:id="@+id/linearLayout3"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
-    <Button android:id="@+id/startBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/start_btn"
-        android:onClick="startRun"
-        android:textColor="#1c3920"
-        android:buttonStyle="@style/CKButton"
-        android:background="@drawable/round_shape_button"
-        android:layout_alignParentBottom ="true"
-        android:layout_marginBottom="20dp"
-        />
+        <Button android:id="@+id/startBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonStyle="@style/myButtons"
+            android:text="@string/start_btn"
+            android:onClick="startRun"
+            android:layout_alignParentBottom ="true"
+            android:layout_marginBottom="20dip"
+            />
 
-    <Button android:id="@+id/stopBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/stop_btn"
-        android:onClick="stopRun"
-        android:textColor="#1c3920"
-        android:textSize="30dip"
-        android:background="@drawable/round_shape_button"
-        android:layout_alignParentBottom ="true"
-        android:layout_marginBottom="20dp"
-
-        />
+        <Button android:id="@+id/stopBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/stop_btn"
+            android:onClick="stopRun"
+            android:layout_alignParentBottom ="true"
+            android:buttonStyle="@style/myButtons"
+            android:layout_marginBottom="20dip"
+            />
 
         <Button android:id="@+id/saveRunBtn"
             android:layout_width="match_parent"
@@ -119,10 +113,8 @@
             android:layout_above="@+id/menuBtn"
             android:text="@string/save_btn"
             android:onClick="saveRun"
-            android:textColor="#1c3920"
-            android:textSize="30dip"
-            android:background="@drawable/round_shape_button"
-            android:layout_marginBottom="20dp"
+            android:buttonStyle="@style/myButtons"
+            android:layout_marginBottom="20dip"
             />
 
         <Button android:id="@+id/menuBtn"
@@ -130,11 +122,9 @@
             android:layout_height="wrap_content"
             android:text="@string/menu_btn"
             android:onClick="menu"
-            android:textColor="#1c3920"
-            android:textSize="30dip"
-            android:background="@drawable/round_shape_button"
             android:layout_alignParentBottom ="true"
-            android:layout_marginBottom="20dp"
+            android:buttonStyle="@style/myButtons"
+            android:layout_marginBottom="20dip"
             />
 
 

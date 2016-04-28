@@ -23,12 +23,12 @@
         </activity>
         <activity
             android:name=".NewRun"
-            android:label="@string/title_activity_display_coordinates"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:label="@string/title_activity_new_run"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".GhostRun"
-            android:label="@string/title_activity_calculate_distance"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:label="@string/title_activity_ghost_run"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

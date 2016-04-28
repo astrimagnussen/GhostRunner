@@ -112,7 +112,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         setContentView(R.layout.activity_new_run);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setTitle("New Run");
+       // getSupportActionBar().setTitle("New Run");
         calculateRun = false;
 
         //Creates the mediaPlayer
@@ -126,10 +126,10 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         paceText = (TextView) findViewById(R.id.showSpeed);
 
         //Find Buttons from id
-        saveBtn = (Button) findViewById(R.id.saveRun);
+        saveBtn = (Button) findViewById(R.id.saveRunBtn);
         stopBtn = (Button) findViewById(R.id.stopBtn);
         startBtn = (Button) findViewById(R.id.startBtn);
-        menuBtn = (Button) findViewById(R.id.goHome);
+        menuBtn = (Button) findViewById(R.id.menuBtn);
 
         //Sets visibility for buttons
         saveBtn.setVisibility(View.GONE);
@@ -286,9 +286,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         //for time calculation stop
         handler.removeCallbacks(runnable);
 
-
-
-
         Toast.makeText(getApplicationContext(), "Run stopped", Toast.LENGTH_SHORT).show();
         //showTime.setText(Long.toString(stopTime));
     }
@@ -347,7 +344,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     }
 
     //Läser in från fil och visa stuff
-    public void goHome(View view){
+    public void menu(View view){
 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);

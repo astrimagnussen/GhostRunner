@@ -8,7 +8,20 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimary">@color/holo_green_dark</item>
         <item name="android:colorForeground">@android:color/holo_blue_dark</item>
+
+
+
     </style>
+
+
+    <style name="Buttons" parent="AppTheme">
+        <item name="android:buttonStyle">@style/CKButton</item>
+    </style>
+    <style name="CKButton" parent="android:style/Widget.Button">
+        <item name="android:textSize">25dp</item>
+        <item name="android:textColor">#e40d0d</item>
+    </style>
+
 
     <style name="AppTheme.NoActionBar">
         <item name="android:background">#20872f</item>
@@ -19,5 +32,7 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
 
 </resources>

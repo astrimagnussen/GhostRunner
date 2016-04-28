@@ -3,10 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorStatusBar">#06320b</color>
     <color name="colorAccent">#FF4081</color>
+
     <color name="colorActionBar">#095501</color>
     <color name="colorWindowBackground">#f4faf5</color>
     <color name="colorTitle">#fff</color>
     <color name="colorButtonText">#ffffff</color>
     <color name="colorButtonBackground">#095501</color>
     <color name="colorDisplayRunText">#000000</color>
+
 </resources>

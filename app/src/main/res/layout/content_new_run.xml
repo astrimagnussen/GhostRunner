@@ -15,117 +15,119 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
 
         <TextView
             android:id="@+id/distanceTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="5dip"
             android:text="@string/distance_title"
-            android:textSize="20dip">
+            android:layout_marginTop="20dp"
+            android:textViewStyle="@style/displayRun">
         </TextView>
 
         <TextView
             android:id="@+id/showDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentRight ="true"
             android:text="0"
-            android:textSize="20dip" >
+            android:textViewStyle="@style/displayRun">
         </TextView>
 
         <TextView
             android:id="@+id/timeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="5dip"
             android:text="@string/time_title"
-            android:layout_below="@id/showDistance"
-            android:textSize="20dip" >
+            android:layout_below="@id/distanceTitle"
+            android:textViewStyle="@style/displayRun" >
         </TextView>
 
         <TextView
             android:id="@+id/showTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight ="true"
+            android:layout_below="@id/showDistance"
             android:text="0"
-            android:textSize="20dip" >
+            android:textViewStyle="@style/displayRun" >
         </TextView>
 
         <TextView
             android:id="@+id/speedTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="5dip"
             android:text="@string/speed_title"
-            android:layout_below="@id/showTime"
-            android:textSize="20dip" >
+            android:layout_below="@id/timeTitle"
+            android:textViewStyle="@style/displayRun" >
         </TextView>
 
         <TextView
             android:id="@+id/showSpeed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/speedTitle"
+            android:layout_alignParentRight ="true"
+            android:layout_below="@id/showTime"
             android:text="0"
-            android:textSize="20dip" >
+            android:textViewStyle="@style/displayRun" >
         </TextView>
-    </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <Button android:id="@+id/startBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/start_btn"
-        android:onClick="startRun"
-        android:textColor="#1c3920"
-        android:background="@drawable/round_shape_button"
-        android:layout_alignParentBottom ="true"
-        android:layout_margin="50dp"/>
+        <Button android:id="@+id/startBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonStyle="@style/myButtons"
+            android:text="@string/start_btn"
+            android:onClick="startRun"
+            android:layout_alignParentBottom ="true"
+            android:layout_marginBottom="20dip"
+            />
 
-    <Button android:id="@+id/stopBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/stop_btn"
-        android:onClick="stopRun"
-        android:textColor="#1c3920"
-        android:background="@drawable/round_shape_button"
-        android:layout_alignParentBottom ="true"
-        android:layout_margin="50dp"/>
+        <Button android:id="@+id/stopBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/stop_btn"
+            android:onClick="stopRun"
+            android:layout_alignParentBottom ="true"
+            android:buttonStyle="@style/myButtons"
+            android:layout_marginBottom="20dip"
+            />
+
+        <Button android:id="@+id/saveRunBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/menuBtn"
+            android:text="@string/save_btn"
+            android:onClick="saveRun"
+            android:buttonStyle="@style/myButtons"
+            android:layout_marginBottom="20dip"
+            />
 
         <Button android:id="@+id/menuBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/menu_btn"
             android:onClick="menu"
-            android:textColor="#1c3920"
-            android:background="@drawable/round_shape_button"
             android:layout_alignParentBottom ="true"
-            android:layout_margin="50dp"/>
+            android:buttonStyle="@style/myButtons"
+            android:layout_marginBottom="20dip"
+            />
 
-        <Button android:id="@+id/saveRunBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/save_btn"
-            android:layout_above="@id/menuBtn"
-            android:onClick="saveRun"
-        android:textColor="#1c3920"
-        android:background="@drawable/round_shape_button"
-        android:layout_alignParentBottom ="true"
-        android:layout_margin="50dp"/>
+
 
 
     </RelativeLayout>

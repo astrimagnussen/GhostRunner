@@ -112,7 +112,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         setContentView(R.layout.activity_new_run);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-       // getSupportActionBar().setTitle("New Run");
         calculateRun = false;
 
         //Creates the mediaPlayer

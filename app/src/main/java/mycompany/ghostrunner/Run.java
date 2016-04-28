@@ -37,4 +37,6 @@ public class Run {
     public String getDate() {
         return runDate;
     }
+
+    //Kanske bör lägga in en toString() här?
 }

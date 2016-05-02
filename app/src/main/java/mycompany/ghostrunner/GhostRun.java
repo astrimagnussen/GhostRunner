@@ -3,7 +3,6 @@ package mycompany.ghostrunner;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -20,8 +19,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class GhostRun extends AppCompatActivity {
     /*private TextView dateText;
@@ -29,7 +26,7 @@ public class GhostRun extends AppCompatActivity {
     private TextView timeText;*/
     //private ArrayList<Run> runList;
     private ListView listView;
-    private OurListAdapter adapter;
+    private RunListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +40,7 @@ public class GhostRun extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listView);
         //runList = new ArrayList<>();
 
-        adapter = new OurListAdapter(this/*, R.layout.row, runList*/);
+        adapter = new RunListAdapter(this/*, R.layout.row, runList*/);
         listView.setAdapter(adapter);
 
         if(!read()) {
@@ -70,12 +67,12 @@ public class GhostRun extends AppCompatActivity {
         timeText = (TextView) findViewById(R.id.timeTextGhost);*/
     }
 
-    private class OurListAdapter extends BaseAdapter {
+    private class RunListAdapter extends BaseAdapter {
         private ArrayList<Run> runList;
 
         private final Context context;
 
-        public OurListAdapter(Context context/*, int textViewResourceId,
+        public RunListAdapter(Context context/*, int textViewResourceId,
                               ArrayList<Run> runList*/) {
             this.context = context;
 

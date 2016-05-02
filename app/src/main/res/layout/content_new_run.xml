@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_alignParentRight ="true"
-            android:text="0"
+            android:text="0 km"
             android:textViewStyle="@style/displayRun">
         </TextView>
 
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight ="true"
             android:layout_below="@id/showTime"
-            android:text="0"
+            android:text="0 min/km"
             android:textViewStyle="@style/displayRun" >
         </TextView>
     </RelativeLayout>

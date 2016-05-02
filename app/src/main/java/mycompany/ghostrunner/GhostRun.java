@@ -21,10 +21,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class GhostRun extends AppCompatActivity {
-    /*private TextView dateText;
-    private TextView distText;
-    private TextView timeText;*/
-    //private ArrayList<Run> runList;
     private ListView listView;
     private RunListAdapter adapter;
 
@@ -75,7 +71,6 @@ public class GhostRun extends AppCompatActivity {
         public RunListAdapter(Context context/*, int textViewResourceId,
                               ArrayList<Run> runList*/) {
             this.context = context;
-
             runList = new ArrayList<>();
         }
 
@@ -126,7 +121,7 @@ public class GhostRun extends AppCompatActivity {
             TextView timeText = (TextView) convertView.findViewById(R.id.timeTextGhost);
 
             Run run = getItem(position);
-            dateText.setText(run.getDate());
+            dateText.setText(run.getDate().substring(0, 10));
             distText.setText(Float.toString(run.getDistance()));
             timeText.setText(run.getHours() + ":" + run.getMinutes() + ":" + run.getSeconds());
 
@@ -192,12 +187,13 @@ public class GhostRun extends AppCompatActivity {
                     case 4:
                         byte[] bytes = input.getBytes("UTF-8");
                         date = new String(bytes, "UTF-8");
+
                      //   dateText.setText(input);
                         break;
                 }
 
                 counter++;
-                if (counter/5 == 0 && counter !=0) readRunList.add(new Run(hour, min, sec, distance, date));
+                if (counter%5 == 0 && counter != 0) readRunList.add(new Run(hour, min, sec, distance, date));
             }
 
             adapter.updateRuns(readRunList);

@@ -6,7 +6,7 @@
     <string name="start_btn">Start</string>
     <string name="stop_btn">Stop</string>
     <string name="save_btn">Save</string>
-    <string name="menu_btn">Menu</string>
+    <string name="menu_btn">Delete</string>
     <string name="title_activity_ghost_run">GhostRun</string>
     <string name="distance_title">Distance: </string>
     <string name="time_title">Time: </string>

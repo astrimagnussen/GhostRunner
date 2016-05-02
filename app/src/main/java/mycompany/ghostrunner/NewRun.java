@@ -76,6 +76,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     private Button stopBtn;
     private Button startBtn;
     private Button menuBtn;
+    private Button deleteBtn;
 
     //for time calc from http://stackoverflow.com/questions/4597690/android-timer-how
     private long startTime = 0;
@@ -129,12 +130,15 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         stopBtn = (Button) findViewById(R.id.stopBtn);
         startBtn = (Button) findViewById(R.id.startBtn);
         menuBtn = (Button) findViewById(R.id.menuBtn);
+        deleteBtn = (Button) findViewById(R.id.deleteBtn);
 
         //Sets visibility for buttons
         saveBtn.setVisibility(View.GONE);
         stopBtn.setVisibility(View.GONE);
         startBtn.setVisibility(View.VISIBLE);
         menuBtn.setVisibility(View.GONE);
+        deleteBtn.setVisibility(View.GONE);
+
 
         //Creates locationRequests
         createLocationRequest();
@@ -277,7 +281,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     // spara saker globalt
     public void stopRun(View view) {
         saveBtn.setVisibility(View.VISIBLE);
-        menuBtn.setVisibility(View.VISIBLE);
+        deleteBtn.setVisibility(View.VISIBLE);
         stopBtn.setVisibility(View.GONE);
         calculateRun= false;
 
@@ -312,6 +316,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     //Spara till fil
     public void saveRun(View view){
         saveBtn.setVisibility(View.GONE);
+        deleteBtn.setVisibility(View.GONE);
         menuBtn.setVisibility(View.VISIBLE);
 
         date =  getDateTime();
@@ -332,7 +337,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             fileOutputStream.write((date).getBytes());
 
             fileOutputStream.close();
-            Toast.makeText(getApplicationContext(), "Run saved", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Run saved", Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e){
@@ -340,6 +345,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         }
         save.start();
 
+    }
+    public void afterDelete(View view){
+        Toast.makeText(getApplicationContext(), "Run deleted", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     //Läser in från fil och visa stuff

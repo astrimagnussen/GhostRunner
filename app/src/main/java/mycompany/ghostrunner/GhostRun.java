@@ -130,7 +130,10 @@ public class GhostRun extends AppCompatActivity {
 
             Run run = getItem(position);
             dateText.setText(run.getDate());
-            distText.setText(Float.toString(run.getDistance()));
+            float distance = run.getDistance();
+            int tenMeters = (int) (distance/10)%100;
+            int km = (int) distance/1000;
+            distText.setText(String.format("%d.%02d", km, tenMeters));
             timeText.setText(run.getHours() + ":" + run.getMinutes() + ":" + run.getSeconds());
 
             return convertView;

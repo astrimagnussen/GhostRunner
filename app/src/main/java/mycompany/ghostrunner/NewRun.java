@@ -297,13 +297,13 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         int tenMeters = (distance/10)%100;
         int km = distance/1000;
         startLocation = mCurrentLocation;
-        distText.setText(String.format("%d.%02d", km, tenMeters));
+        distText.setText(String.format("%d.%02d %s", km, tenMeters, " km"));
     }
     public void calcAvgPace (){
         int avgPaceSec = milliSeconds/distance;
         int avgPaceMin = avgPaceSec/60;
         avgPaceSec = avgPaceSec%60;
-        paceText.setText(String.format("%d:%02d", avgPaceMin, avgPaceSec));
+        paceText.setText(String.format("%d:%02d %s", avgPaceMin, avgPaceSec, " min/km"));
 
     }
 
@@ -344,7 +344,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             e.printStackTrace();
         }
         save.start();
-
     }
     public void afterDelete(View view){
         Toast.makeText(getApplicationContext(), "Run deleted", Toast.LENGTH_SHORT).show();
@@ -354,7 +353,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     //Läser in från fil och visa stuff
     public void menu(View view){
-
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
 

@@ -3,7 +3,6 @@ package mycompany.ghostrunner;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -20,16 +19,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class GhostRun extends AppCompatActivity {
-    /*private TextView dateText;
-    private TextView distText;
-    private TextView timeText;*/
-    //private ArrayList<Run> runList;
     private ListView listView;
-    private OurListAdapter adapter;
+    private RunListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +36,7 @@ public class GhostRun extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listView);
         //runList = new ArrayList<>();
 
-        adapter = new OurListAdapter(this/*, R.layout.row, runList*/);
+        adapter = new RunListAdapter(this/*, R.layout.row, runList*/);
         listView.setAdapter(adapter);
 
         if(!read()) {
@@ -70,15 +63,14 @@ public class GhostRun extends AppCompatActivity {
         timeText = (TextView) findViewById(R.id.timeTextGhost);*/
     }
 
-    private class OurListAdapter extends BaseAdapter {
+    private class RunListAdapter extends BaseAdapter {
         private ArrayList<Run> runList;
 
         private final Context context;
 
-        public OurListAdapter(Context context/*, int textViewResourceId,
+        public RunListAdapter(Context context/*, int textViewResourceId,
                               ArrayList<Run> runList*/) {
             this.context = context;
-
             runList = new ArrayList<>();
         }
 
@@ -129,8 +121,11 @@ public class GhostRun extends AppCompatActivity {
             TextView timeText = (TextView) convertView.findViewById(R.id.timeTextGhost);
 
             Run run = getItem(position);
-            dateText.setText(run.getDate());
-            distText.setText(Float.toString(run.getDistance()));
+            dateText.setText(run.getDate().substring(0, 10));
+            float distance = run.getDistance();
+            int tenMeters = (int) (distance/10)%100;
+            int km = (int) distance/1000;
+            distText.setText(String.format("%d.%02d %s", km, tenMeters, " km"));
             timeText.setText(run.getHours() + ":" + run.getMinutes() + ":" + run.getSeconds());
 
             return convertView;
@@ -195,12 +190,13 @@ public class GhostRun extends AppCompatActivity {
                     case 4:
                         byte[] bytes = input.getBytes("UTF-8");
                         date = new String(bytes, "UTF-8");
+
                      //   dateText.setText(input);
                         break;
                 }
 
                 counter++;
-                if (counter/5 == 0 && counter !=0) readRunList.add(new Run(hour, min, sec, distance, date));
+                if (counter%5 == 0 && counter != 0) readRunList.add(new Run(hour, min, sec, distance, date));
             }
 
             adapter.updateRuns(readRunList);

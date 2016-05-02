@@ -3,6 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorStatusBar">#06320b</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorSaveBtn">#48c1f1</color>
+    <color name="colorDeleteBtn">#e12326</color>
 
     <color name="colorActionBar">#095501</color>
     <color name="colorWindowBackground">#f4faf5</color>

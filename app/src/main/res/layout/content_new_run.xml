@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_alignParentRight ="true"
-            android:text="0"
+            android:text="0 km"
             android:textViewStyle="@style/displayRun">
         </TextView>
 
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight ="true"
             android:layout_below="@id/showTime"
-            android:text="0"
+            android:text="0 min/km"
             android:textViewStyle="@style/displayRun" >
         </TextView>
     </RelativeLayout>
@@ -110,11 +110,12 @@
         <Button android:id="@+id/saveRunBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/menuBtn"
+            android:layout_above="@+id/deleteBtn"
             android:text="@string/save_btn"
             android:onClick="saveRun"
             android:buttonStyle="@style/myButtons"
             android:layout_marginBottom="20dip"
+            android:background="@color/colorSaveBtn"
             />
 
         <Button android:id="@+id/menuBtn"
@@ -125,6 +126,16 @@
             android:layout_alignParentBottom ="true"
             android:buttonStyle="@style/myButtons"
             android:layout_marginBottom="20dip"
+            />
+        <Button android:id="@+id/deleteBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_btn"
+            android:onClick="afterDelete"
+            android:layout_alignParentBottom="true"
+            android:buttonStyle="@style/myButtons"
+            android:layout_marginBottom="20dip"
+            android:background="@color/colorDeleteBtn"
             />
 
 

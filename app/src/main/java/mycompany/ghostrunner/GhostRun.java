@@ -57,10 +57,6 @@ public class GhostRun extends AppCompatActivity {
                         });*/
             }
         });
-
-        /*dateText = (TextView) findViewById(R.id.dateTextGhost);
-        distText = (TextView) findViewById(R.id.distTextGhost);
-        timeText = (TextView) findViewById(R.id.timeTextGhost);*/
     }
 
     private class RunListAdapter extends BaseAdapter {
@@ -132,8 +128,6 @@ public class GhostRun extends AppCompatActivity {
         }
 
     }
-
-
 
     public boolean read() {
         try {

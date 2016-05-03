@@ -15,8 +15,7 @@
     android:orientation="vertical">
 
 
-    <RelativeLayout
-        android:id="@+id/linearLayout2"
+    <RelativeLayout android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -82,7 +81,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/linearLayout3"
+        android:id="@+id/relativeLayout3"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -94,7 +93,7 @@
             android:text="@string/start_btn"
             android:onClick="startRun"
             android:layout_alignParentBottom ="true"
-            android:layout_marginBottom="20dip"
+            android:layout_marginBottom="20dp"
             />
 
         <Button android:id="@+id/stopBtn"
@@ -102,9 +101,29 @@
             android:layout_height="wrap_content"
             android:text="@string/stop_btn"
             android:onClick="stopRun"
-            android:layout_alignParentBottom ="true"
+            android:layout_alignParentBottom="true"
             android:buttonStyle="@style/myButtons"
-            android:layout_marginBottom="20dip"
+            android:layout_marginBottom="20dp"
+            />
+
+        <Button android:id="@+id/pauseBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pause"
+            android:onClick="pauseRun"
+            android:layout_above="@id/stopBtn"
+            android:buttonStyle="@style/myButtons"
+            android:layout_marginBottom="20dp"
+            />
+
+        <Button android:id="@+id/continueBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Continue"
+            android:onClick="continueRun"
+            android:layout_above="@id/stopBtn"
+            android:buttonStyle="@style/myButtons"
+            android:layout_marginBottom="20dp"
             />
 
         <Button android:id="@+id/saveRunBtn"
@@ -114,7 +133,7 @@
             android:text="@string/save_btn"
             android:onClick="saveRun"
             android:buttonStyle="@style/myButtons"
-            android:layout_marginBottom="20dip"
+            android:layout_marginBottom="20dp"
             android:background="@color/colorSaveBtn"
             />
 
@@ -125,7 +144,7 @@
             android:onClick="menu"
             android:layout_alignParentBottom ="true"
             android:buttonStyle="@style/myButtons"
-            android:layout_marginBottom="20dip"
+            android:layout_marginBottom="20dp"
             />
         <Button android:id="@+id/deleteBtn"
             android:layout_width="match_parent"
@@ -134,12 +153,9 @@
             android:onClick="afterDelete"
             android:layout_alignParentBottom="true"
             android:buttonStyle="@style/myButtons"
-            android:layout_marginBottom="20dip"
+            android:layout_marginBottom="20dp"
             android:background="@color/colorDeleteBtn"
             />
-
-
-
 
     </RelativeLayout>
 </LinearLayout>

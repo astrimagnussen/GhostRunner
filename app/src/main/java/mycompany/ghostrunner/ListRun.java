@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class GhostRun extends AppCompatActivity {
+public class ListRun extends AppCompatActivity {
     private ListView listView;
     private RunListAdapter adapter;
 

@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //Goes from ghost run button view (GhostRun)
-    public void ghostRun(View view){
-        Intent intent = new Intent(this, GhostRun.class);
+    //Goes from ghost run button view
+    public void listRun(View view){
+        Intent intent = new Intent(this, ListRun.class);
         startActivity(intent);
     }
 

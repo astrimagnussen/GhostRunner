@@ -28,7 +28,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".GhostRun"
+            android:name=".ListRun"
             android:label="@string/title_activity_ghost_run"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>

@@ -8,7 +8,8 @@
     <string name="save_btn">Save</string>
     <string name="menu_btn">Menu</string>
     <string name="delete_btn">Delete</string>
-    <string name="title_activity_ghost_run">GhostRun</string>
+    <string name="title_activity_list_run">List</string>
+    <string name="title_activity_ghost_compete">GhostRun</string>
     <string name="distance_title">Distance: </string>
     <string name="time_title">Time: </string>
     <string name="speed_title">Current pace: </string>

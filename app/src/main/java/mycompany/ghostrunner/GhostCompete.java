@@ -1,43 +1,46 @@
 package mycompany.ghostrunner;
 // mycket kod från här: https://developer.android.com/training/location/retrieve-current.html
-import android.Manifest;
+        import android.Manifest;
 
-import android.content.Intent;
-import android.media.MediaPlayer;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
+        import android.content.Intent;
+        import android.media.MediaPlayer;
+        import android.net.Uri;
+        import android.os.Bundle;
+        import android.os.Handler;
+        import android.support.v7.app.AppCompatActivity;
+        import android.support.v7.widget.Toolbar;
+        import android.view.View;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
+        import android.content.Context;
+        import android.content.pm.PackageManager;
 
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+        import android.support.v4.app.ActivityCompat;
+        import android.support.v4.content.ContextCompat;
 
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+        import android.widget.Button;
+        import android.widget.TextView;
+        import android.widget.Toast;
 
-import android.location.Location;
-import android.location.LocationManager;
+        import android.location.Location;
+        import android.location.LocationManager;
 
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
+        import com.google.android.gms.appindexing.Action;
+        import com.google.android.gms.appindexing.AppIndex;
+        import com.google.android.gms.location.LocationRequest;
+        import com.google.android.gms.location.LocationServices;
+        import com.google.android.gms.location.LocationSettingsRequest;
+        import com.google.android.gms.location.LocationListener;
+        import com.google.android.gms.common.ConnectionResult;
+        import com.google.android.gms.common.api.GoogleApiClient;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+        import java.io.FileNotFoundException;
+        import java.io.FileOutputStream;
+        import java.io.IOException;
+        import java.text.DateFormat;
+        import java.text.SimpleDateFormat;
+        import java.util.Date;
 
-public class NewRun extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class GhostCompete extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     //Used to access the API
     private GoogleApiClient mGoogleApiClient;
@@ -54,18 +57,22 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     public Location startLocation;
     private int distance;
 
-    //Shows the distance and the saved values
-    private TextView distText;
-    private TextView timeText;
-    private TextView paceText;
-   // private TextView showsaved;
+    //Shows the distance and the saved values for person
+    private TextView distTextPerson;
+    private TextView timeTextPerson;
+    private TextView paceTextPerson;
+
+    //Shows the distance and the saved values for ghost
+    private TextView distTextGhost;
+    private TextView timeTextGhost;
+    private TextView paceTextGhost;
 
     //The audio for save
     private MediaPlayer save;
     private boolean calculateRun;
-    
+
     //for the time counting
-   private Integer milliSeconds;
+    private Integer milliSeconds;
     Integer hourToSave= 0;
     Integer minutesToSave = 0;
     Integer secToSave = 0;
@@ -77,6 +84,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     private Button startBtn;
     private Button menuBtn;
     private Button deleteBtn;
+
+    //All the timestuff!
+
 
     //for time calc from http://stackoverflow.com/questions/4597690/android-timer-how
     private long startTime = 0;
@@ -96,10 +106,10 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             secToSave = seconds;
 
             if (hour>0){
-                timeText.setText(String.format("%d:%02d:%03d", hour, minutes, seconds));
+                timeTextPerson.setText(String.format("%d:%02d:%03d", hour, minutes, seconds));
             }
             else {
-                timeText.setText(String.format("%d:%02d", minutes, seconds));
+                timeTextPerson.setText(String.format("%d:%02d", minutes, seconds));
             }
 
             handler.postDelayed(this, 500);
@@ -107,23 +117,22 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         }
     };
 
+
     @Override //Runs when the Activity starts
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_run);
+        setContentView(R.layout.activity_ghost_compete);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
         calculateRun = false;
+
+        //Get the ghosts stuff
+        Intent intent = getIntent();
+        Run ghost = (Run) intent.getSerializableExtra("Run");
 
         //Creates the mediaPlayer
         save = MediaPlayer.create(getApplicationContext(), R.raw.saved);
-
-
-
-        //Finds TextViews the objects by Id
-        timeText = (TextView) findViewById(R.id.showTime);
-        distText = (TextView) findViewById(R.id.showDistance);
-        paceText = (TextView) findViewById(R.id.showSpeed);
 
         //Find Buttons from id
         saveBtn = (Button) findViewById(R.id.saveRunGhostCompeteBtn);
@@ -132,12 +141,18 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         menuBtn = (Button) findViewById(R.id.menuGhostCompeteBtn);
         deleteBtn = (Button) findViewById(R.id.deleteGhostCompeteBtn);
 
-        //Sets visibility for buttons
-        saveBtn.setVisibility(View.GONE);
-        stopBtn.setVisibility(View.GONE);
-        startBtn.setVisibility(View.VISIBLE);
-        menuBtn.setVisibility(View.GONE);
-        deleteBtn.setVisibility(View.GONE);
+        //Finds TextViews the objects by Id for person
+        timeTextPerson = (TextView) findViewById(R.id.showTimePerson);
+        distTextPerson = (TextView) findViewById(R.id.showDistancePerson);
+        paceTextPerson = (TextView) findViewById(R.id.showSpeedPerson);
+
+        //Finds TextViews the objects by Id for ghost
+        timeTextGhost = (TextView) findViewById(R.id.showTimeGhost);
+        distTextGhost = (TextView) findViewById(R.id.showDistanceGhost);
+        paceTextGhost = (TextView) findViewById(R.id.showSpeedGhost);
+
+
+        showGhost(ghost);
 
 
         //Creates locationRequests
@@ -145,16 +160,40 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
         // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
+            // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
+            // See https://g.co/AppIndexing/AndroidStudio for more information.
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
-                    .build();
+                    .addApi(AppIndex.API).build();
         }
+
+        //Sets visibility for buttons
+        saveBtn.setVisibility(View.GONE);
+        stopBtn.setVisibility(View.GONE);
+        startBtn.setVisibility(View.VISIBLE);
+        menuBtn.setVisibility(View.GONE);
+        deleteBtn.setVisibility(View.GONE);
 
         //Gets the locationManager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     }
+
+    public void showGhost(Run ghost){
+        int hour = ghost.getHours();
+        if(hour != 0) {
+            timeTextGhost.setText(String.format("%d:%02d:%03d", hour, ghost.getMinutes(), ghost.getSeconds()));
+        }else{
+            timeTextGhost.setText(String.format("%d:%02d", ghost.getMinutes(), ghost.getSeconds()));
+        }
+
+
+
+    }
+
+
+
 
     //Runs when GoogleApiClient connects
     public void onConnected(Bundle connectionHint) {
@@ -177,11 +216,37 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     protected void onStart() {
         mGoogleApiClient.connect();
         super.onStart();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "GhostCompete Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://mycompany.ghostrunner/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(mGoogleApiClient, viewAction);
     }
 
     protected void onStop() {
         mGoogleApiClient.disconnect();
         super.onStop();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "GhostCompete Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://mycompany.ghostrunner/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(mGoogleApiClient, viewAction);
     }
 
     // @Override
@@ -253,8 +318,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             return;
         }
         //Requests for updates
-            LocationServices.FusedLocationApi.requestLocationUpdates(
-                    mGoogleApiClient, mLocationRequest, this);
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
     }
 
 
@@ -297,21 +362,21 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         int tenMeters = (distance/10)%100;
         int km = distance/1000;
         startLocation = mCurrentLocation;
-        distText.setText(String.format("%d.%02d %s", km, tenMeters, " km"));
+        distTextPerson.setText(String.format("%d.%02d %s", km, tenMeters, " km"));
     }
     public void calcAvgPace (){
         int avgPaceSec;
         int avgPaceMin;
         if(distance!=0){
-            avgPaceSec = milliSeconds/distance;
-            avgPaceMin = avgPaceSec/60;
-            avgPaceSec = avgPaceSec%60;
+        avgPaceSec = milliSeconds/distance;
+        avgPaceMin = avgPaceSec/60;
+        avgPaceSec = avgPaceSec%60;
         }
         else{
             avgPaceMin = 0;
             avgPaceSec = 0;
         }
-        paceText.setText(String.format("%d:%02d %s", avgPaceMin, avgPaceSec, " min/km"));
+        paceTextPerson.setText(String.format("%d:%02d %s", avgPaceMin, avgPaceSec, " min/km"));
 
     }
 
@@ -361,9 +426,10 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     //Läser in från fil och visa stuff
     public void menu(View view){
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
 
     }
+
 
 }

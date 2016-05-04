@@ -11,7 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".NewRun"
-    tools:showIn="@layout/activity_new_run"
+    tools:showIn="@layout/activity_ghost_compete"
     android:orientation="vertical">
 
 
@@ -24,7 +24,7 @@
 
 
         <TextView
-            android:id="@+id/distanceTitle"
+            android:id="@+id/distanceTitlePerson"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/distance_title"
@@ -33,7 +33,7 @@
         </TextView>
 
         <TextView
-            android:id="@+id/showDistance"
+            android:id="@+id/showDistancePerson"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -43,43 +43,110 @@
         </TextView>
 
         <TextView
-            android:id="@+id/timeTitle"
+            android:id="@+id/timeTitlePerson"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/time_title"
-            android:layout_below="@id/distanceTitle"
+            android:layout_below="@id/distanceTitlePerson"
             android:textViewStyle="@style/displayRun" >
         </TextView>
 
         <TextView
-            android:id="@+id/showTime"
+            android:id="@+id/showTimePerson"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight ="true"
-            android:layout_below="@id/showDistance"
+            android:layout_below="@id/showDistancePerson"
             android:text="0"
             android:textViewStyle="@style/displayRun" >
         </TextView>
 
         <TextView
-            android:id="@+id/speedTitle"
+            android:id="@+id/speedTitlePerson"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/speed_title"
-            android:layout_below="@id/timeTitle"
+            android:layout_below="@id/timeTitlePerson"
             android:textViewStyle="@style/displayRun" >
         </TextView>
 
         <TextView
-            android:id="@+id/showSpeed"
+            android:id="@+id/showSpeedPerson"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight ="true"
-            android:layout_below="@id/showTime"
+            android:layout_below="@id/showTimePerson"
             android:text="0 min/km"
             android:textViewStyle="@style/displayRun" >
         </TextView>
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayoutInfoGhostCompeteGhost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+
+        <TextView
+            android:id="@+id/distanceTitleGhost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/distance_title"
+            android:layout_marginTop="20dp"
+            android:textViewStyle="@style/displayRun">
+        </TextView>
+
+        <TextView
+            android:id="@+id/showDistanceGhost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentRight ="true"
+            android:text="0 km"
+            android:textViewStyle="@style/displayRun">
+        </TextView>
+
+        <TextView
+            android:id="@+id/timeTitleGhost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/time_title"
+            android:layout_below="@id/distanceTitleGhost"
+            android:textViewStyle="@style/displayRun" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/showTimeGhost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight ="true"
+            android:layout_below="@id/showDistanceGhost"
+            android:text="0"
+            android:textViewStyle="@style/displayRun" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/speedTitleGhost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/speed_title"
+            android:layout_below="@id/timeTitleGhost"
+            android:textViewStyle="@style/displayRun" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/showSpeedGhost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight ="true"
+            android:layout_below="@id/showTimeGhost"
+            android:text="0 min/km"
+            android:textViewStyle="@style/displayRun" >
+        </TextView>
+    </RelativeLayout>
+
 
     <RelativeLayout
         android:id="@+id/relativeLayoutButtonsGhostCompete"

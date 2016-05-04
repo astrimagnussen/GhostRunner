@@ -18,9 +18,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ListRun extends AppCompatActivity {
+public class ListRun extends AppCompatActivity implements Serializable {
     private ListView listView;
     private RunListAdapter adapter;
 
@@ -28,10 +29,10 @@ public class ListRun extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent = getIntent();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ghost_run);
+        setContentView(R.layout.activity_list_run);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Ghost Run");
+        getSupportActionBar().setTitle("List");
 
         listView = (ListView) findViewById(R.id.listView);
         //runList = new ArrayList<>();
@@ -47,6 +48,12 @@ public class ListRun extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
                 final Run item = (Run) parent.getItemAtPosition(position);
+
+
+                Intent intent = new Intent(view.getContext(), GhostCompete.class);
+                intent.putExtra("Run" , item);
+                startActivity(intent);
+
                 /*view.animate().setDuration(2000).alpha(0).withEndAction(new Runnable() {
                             @Override
                             public void run() {
@@ -58,9 +65,6 @@ public class ListRun extends AppCompatActivity {
             }
         });
 
-        /*dateText = (TextView) findViewById(R.id.dateTextGhost);
-        distText = (TextView) findViewById(R.id.distTextGhost);
-        timeText = (TextView) findViewById(R.id.timeTextGhost);*/
     }
 
     private class RunListAdapter extends BaseAdapter {

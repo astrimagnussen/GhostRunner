@@ -1,9 +1,11 @@
 package mycompany.ghostrunner;
 
+import java.io.Serializable;
+
 /**
  * Created by rolofzon on 2016-04-25.
  */
-public class Run {
+public class Run implements Serializable {
     public int runHours;
     public int runMinutes;
     public int runSeconds;

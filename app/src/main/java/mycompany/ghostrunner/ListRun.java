@@ -137,8 +137,6 @@ public class ListRun extends AppCompatActivity implements Serializable {
 
     }
 
-
-
     public boolean read() {
         try {
             String input;

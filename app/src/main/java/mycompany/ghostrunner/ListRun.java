@@ -35,7 +35,6 @@ public class ListRun extends AppCompatActivity implements Serializable {
         getSupportActionBar().setTitle("List");
 
         listView = (ListView) findViewById(R.id.listView);
-        //runList = new ArrayList<>();
 
         adapter = new RunListAdapter(this/*, R.layout.row, runList*/);
         listView.setAdapter(adapter);
@@ -130,7 +129,12 @@ public class ListRun extends AppCompatActivity implements Serializable {
             int tenMeters = (int) (distance/10)%100;
             int km = (int) distance/1000;
             distText.setText(String.format("%d.%02d %s", km, tenMeters, " km"));
-            timeText.setText(run.getHours() + ":" + run.getMinutes() + ":" + run.getSeconds());
+            if (run.getHours() > 0){
+                timeText.setText(String.format("%d:%02d:%02d", run.getHours(), run.getMinutes(), run.getSeconds()));
+            }
+            else {
+                timeText.setText(String.format("%d:%02d", run.getMinutes(), run.getSeconds()));
+            }
 
             return convertView;
         }

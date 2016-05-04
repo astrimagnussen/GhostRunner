@@ -18,29 +18,23 @@
 
         <item name="android:buttonStyle">@style/myButtons</item>
 
-
-
-
         <item name="android:textViewStyle">@style/displayRun</item>
-
     </style>
 
 
     <!-- Customize your button theme here. -->
     <style name="myButtons" parent="android:style/Widget.Material.Light.Button">
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">25dp</item>
         <item name="android:textColor">@color/colorButtonText</item>
+        <item name="android:layout_marginBottom">20dp</item>
         <item name="android:background">@drawable/round_shape_button</item>
     </style>
-    
+
 
     <style name="displayRun" parent="android:style/Widget.Material.Light.TextView">
         <item name="android:textSize">25dp</item>
         <item name="android:textColor">@color/colorDisplayRunText</item>
     </style>
-
-
-
 
 
 </resources>

@@ -12,5 +12,6 @@
     <color name="colorButtonText">#ffffff</color>
     <color name="colorButtonBackground">#109401</color>
     <color name="colorDisplayRunText">#000000</color>
+    <color name="colorGhostGrey">#868686</color>
 
 </resources>

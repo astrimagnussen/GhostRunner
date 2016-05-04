@@ -17,6 +17,8 @@
         <item name="windowNoTitle">true</item>
 
         <item name="android:buttonStyle">@style/myButtons</item>
+
+        <item name="android:textViewStyle">@style/displayRun</item>
     </style>
 
 
@@ -29,7 +31,10 @@
     </style>
 
 
-
+    <style name="displayRun" parent="android:style/Widget.Material.Light.TextView">
+        <item name="android:textSize">25dp</item>
+        <item name="android:textColor">@color/colorDisplayRunText</item>
+    </style>
 
 
 </resources>

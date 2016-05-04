@@ -38,7 +38,7 @@ public class ListRun extends AppCompatActivity implements Serializable {
 
         adapter = new RunListAdapter(this/*, R.layout.row, runList*/);
         listView.setAdapter(adapter);
-
+        System.out.println("getViewTypeCount() = " + adapter.getViewTypeCount());
         if(!read()) {
             //inte bra
         }
@@ -47,7 +47,6 @@ public class ListRun extends AppCompatActivity implements Serializable {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
                 final Run item = (Run) parent.getItemAtPosition(position);
-
 
                 Intent intent = new Intent(view.getContext(), GhostCompete.class);
                 intent.putExtra("Run" , item);
@@ -63,7 +62,6 @@ public class ListRun extends AppCompatActivity implements Serializable {
                         });*/
             }
         });
-
     }
 
     private class RunListAdapter extends BaseAdapter {
@@ -115,8 +113,7 @@ public class ListRun extends AppCompatActivity implements Serializable {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = LayoutInflater.from(context)
-                        .inflate(R.layout.row, parent, false);
+                convertView = LayoutInflater.from(context).inflate(R.layout.row, parent, false);
             }
 
             TextView dateText = (TextView) convertView.findViewById(R.id.dateTextGhost);
@@ -138,7 +135,6 @@ public class ListRun extends AppCompatActivity implements Serializable {
 
             return convertView;
         }
-
     }
 
     public boolean read() {
@@ -158,55 +154,49 @@ public class ListRun extends AppCompatActivity implements Serializable {
             ArrayList<Run> readRunList = new ArrayList<>();
 
             while ((input = bufferedReader.readLine()) != null) {
-                switch (counter%5) {
-
+                switch (counter % 5) {
                     case 0:
-                        distance = Integer.parseInt(input);
-                       // distText.setText(input);
-                        break;
-                    case 1:
                         try {
                             hour = Integer.parseInt(input);
                         } catch (NumberFormatException e) {
-                          //  dateText.setText("Kaos hour");
+                            e.printStackTrace();
+                            return false;
+                        }
+                        break;
+                    case 1:
+                        try {
+                            min = Integer.parseInt(input);
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
                             return false;
                         }
                         break;
                     case 2:
                         try {
-                            min = Integer.parseInt(input);
+                            sec = Integer.parseInt(input);
                         } catch (NumberFormatException e) {
-                           // dateText.setText("Kaos min");
+                            e.printStackTrace();
                             return false;
                         }
                         break;
                     case 3:
                         try {
-                            sec = Integer.parseInt(input);
-                            if (hour > 0) {
-                                // timeText.setText(String.format("%d:%02d:%03d", hour, min, sec));
-                            } else {
-                               // timeText.setText(String.format("%d:%02d", min, sec));
-                            }
+                            distance = Integer.parseInt(input);
                         } catch (NumberFormatException e) {
-                            //dateText.setText("Kaos sec");
+                            e.printStackTrace();
                             return false;
                         }
                         break;
                     case 4:
                         byte[] bytes = input.getBytes("UTF-8");
                         date = new String(bytes, "UTF-8");
-
-                     //   dateText.setText(input);
                         break;
                 }
-
                 counter++;
-                if (counter%5 == 0 && counter != 0) readRunList.add(new Run(hour, min, sec, distance, date));
+                if (counter % 5 == 0 && counter != 0) readRunList.add(new Run(hour, min, sec, distance, date));
             }
 
             adapter.updateRuns(readRunList);
-
             return true;
 
         } catch (FileNotFoundException e) {

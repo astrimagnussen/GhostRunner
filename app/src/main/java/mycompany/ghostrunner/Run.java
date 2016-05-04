@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by rolofzon on 2016-04-25.
+ *
  */
 public class Run implements Serializable {
     public int runHours;
@@ -40,5 +41,5 @@ public class Run implements Serializable {
         return runDate;
     }
 
-    //Kanske bör lägga in en toString() här?
+    //Todo: Kanske bör lägga in en toString() här?
 }

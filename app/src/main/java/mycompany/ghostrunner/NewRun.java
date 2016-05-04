@@ -101,7 +101,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             secToSave = seconds;
 
             if (hour>0){
-                timeText.setText(String.format("%d:%02d:%03d", hour, minutes, seconds));
+                timeText.setText(String.format("%d:%02d:%02d", hour, minutes, seconds));
             }
             else {
                 timeText.setText(String.format("%d:%02d", minutes, seconds));
@@ -355,22 +355,23 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         deleteBtn.setVisibility(View.GONE);
         menuBtn.setVisibility(View.VISIBLE);
 
-        date =  getDateTime();
+        date = getDateTime();
 
         String file_name = "runs";
         try {
-            //Skickas, distans, new line, hour, new line, min, new line, sec, new line, date
-            FileOutputStream fileOutputStream = openFileOutput(file_name, MODE_PRIVATE);
+            //Skickas: hour, new line, min, new line, sec, new line, distans, new line, date, new line
+            FileOutputStream fileOutputStream = openFileOutput(file_name, MODE_APPEND);
 
-            fileOutputStream.write( Integer.toString(distance).getBytes());
-            fileOutputStream.write("\n".getBytes());
             fileOutputStream.write(Integer.toString(hourToSave).getBytes());
             fileOutputStream.write("\n".getBytes());
             fileOutputStream.write(Integer.toString(minutesToSave).getBytes());
             fileOutputStream.write("\n".getBytes());
             fileOutputStream.write(Integer.toString(secToSave).getBytes());
             fileOutputStream.write("\n".getBytes());
+            fileOutputStream.write(Integer.toString(distance).getBytes());
+            fileOutputStream.write("\n".getBytes());
             fileOutputStream.write((date).getBytes());
+            fileOutputStream.write("\n".getBytes());
 
             fileOutputStream.close();
             Toast.makeText(getApplicationContext(), "Run saved", Toast.LENGTH_SHORT).show();
@@ -392,5 +393,4 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
     }
-
 }

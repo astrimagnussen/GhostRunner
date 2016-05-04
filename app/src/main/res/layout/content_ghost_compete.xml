@@ -14,18 +14,11 @@
     tools:showIn="@layout/activity_new_run"
     android:orientation="vertical">
 
-
-
-
-
-
-<RelativeLayout
+    <RelativeLayout
         android:id="@+id/RelativeLayoutInfoGhostCompetePerson"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/distanceTitlePerson"
@@ -33,8 +26,7 @@
             android:layout_height="wrap_content"
             android:text="@string/distance_title"
             android:layout_marginTop="20dp"
-            android:textViewStyle="@style/displayRun">
-        </TextView>
+            android:textViewStyle="@style/displayRun" />
 
         <TextView
             android:id="@+id/showDistancePerson"
@@ -43,8 +35,7 @@
             android:layout_marginTop="20dp"
             android:layout_alignParentRight ="true"
             android:text="0 km"
-            android:textViewStyle="@style/displayRun">
-        </TextView>
+            android:textViewStyle="@style/displayRun"/>
 
         <TextView
             android:id="@+id/timeTitlePerson"
@@ -52,8 +43,7 @@
             android:layout_height="wrap_content"
             android:text="@string/time_title"
             android:layout_below="@id/distanceTitlePerson"
-            android:textViewStyle="@style/displayRun" >
-        </TextView>
+            android:textViewStyle="@style/displayRun" />
 
         <TextView
             android:id="@+id/showTimePerson"
@@ -62,8 +52,7 @@
             android:layout_alignParentRight ="true"
             android:layout_below="@id/showDistancePerson"
             android:text="0"
-            android:textViewStyle="@style/displayRun" >
-        </TextView>
+            android:textViewStyle="@style/displayRun" />
 
         <TextView
             android:id="@+id/speedTitlePerson"
@@ -71,8 +60,7 @@
             android:layout_height="wrap_content"
             android:text="@string/speed_title"
             android:layout_below="@id/timeTitlePerson"
-            android:textViewStyle="@style/displayRun" >
-        </TextView>
+            android:textViewStyle="@style/displayRun" />
 
         <TextView
             android:id="@+id/showSpeedPerson"
@@ -81,8 +69,7 @@
             android:layout_alignParentRight ="true"
             android:layout_below="@id/showTimePerson"
             android:text="0 min/km"
-            android:textViewStyle="@style/displayRun" >
-        </TextView>
+            android:textViewStyle="@style/displayRun" />
     </RelativeLayout>
 
     <View
@@ -90,16 +77,13 @@
         android:layout_height="1dp"
         android:background="@color/colorDisplayRunText"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
-        />
+        android:layout_marginBottom="30dp" />
 
     <RelativeLayout
         android:id="@+id/RelativeLayoutInfoGhostCompeteGhost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/distanceTitleGhost"
@@ -107,8 +91,7 @@
             android:layout_height="wrap_content"
             android:text="@string/distance_title"
             android:textViewStyle="@style/displayRun"
-            android:textColor="@color/colorGhostGrey">
-        </TextView>
+            android:textColor="@color/colorGhostGrey" />
 
         <TextView
             android:id="@+id/showDistanceGhost"
@@ -117,8 +100,7 @@
             android:layout_alignParentRight ="true"
             android:text="0 km"
             android:textViewStyle="@style/displayRun"
-            android:textColor="@color/colorGhostGrey">
-        </TextView>
+            android:textColor="@color/colorGhostGrey" />
 
         <TextView
             android:id="@+id/timeTitleGhost"
@@ -127,8 +109,7 @@
             android:text="@string/time_title"
             android:layout_below="@id/distanceTitleGhost"
             android:textViewStyle="@style/displayRun"
-            android:textColor="@color/colorGhostGrey">
-        </TextView>
+            android:textColor="@color/colorGhostGrey" />
 
         <TextView
             android:id="@+id/showTimeGhost"
@@ -138,8 +119,7 @@
             android:layout_below="@id/showDistanceGhost"
             android:text="0"
             android:textViewStyle="@style/displayRun"
-            android:textColor="@color/colorGhostGrey">
-        </TextView>
+            android:textColor="@color/colorGhostGrey" />
 
         <TextView
             android:id="@+id/speedTitleGhost"
@@ -148,8 +128,7 @@
             android:text="@string/speed_title"
             android:layout_below="@id/timeTitleGhost"
             android:textViewStyle="@style/displayRun"
-            android:textColor="@color/colorGhostGrey">
-        </TextView>
+            android:textColor="@color/colorGhostGrey" />
 
         <TextView
             android:id="@+id/showSpeedGhost"
@@ -159,10 +138,8 @@
             android:layout_below="@id/showTimeGhost"
             android:text="0 min/km"
             android:textViewStyle="@style/displayRun"
-            android:textColor="@color/colorGhostGrey">
-        </TextView>
+            android:textColor="@color/colorGhostGrey" />
     </RelativeLayout>
-
 
     <RelativeLayout
         android:id="@+id/relativeLayoutButtonsGhostCompete"
@@ -177,8 +154,7 @@
             android:text="@string/start_btn"
             android:onClick="startRun"
             android:layout_alignParentBottom ="true"
-            android:layout_marginBottom="20dip"
-            />
+            android:layout_marginBottom="20dip" />
 
         <Button android:id="@+id/stopGhostCompeteBtn"
             android:layout_width="match_parent"
@@ -187,8 +163,25 @@
             android:onClick="stopRun"
             android:layout_alignParentBottom ="true"
             android:buttonStyle="@style/myButtons"
-            android:layout_marginBottom="20dip"
-            />
+            android:layout_marginBottom="20dip" />
+
+        <Button android:id="@+id/pauseBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pause"
+            android:onClick="pauseRun"
+            android:layout_above="@id/stopGhostCompeteBtn"
+            android:buttonStyle="@style/myButtons"
+            android:layout_marginBottom="20dp" />
+
+        <Button android:id="@+id/continueBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Continue"
+            android:onClick="continueRun"
+            android:layout_above="@id/stopGhostCompeteBtn"
+            android:buttonStyle="@style/myButtons"
+            android:layout_marginBottom="20dp" />
 
         <Button android:id="@+id/saveRunGhostCompeteBtn"
             android:layout_width="match_parent"
@@ -198,7 +191,7 @@
             android:onClick="saveRun"
             android:buttonStyle="@style/myButtons"
             android:layout_marginBottom="20dip"
-            />
+            android:background="@color/colorSaveBtn" />
 
         <Button android:id="@+id/menuGhostCompeteBtn"
             android:layout_width="match_parent"
@@ -207,8 +200,8 @@
             android:onClick="menu"
             android:layout_alignParentBottom ="true"
             android:buttonStyle="@style/myButtons"
-            android:layout_marginBottom="20dip"
-            />
+            android:layout_marginBottom="20dip" />
+
         <Button android:id="@+id/deleteGhostCompeteBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -217,11 +210,7 @@
             android:layout_alignParentBottom="true"
             android:buttonStyle="@style/myButtons"
             android:layout_marginBottom="20dip"
-            android:colorBackground="@color/colorDeleteBtn"
-            />
-
-
-
+            android:background="@color/colorDeleteBtn" />
 
     </RelativeLayout>
 </LinearLayout>

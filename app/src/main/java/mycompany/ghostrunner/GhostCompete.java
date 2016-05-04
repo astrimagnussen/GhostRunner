@@ -7,6 +7,7 @@ package mycompany.ghostrunner;
         import android.net.Uri;
         import android.os.Bundle;
         import android.os.Handler;
+        import android.os.SystemClock;
         import android.support.v7.app.AppCompatActivity;
         import android.support.v7.widget.Toolbar;
         import android.view.View;
@@ -80,21 +81,23 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     private String date;
 
     private Button saveBtn;
+    private Button pauseBtn;
+    private Button continueBtn;
     private Button stopBtn;
     private Button startBtn;
     private Button menuBtn;
     private Button deleteBtn;
 
     //All the timestuff!
-
-
     //for time calc from http://stackoverflow.com/questions/4597690/android-timer-how
     private long startTime = 0;
+    private long pausedTimeAt = 0;
+    private long totalPauseTime = 0;
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            long millis = System.currentTimeMillis() - startTime;
+            long millis = SystemClock.elapsedRealtime() - startTime - totalPauseTime;
             milliSeconds =  (int) millis;
             int seconds = (int) (millis/1000);
             int minutes = seconds/60;
@@ -106,14 +109,13 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
             secToSave = seconds;
 
             if (hour>0){
-                timeTextPerson.setText(String.format("%d:%02d:%03d", hour, minutes, seconds));
+                timeTextPerson.setText(String.format("%d:%02d:%02d", hour, minutes, seconds));
             }
             else {
                 timeTextPerson.setText(String.format("%d:%02d", minutes, seconds));
             }
 
             handler.postDelayed(this, 500);
-
         }
     };
 
@@ -140,6 +142,8 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         startBtn = (Button) findViewById(R.id.startGhostCompeteBtn);
         menuBtn = (Button) findViewById(R.id.menuGhostCompeteBtn);
         deleteBtn = (Button) findViewById(R.id.deleteGhostCompeteBtn);
+        pauseBtn = (Button) findViewById(R.id.pauseBtn);
+        continueBtn = (Button) findViewById(R.id.continueBtn);
 
         //Finds TextViews the objects by Id for person
         timeTextPerson = (TextView) findViewById(R.id.showTimePerson);
@@ -151,9 +155,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         distTextGhost = (TextView) findViewById(R.id.showDistanceGhost);
         paceTextGhost = (TextView) findViewById(R.id.showSpeedGhost);
 
-
         showGhost(ghost);
-
 
         //Creates locationRequests
         createLocationRequest();
@@ -173,6 +175,8 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         saveBtn.setVisibility(View.GONE);
         stopBtn.setVisibility(View.GONE);
         startBtn.setVisibility(View.VISIBLE);
+        pauseBtn.setVisibility(View.GONE);
+        continueBtn.setVisibility(View.GONE);
         menuBtn.setVisibility(View.GONE);
         deleteBtn.setVisibility(View.GONE);
 
@@ -180,20 +184,29 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     }
 
-    public void showGhost(Run ghost){
+    public void showGhost(Run ghost) {
         int hour = ghost.getHours();
         if(hour != 0) {
-            timeTextGhost.setText(String.format("%d:%02d:%03d", hour, ghost.getMinutes(), ghost.getSeconds()));
+            timeTextGhost.setText(String.format("%d:%02d:%02d", hour, ghost.getMinutes(), ghost.getSeconds()));
         }else{
             timeTextGhost.setText(String.format("%d:%02d", ghost.getMinutes(), ghost.getSeconds()));
         }
+        distTextGhost.setText(Float.toString(ghost.getDistance()));
 
-
-
+        int avgPaceSec;
+        int avgPaceMin;
+        int totSeconds = ghost.getSeconds() + 60 * (ghost.getMinutes() + (ghost.getHours() * 60));
+        if(ghost.getDistance() != 0) {
+            avgPaceSec = totSeconds/Float.floatToIntBits(ghost.getDistance());
+            avgPaceMin = avgPaceSec/60;
+            avgPaceSec = avgPaceSec%60;
+        }
+        else {
+            avgPaceMin = 0;
+            avgPaceSec = 0;
+        }
+        paceTextGhost.setText(String.format("%d:%02d %s", avgPaceMin, avgPaceSec, " min/km"));
     }
-
-
-
 
     //Runs when GoogleApiClient connects
     public void onConnected(Bundle connectionHint) {
@@ -219,13 +232,13 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "GhostCompete Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
+                Action.TYPE_VIEW, // TOD choose an action type.
+                "GhostCompete Page", // TOD Define a title for the content shown.
+                // TOD: If you have web page content that matches this app activity's content,
                 // make sure this auto-generated web page URL is correct.
                 // Otherwise, set the URL to null.
                 Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
+                // TOD: Make sure this auto-generated app URL is correct.
                 Uri.parse("android-app://mycompany.ghostrunner/http/host/path")
         );
         AppIndex.AppIndexApi.start(mGoogleApiClient, viewAction);
@@ -237,13 +250,13 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "GhostCompete Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
+                Action.TYPE_VIEW, // TOD: choose an action type.
+                "GhostCompete Page", // TOD: Define a title for the content shown.
+                // TOD: If you have web page content that matches this app activity's content,
                 // make sure this auto-generated web page URL is correct.
                 // Otherwise, set the URL to null.
                 Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
+                // TOD: Make sure this auto-generated app URL is correct.
                 Uri.parse("android-app://mycompany.ghostrunner/http/host/path")
         );
         AppIndex.AppIndexApi.end(mGoogleApiClient, viewAction);
@@ -254,10 +267,8 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         // An unresolvable error has occurred and a connection to Google APIs
         // could not be established. Display an error message, or handle
         // the failure silently
-
         // ...
     }
-
 
     @Override
     public void onResume() {
@@ -322,11 +333,12 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
                 mGoogleApiClient, mLocationRequest, this);
     }
 
-
     public void startRun(View view) {
         stopBtn.setVisibility(View.VISIBLE);
+        pauseBtn.setVisibility(View.VISIBLE);
         startBtn.setVisibility(View.GONE);
         calculateRun = true;
+
         //Checks permissions
         if (locationManager != null) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -336,20 +348,42 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         //Gets the last location
         startLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-
         //for time calculation start
-        startTime = System.currentTimeMillis();
+        startTime = SystemClock.elapsedRealtime();
+        handler.postDelayed(runnable, 0);
+    }
+
+    public void pauseRun(View view) {
+        pauseBtn.setVisibility(View.GONE);
+        continueBtn.setVisibility(View.VISIBLE);
+        calculateRun = false;
+
+        handler.removeCallbacks(runnable);
+        pausedTimeAt = SystemClock.elapsedRealtime();
+
+        Toast.makeText(getApplicationContext(), "Run paused", Toast.LENGTH_SHORT).show();
+    }
+
+    public void continueRun(View view) {
+        continueBtn.setVisibility(View.GONE);
+        pauseBtn.setVisibility(View.VISIBLE);
+        calculateRun = true;
+
+        totalPauseTime += SystemClock.elapsedRealtime() - pausedTimeAt;
+        pausedTimeAt = 0;
         handler.postDelayed(runnable, 0);
 
+        Toast.makeText(getApplicationContext(), "Run continued", Toast.LENGTH_SHORT).show();
     }
 
     // spara saker globalt
     public void stopRun(View view) {
         saveBtn.setVisibility(View.VISIBLE);
         deleteBtn.setVisibility(View.VISIBLE);
+        pauseBtn.setVisibility(View.GONE);
+        continueBtn.setVisibility(View.GONE);
         stopBtn.setVisibility(View.GONE);
         calculateRun= false;
-
 
         //for time calculation stop
         handler.removeCallbacks(runnable);
@@ -392,22 +426,23 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         deleteBtn.setVisibility(View.GONE);
         menuBtn.setVisibility(View.VISIBLE);
 
-        date =  getDateTime();
+        date = getDateTime();
 
         String file_name = "runs";
         try {
-            //Skickas, distans, new line, hour, new line, min, new line, sec, new line, date
-            FileOutputStream fileOutputStream = openFileOutput(file_name, MODE_PRIVATE);
+            //Skickas: hour, new line, min, new line, sec, new line, distans, new line, date, new line
+            FileOutputStream fileOutputStream = openFileOutput(file_name, MODE_APPEND);
 
-            fileOutputStream.write( Integer.toString(distance).getBytes());
-            fileOutputStream.write("\n".getBytes());
             fileOutputStream.write(Integer.toString(hourToSave).getBytes());
             fileOutputStream.write("\n".getBytes());
             fileOutputStream.write(Integer.toString(minutesToSave).getBytes());
             fileOutputStream.write("\n".getBytes());
             fileOutputStream.write(Integer.toString(secToSave).getBytes());
             fileOutputStream.write("\n".getBytes());
+            fileOutputStream.write(Integer.toString(distance).getBytes());
+            fileOutputStream.write("\n".getBytes());
             fileOutputStream.write((date).getBytes());
+            fileOutputStream.write("\n".getBytes());
 
             fileOutputStream.close();
             Toast.makeText(getApplicationContext(), "Run saved", Toast.LENGTH_SHORT).show();
@@ -428,8 +463,5 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     public void menu(View view){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-
     }
-
-
 }

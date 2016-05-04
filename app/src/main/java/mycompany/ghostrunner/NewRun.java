@@ -59,7 +59,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     private TextView distText;
     private TextView timeText;
     private TextView paceText;
-   // private TextView showsaved;
 
     //The audio for save
     private MediaPlayer save;
@@ -133,7 +132,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         startBtn = (Button) findViewById(R.id.startGhostCompeteBtn);
         menuBtn = (Button) findViewById(R.id.menuGhostCompeteBtn);
         deleteBtn = (Button) findViewById(R.id.deleteGhostCompeteBtn);
-
         pauseBtn = (Button) findViewById(R.id.pauseBtn);
         continueBtn = (Button) findViewById(R.id.continueBtn);
 
@@ -219,7 +217,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
                 mGoogleApiClient, this);
     }
 
-
     //When the location is changed
     public void onLocationChanged(Location location) {
         //updates the currentLocation
@@ -229,7 +226,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             calcAvgPace();
         }
     }
-
 
     //Have to exist and do nothing...
     public void onConnectionSuspended( int i ){}
@@ -262,7 +258,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, this);
     }
-
 
     public void startRun(View view) {
         stopBtn.setVisibility(View.VISIBLE);
@@ -331,7 +326,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     public void calcAvgPace (){
         int avgPaceSec;
         int avgPaceMin;
-        if(distance!=0){
+        if(distance != 0){
             avgPaceSec = milliSeconds/distance;
             avgPaceMin = avgPaceSec/60;
             avgPaceSec = avgPaceSec%60;
@@ -357,10 +352,16 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
         date = getDateTime();
 
+        System.out.println("hourToSave = " + hourToSave);
+        System.out.println("minutesToSave = " + minutesToSave);
+        System.out.println("secToSave = " + secToSave);
+        System.out.println("distance = " + distance);
+        System.out.println("date = " + date);
+
         String file_name = "runs";
         try {
             //Skickas: hour, new line, min, new line, sec, new line, distans, new line, date, new line
-            FileOutputStream fileOutputStream = openFileOutput(file_name, MODE_APPEND);
+            FileOutputStream fileOutputStream = openFileOutput(file_name, MODE_PRIVATE);
 
             fileOutputStream.write(Integer.toString(hourToSave).getBytes());
             fileOutputStream.write("\n".getBytes());

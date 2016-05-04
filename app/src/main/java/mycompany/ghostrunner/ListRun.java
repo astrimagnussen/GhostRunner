@@ -38,7 +38,6 @@ public class ListRun extends AppCompatActivity implements Serializable {
 
         adapter = new RunListAdapter(this/*, R.layout.row, runList*/);
         listView.setAdapter(adapter);
-        System.out.println("getViewTypeCount() = " + adapter.getViewTypeCount());
         if(!read()) {
             //inte bra
         }
@@ -193,7 +192,14 @@ public class ListRun extends AppCompatActivity implements Serializable {
                         break;
                 }
                 counter++;
-                if (counter % 5 == 0 && counter != 0) readRunList.add(new Run(hour, min, sec, distance, date));
+                if (counter % 5 == 0 && counter != 0) {
+                    System.out.println("hour = " + hour);
+                    System.out.println("min = " + min);
+                    System.out.println("sec = " + sec);
+                    System.out.println("distance = " + distance);
+                    System.out.println("date = " + date);
+                    readRunList.add(new Run(hour, min, sec, distance, date));
+                }
             }
 
             adapter.updateRuns(readRunList);

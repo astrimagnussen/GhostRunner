@@ -361,7 +361,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         String file_name = "runs";
         try {
             //Skickas: hour, new line, min, new line, sec, new line, distans, new line, date, new line
-            FileOutputStream fileOutputStream = openFileOutput(file_name, MODE_PRIVATE);
+            FileOutputStream fileOutputStream = openFileOutput(file_name, MODE_APPEND);
 
             fileOutputStream.write(Integer.toString(hourToSave).getBytes());
             fileOutputStream.write("\n".getBytes());

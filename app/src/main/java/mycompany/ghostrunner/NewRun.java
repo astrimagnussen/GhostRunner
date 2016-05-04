@@ -75,16 +75,24 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     private Button saveBtn;
     private Button stopBtn;
     private Button startBtn;
+    private Button pauseBtn;
+    private Button continueBtn;
     private Button menuBtn;
     private Button deleteBtn;
 
     //for time calc from http://stackoverflow.com/questions/4597690/android-timer-how
     private long startTime = 0;
+    private long pauseTime = 0;
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            long millis = System.currentTimeMillis() - startTime;
+            long millis;
+            if (pauseTime != 0) {
+                millis = System.nanoTime() - (pauseTime + startTime);
+            } else {
+                millis = System.nanoTime() - startTime;
+            }
             milliSeconds =  (int) millis;
             int seconds = (int) (millis/1000);
             int minutes = seconds/60;
@@ -103,7 +111,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             }
 
             handler.postDelayed(this, 500);
-
         }
     };
 
@@ -119,7 +126,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         save = MediaPlayer.create(getApplicationContext(), R.raw.saved);
 
 
-
         //Finds TextViews the objects by Id
         timeText = (TextView) findViewById(R.id.showTime);
         distText = (TextView) findViewById(R.id.showDistance);
@@ -129,12 +135,16 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         saveBtn = (Button) findViewById(R.id.saveRunBtn);
         stopBtn = (Button) findViewById(R.id.stopBtn);
         startBtn = (Button) findViewById(R.id.startBtn);
+        pauseBtn = (Button) findViewById(R.id.pauseBtn);
+        continueBtn = (Button) findViewById(R.id.continueBtn);
         menuBtn = (Button) findViewById(R.id.menuBtn);
         deleteBtn = (Button) findViewById(R.id.deleteBtn);
 
         //Sets visibility for buttons
         saveBtn.setVisibility(View.GONE);
         stopBtn.setVisibility(View.GONE);
+        pauseBtn.setVisibility(View.GONE);
+        continueBtn.setVisibility(View.GONE);
         startBtn.setVisibility(View.VISIBLE);
         menuBtn.setVisibility(View.GONE);
         deleteBtn.setVisibility(View.GONE);
@@ -260,6 +270,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     public void startRun(View view) {
         stopBtn.setVisibility(View.VISIBLE);
+        pauseBtn.setVisibility(View.VISIBLE);
         startBtn.setVisibility(View.GONE);
         calculateRun = true;
         //Checks permissions
@@ -271,20 +282,41 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         //Gets the last location
         startLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-
         //for time calculation start
-        startTime = System.currentTimeMillis();
+        startTime = System.nanoTime();
+        handler.postDelayed(runnable, 0);
+    }
+
+    public void pauseRun(View view) {
+        pauseBtn.setVisibility(View.GONE);
+        continueBtn.setVisibility(View.VISIBLE);
+        calculateRun = false;
+
+        handler.removeCallbacks(runnable);
+        pauseTime = System.nanoTime();
+
+        Toast.makeText(getApplicationContext(), "Run paused", Toast.LENGTH_SHORT).show();
+    }
+
+    public void continueRun(View view) {
+        continueBtn.setVisibility(View.GONE);
+        pauseBtn.setVisibility(View.VISIBLE);
+        calculateRun = true;
+
+        pauseTime = System.nanoTime() - pauseTime;
         handler.postDelayed(runnable, 0);
 
+        Toast.makeText(getApplicationContext(), "Run continued", Toast.LENGTH_SHORT).show();
     }
 
     // spara saker globalt
     public void stopRun(View view) {
         saveBtn.setVisibility(View.VISIBLE);
         deleteBtn.setVisibility(View.VISIBLE);
+        pauseBtn.setVisibility(View.GONE);
+        continueBtn.setVisibility(View.GONE);
         stopBtn.setVisibility(View.GONE);
-        calculateRun= false;
-
+        calculateRun = false;
 
         //for time calculation stop
         handler.removeCallbacks(runnable);
@@ -304,7 +336,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         int avgPaceMin = avgPaceSec/60;
         avgPaceSec = avgPaceSec%60;
         paceText.setText(String.format("%d:%02d %s", avgPaceMin, avgPaceSec, " min/km"));
-
     }
 
     private String getDateTime() {
@@ -355,7 +386,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     public void menu(View view){
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-
     }
 
 }

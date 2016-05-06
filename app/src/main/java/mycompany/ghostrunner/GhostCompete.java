@@ -528,6 +528,8 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
             e.printStackTrace();
         }
         save.start();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
     public void afterDelete(View view){
         Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);

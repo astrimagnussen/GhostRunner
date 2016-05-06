@@ -407,6 +407,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             e.printStackTrace();
         }
         save.start();
+        Intent intent = new Intent(this, ListRun.class);
+        startActivity(intent);
     }
     public void afterDelete(View view){
         Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);

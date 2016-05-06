@@ -13,6 +13,6 @@
     <string name="distance_title">Distance: </string>
     <string name="time_title">Time: </string>
     <string name="speed_title">Current pace: </string>
-    <string name="list_btn">Show List</string>
+    <string name="list_btn">Choose a Run</string>
     <string name="new_run_btn">New Run</string>
 </resources>

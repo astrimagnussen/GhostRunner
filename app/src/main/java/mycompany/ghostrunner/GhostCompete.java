@@ -3,6 +3,7 @@ package mycompany.ghostrunner;
         import android.Manifest;
 
         import android.content.Intent;
+        import android.graphics.Color;
         import android.media.MediaPlayer;
         import android.net.Uri;
         import android.os.Bundle;
@@ -63,6 +64,11 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     private TextView timeTextPerson;
     private TextView paceTextPerson;
 
+    //Shows the titles for the person
+    private TextView distTextPersonTitle;
+    private TextView timeTextPersonTitle;
+    private TextView paceTextPersonTitle;
+
     //Shows the distance and the saved values for ghost
     private TextView distTextGhost;
     private TextView timeTextGhost;
@@ -87,6 +93,11 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     private Button startBtn;
     private Button menuBtn;
     private Button deleteBtn;
+
+    private int avgPaceSec;
+    private int avgPaceMin;
+
+    private Run ghost;
 
     //All the timestuff!
     //for time calc from http://stackoverflow.com/questions/4597690/android-timer-how
@@ -131,7 +142,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 
         //Get the ghosts stuff
         Intent intent = getIntent();
-        Run ghost = (Run) intent.getSerializableExtra("Run");
+        ghost = (Run) intent.getSerializableExtra("Run");
 
         //Creates the mediaPlayer
         save = MediaPlayer.create(getApplicationContext(), R.raw.saved);
@@ -145,10 +156,17 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         pauseBtn = (Button) findViewById(R.id.pauseBtn);
         continueBtn = (Button) findViewById(R.id.continueBtn);
 
+
         //Finds TextViews the objects by Id for person
         timeTextPerson = (TextView) findViewById(R.id.showTimePerson);
         distTextPerson = (TextView) findViewById(R.id.showDistancePerson);
         paceTextPerson = (TextView) findViewById(R.id.showSpeedPerson);
+
+        //Finds TextViews for the titles
+        distTextPersonTitle = (TextView) findViewById(R.id.distanceTitlePerson);
+        timeTextPersonTitle = (TextView) findViewById(R.id.timeTitlePerson);
+        paceTextPersonTitle = (TextView) findViewById(R.id.speedTitlePerson);
+
 
         //Finds TextViews the objects by Id for ghost
         timeTextGhost = (TextView) findViewById(R.id.showTimeGhost);
@@ -293,11 +311,47 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     //When the location is changed
     public void onLocationChanged(Location location) {
         //updates the currentLocation
+        float ghostPaceMin = 0;
+        float ghostPaceSec = 0;
         mCurrentLocation = location;
         if(calculateRun) {
             calcDist();
             calcAvgPace();
+
+            ghostPaceSec = ghost.getSeconds()/ghost.getDistance();
+            ghostPaceMin = ghostPaceSec/60;
+
+            if(avgPaceMin > ghostPaceMin){
+                setPersonFasterThanGhost(true);
+            }else{
+                setPersonFasterThanGhost(false);
+            }
         }
+    }
+
+    public void setPersonFasterThanGhost(Boolean green){
+        //sets the color
+        Color color;
+        if(green){
+            timeTextPersonTitle.setTextColor(Color.GREEN);
+            timeTextPerson.setTextColor(Color.GREEN);
+
+            distTextPersonTitle.setTextColor(Color.GREEN);
+            distTextPerson.setTextColor(Color.GREEN);
+
+            paceTextPersonTitle.setTextColor(Color.GREEN);
+            paceTextPerson.setTextColor(Color.GREEN);
+        } else{
+            timeTextPersonTitle.setTextColor(Color.RED);
+            timeTextPerson.setTextColor(Color.RED);
+
+            distTextPersonTitle.setTextColor(Color.RED);
+            distTextPerson.setTextColor(Color.RED);
+
+            paceTextPersonTitle.setTextColor(Color.RED);
+            paceTextPerson.setTextColor(Color.RED);
+        }
+
     }
 
 
@@ -399,8 +453,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         distTextPerson.setText(String.format("%d.%02d %s", km, tenMeters, " km"));
     }
     public void calcAvgPace (){
-        int avgPaceSec;
-        int avgPaceMin;
+
         if(distance!=0){
         avgPaceSec = milliSeconds/distance;
         avgPaceMin = avgPaceSec/60;

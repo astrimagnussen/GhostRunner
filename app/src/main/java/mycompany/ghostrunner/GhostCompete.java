@@ -9,6 +9,7 @@ package mycompany.ghostrunner;
         import android.os.Bundle;
         import android.os.Handler;
         import android.os.SystemClock;
+        import android.os.Vibrator;
         import android.support.v7.app.AppCompatActivity;
         import android.support.v7.widget.Toolbar;
         import android.view.View;
@@ -393,6 +394,10 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         startBtn.setVisibility(View.GONE);
         calculateRun = true;
 
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
+
         //Checks permissions
         if (locationManager != null) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -412,6 +417,11 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         continueBtn.setVisibility(View.VISIBLE);
         calculateRun = false;
 
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
+
+
         handler.removeCallbacks(runnable);
         pausedTimeAt = SystemClock.elapsedRealtime();
 
@@ -422,6 +432,11 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         continueBtn.setVisibility(View.GONE);
         pauseBtn.setVisibility(View.VISIBLE);
         calculateRun = true;
+
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
+
 
         totalPauseTime += SystemClock.elapsedRealtime() - pausedTimeAt;
         pausedTimeAt = 0;
@@ -438,6 +453,10 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         continueBtn.setVisibility(View.GONE);
         stopBtn.setVisibility(View.GONE);
         calculateRun= false;
+
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
 
         //for time calculation stop
         handler.removeCallbacks(runnable);
@@ -479,6 +498,10 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         deleteBtn.setVisibility(View.GONE);
         menuBtn.setVisibility(View.VISIBLE);
 
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
+
         date = getDateTime();
 
         String file_name = "runs";
@@ -507,6 +530,9 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         save.start();
     }
     public void afterDelete(View view){
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
         Toast.makeText(getApplicationContext(), "Run deleted", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -514,6 +540,9 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 
     //Läser in från fil och visa stuff
     public void menu(View view){
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

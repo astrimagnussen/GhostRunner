@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -264,6 +265,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         pauseBtn.setVisibility(View.VISIBLE);
         startBtn.setVisibility(View.GONE);
         calculateRun = true;
+
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
+
         //Checks permissions
         if (locationManager != null) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -286,6 +292,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         handler.removeCallbacks(runnable);
         pausedTimeAt = SystemClock.elapsedRealtime();
 
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
+
+
         Toast.makeText(getApplicationContext(), "Run paused", Toast.LENGTH_SHORT).show();
     }
 
@@ -298,6 +309,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         pausedTimeAt = 0;
         handler.postDelayed(runnable, 0);
 
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
+
+
         Toast.makeText(getApplicationContext(), "Run continued", Toast.LENGTH_SHORT).show();
     }
 
@@ -309,6 +325,10 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         continueBtn.setVisibility(View.GONE);
         stopBtn.setVisibility(View.GONE);
         calculateRun = false;
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
+
 
         //for time calculation stop
         handler.removeCallbacks(runnable);
@@ -350,6 +370,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         deleteBtn.setVisibility(View.GONE);
         menuBtn.setVisibility(View.VISIBLE);
 
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
+
+
         date = getDateTime();
 
         System.out.println("hourToSave = " + hourToSave);
@@ -384,6 +409,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         save.start();
     }
     public void afterDelete(View view){
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
         Toast.makeText(getApplicationContext(), "Run deleted", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -391,6 +419,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     //Läser in från fil och visa stuff
     public void menu(View view){
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
     }

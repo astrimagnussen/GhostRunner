@@ -23,8 +23,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="134dp"
-        android:text="New Run"
-
+        android:text="@string/new_run_btn"
         android:contextClickable="true"
         android:background="@drawable/round_shape_button"/>
 
@@ -34,12 +33,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:buttonStyle="@style/myButtons"
-        android:hint="Coordinate"
-        android:onClick="ghostRun"
+        android:onClick="listRun"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:text="Ghost Run"
+        android:text="@string/list_btn"
         android:contextClickable="true"
         android:background="@drawable/round_shape_button"/>
 

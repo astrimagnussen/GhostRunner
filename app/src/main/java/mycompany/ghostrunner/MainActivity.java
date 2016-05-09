@@ -1,8 +1,10 @@
 package mycompany.ghostrunner;
 
+import android.content.Context;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -25,13 +27,19 @@ public class MainActivity extends AppCompatActivity {
 
     //Goes from new run button view to (NewRun)
     public void newRun(View view){
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
         Intent intent = new Intent(this, NewRun.class);
         startActivity(intent);
     }
 
-    //Goes from ghost run button view (GhostRun)
-    public void ghostRun(View view){
-        Intent intent = new Intent(this, GhostRun.class);
+    //Goes from ghost run button view
+    public void listRun(View view){
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
+        Intent intent = new Intent(this, ListRun.class);
         startActivity(intent);
     }
 

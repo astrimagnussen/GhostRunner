@@ -61,6 +61,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     private TextView timeText;
     private TextView paceText;
 
+   // private TextView nameOfRun;
+
     //The audio for save
     private MediaPlayer save;
     private boolean calculateRun;
@@ -127,6 +129,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         distText = (TextView) findViewById(R.id.showDistance);
         paceText = (TextView) findViewById(R.id.showSpeed);
 
+        //Find namefield for the run
+        //nameOfRun = (TextView) findViewById(R.id.nameOfRun);
+
         //Find Buttons from id
         saveBtn = (Button) findViewById(R.id.saveRunGhostCompeteBtn);
         stopBtn = (Button) findViewById(R.id.stopGhostCompeteBtn);
@@ -136,6 +141,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         pauseBtn = (Button) findViewById(R.id.pauseBtn);
         continueBtn = (Button) findViewById(R.id.continueBtn);
 
+
+
         //Sets visibility for buttons
         saveBtn.setVisibility(View.GONE);
         stopBtn.setVisibility(View.GONE);
@@ -144,6 +151,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         startBtn.setVisibility(View.VISIBLE);
         menuBtn.setVisibility(View.GONE);
         deleteBtn.setVisibility(View.GONE);
+
+        //nameOfRun.setVisibility(View.GONE);
 
         //Creates locationRequests
         createLocationRequest();
@@ -369,6 +378,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         saveBtn.setVisibility(View.GONE);
         deleteBtn.setVisibility(View.GONE);
         menuBtn.setVisibility(View.VISIBLE);
+        //nameOfRun.setVisibility(View.VISIBLE);
 
         Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds

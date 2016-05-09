@@ -40,11 +40,15 @@ package mycompany.ghostrunner;
         import com.google.android.gms.common.ConnectionResult;
         import com.google.android.gms.common.api.GoogleApiClient;
 
+        import java.io.BufferedReader;
+        import java.io.FileInputStream;
         import java.io.FileNotFoundException;
         import java.io.FileOutputStream;
         import java.io.IOException;
+        import java.io.InputStreamReader;
         import java.text.DateFormat;
         import java.text.SimpleDateFormat;
+        import java.util.ArrayList;
         import java.util.Date;
 
 public class GhostCompete extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -104,6 +108,8 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     private int avgPaceMin;
 
     private Run ghost;
+    public Boolean secondTry = false;
+
 
     //All the timestuff!
     //for time calc from http://stackoverflow.com/questions/4597690/android-timer-how
@@ -498,11 +504,13 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     }
 
     //Spara till fil
-    public void saveRun(View view){
+    public void saveRun(final View view){
         saveBtn.setVisibility(View.GONE);
         deleteBtn.setVisibility(View.GONE);
         updateBtn.setVisibility(View.GONE);
         menuBtn.setVisibility(View.VISIBLE);
+
+
         //nameOfRun.setVisibility(View.VISIBLE);
 
         //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
@@ -511,19 +519,37 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 
         //kod från https://stackoverflow.com/questions/10903754/input-text-dialog-android , taget 2016-05-06
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Well done! Please name this new run (leave blank for default)");
+
+        if(secondTry){
+            builder.setTitle("Sorry, your name was not unique, choose another name");
+        }else{
+            builder.setTitle("Well done! Please name this new run (leave blank for default)");
+        }
 
         // Set up the input
         final EditText input = new EditText(this);
+
+        input.setTextColor(Color.BLACK);
         // Specify the type of input expected;
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
         builder.setView(input);
 
         // Set up the buttons
         builder.setPositiveButton("Set name", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                saveAndContinue(input.getText().toString());
+                if(checkIfExists(input.getText().toString())){
+                    Toast.makeText(getApplicationContext(), "Name not unique", Toast.LENGTH_LONG).show();
+                    saveBtn.setVisibility(View.VISIBLE);
+                    updateBtn.setVisibility(View.VISIBLE);
+                    deleteBtn.setVisibility(View.VISIBLE);
+                    menuBtn.setVisibility(View.GONE);
+                    secondTry = true;
+                    saveAndContinue("Wrongnamen", false);
+                }else {
+                    secondTry= false;
+                    saveAndContinue(input.getText().toString(), false);
+                }
             }
         });
 
@@ -541,8 +567,11 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         builder.show();
     }
 
-    public void saveAndContinue(String runName) {
+    public void saveAndContinue(String runName, Boolean update) {
         date = getDateTime();
+        if(secondTry){
+            saveBtn.performClick();
+        }else {
 
         /*System.out.println("hourToSave = " + hourToSave);
         System.out.println("minutesToSave = " + minutesToSave);
@@ -550,44 +579,61 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         System.out.println("distance = " + distance);
         System.out.println("date = " + date);*/
 
-        //System.out.println("Given runName = " + runName);
+            //System.out.println("Given runName = " + runName);
 
-        String file_name = "runs";
-        try {
-            //Skriver till namnet på rundan i runs filen
-            FileOutputStream fileOutputStream = openFileOutput(file_name, MODE_APPEND);
-            System.out.print("input when saved: ");
-            System.out.println(runName);
+            String file_name = "runs";
 
-            fileOutputStream.write(runName.getBytes());
-            fileOutputStream.write("\n".getBytes());
-            fileOutputStream.close();
+            try {
 
-            FileOutputStream fileOutputStream2 = openFileOutput(runName, MODE_PRIVATE);
 
-            //Skickas: hour, new line, min, new line, sec, new line, distans, new line, date, new line
-            fileOutputStream2.write(Integer.toString(hourToSave).getBytes());
-            fileOutputStream2.write("\n".getBytes());
-            fileOutputStream2.write(Integer.toString(minutesToSave).getBytes());
-            fileOutputStream2.write("\n".getBytes());
-            fileOutputStream2.write(Integer.toString(secToSave).getBytes());
-            fileOutputStream2.write("\n".getBytes());
-            fileOutputStream2.write(Integer.toString(distance).getBytes());
-            fileOutputStream2.write("\n".getBytes());
-            fileOutputStream2.write((date).getBytes());
-            fileOutputStream2.write("\n".getBytes());
+                //Skriver till namnet på rundan i runs filen
+                FileOutputStream fileOutputStream;
+                if (!update) {
+                    fileOutputStream = openFileOutput(file_name, MODE_APPEND);
+                    fileOutputStream.write(runName.getBytes());
+                    fileOutputStream.write("\n".getBytes());
+                    fileOutputStream.close();
+                }
 
-            fileOutputStream2.close();
-            Toast.makeText(getApplicationContext(), "Run saved", Toast.LENGTH_SHORT).show();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e){
-            e.printStackTrace();
+
+                System.out.print("input when saved: ");
+                System.out.println(runName);
+
+
+                FileOutputStream fileOutputStream2 = openFileOutput(runName, MODE_PRIVATE);
+
+                //Skickas: hour, new line, min, new line, sec, new line, distans, new line, date, new line
+                fileOutputStream2.write(Integer.toString(hourToSave).getBytes());
+                fileOutputStream2.write("\n".getBytes());
+                fileOutputStream2.write(Integer.toString(minutesToSave).getBytes());
+                fileOutputStream2.write("\n".getBytes());
+                fileOutputStream2.write(Integer.toString(secToSave).getBytes());
+                fileOutputStream2.write("\n".getBytes());
+                fileOutputStream2.write(Integer.toString(distance).getBytes());
+                fileOutputStream2.write("\n".getBytes());
+                fileOutputStream2.write((date).getBytes());
+                fileOutputStream2.write("\n".getBytes());
+
+                fileOutputStream2.close();
+                if (update) {
+                    Toast.makeText(getApplicationContext(), "Ghost Updated", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Ghost Saved", Toast.LENGTH_SHORT).show();
+                    save.start();
+                }
+
+
+                Intent intent = new Intent(this, ListRun.class);
+                startActivity(intent);
+
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        save.start();
 
-        Intent intent = new Intent(this, ListRun.class);
-        startActivity(intent);
     }
 
     public void afterDelete(View view){
@@ -616,7 +662,28 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         updateBtn.setVisibility(View.GONE);
         menuBtn.setVisibility(View.VISIBLE);
 
-        saveAndContinue(ghost.getName());
+        saveAndContinue(ghost.getName(), true);
     }
 
+    public Boolean checkIfExists(String name){
+        try {
+            String input;
+            FileInputStream fileInputStream = openFileInput("runs");
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+
+            //Reads all the names of files to read
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            while ((input = bufferedReader.readLine()) != null) {
+                if(name.toLowerCase().equals(input.toLowerCase())){
+                    return true;
+                }
+            }
+            fileInputStream.close();
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

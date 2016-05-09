@@ -373,10 +373,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         deleteBtn.setVisibility(View.GONE);
         menuBtn.setVisibility(View.VISIBLE);
 
-        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        //v.vibrate(200);
-
         //kod från https://stackoverflow.com/questions/10903754/input-text-dialog-android , taget 2016-05-06
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Well done! Please name this run (leave blank for default):");
@@ -411,12 +407,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     public void saveAndContinue(String runName) {
         date = getDateTime();
-
-        /*System.out.println("hourToSave = " + hourToSave);
-        System.out.println("minutesToSave = " + minutesToSave);
-        System.out.println("secToSave = " + secToSave);
-        System.out.println("distance = " + distance);
-        System.out.println("date = " + date);*/
 
         System.out.println("Given runName = " + runName);
 

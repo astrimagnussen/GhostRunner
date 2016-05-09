@@ -66,6 +66,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     private TextView timeText;
     private TextView paceText;
 
+   // private TextView nameOfRun;
+
     //The audio for save
     private MediaPlayer save;
     private boolean calculateRun;
@@ -133,6 +135,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         distText = (TextView) findViewById(R.id.showDistance);
         paceText = (TextView) findViewById(R.id.showSpeed);
 
+        //Find namefield for the run
+        //nameOfRun = (TextView) findViewById(R.id.nameOfRun);
+
         //Find Buttons from id
         saveBtn = (Button) findViewById(R.id.saveRunGhostCompeteBtn);
         stopBtn = (Button) findViewById(R.id.stopGhostCompeteBtn);
@@ -142,6 +147,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         pauseBtn = (Button) findViewById(R.id.pauseBtn);
         continueBtn = (Button) findViewById(R.id.continueBtn);
 
+
+
         //Sets visibility for buttons
         saveBtn.setVisibility(View.GONE);
         stopBtn.setVisibility(View.GONE);
@@ -150,6 +157,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         startBtn.setVisibility(View.VISIBLE);
         menuBtn.setVisibility(View.GONE);
         deleteBtn.setVisibility(View.GONE);
+
+        //nameOfRun.setVisibility(View.GONE);
 
         //Creates locationRequests
         createLocationRequest();
@@ -372,10 +381,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         saveBtn.setVisibility(View.GONE);
         deleteBtn.setVisibility(View.GONE);
         menuBtn.setVisibility(View.VISIBLE);
+        //nameOfRun.setVisibility(View.VISIBLE);
 
         //kod från https://stackoverflow.com/questions/10903754/input-text-dialog-android , taget 2016-05-06
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Well done! Please name this run (leave blank for default):");
+        builder.setTitle("Well done! Please name this run (leave blank for default)");
 
         // Set up the input
         final EditText input = new EditText(this);
@@ -408,25 +418,32 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     public void saveAndContinue(String runName) {
         date = getDateTime();
 
-        System.out.println("Given runName = " + runName);
-
         String file_name = "runs";
         try {
-            //Skickas: hour, new line, min, new line, sec, new line, distans, new line, date, new line
+            //Skriver till namnet på rundan i runs filen
             FileOutputStream fileOutputStream = openFileOutput(file_name, MODE_APPEND);
+            System.out.print("input when saved: ");
+            System.out.println(runName);
 
-            fileOutputStream.write(Integer.toString(hourToSave).getBytes());
+            fileOutputStream.write(runName.getBytes());
             fileOutputStream.write("\n".getBytes());
-            fileOutputStream.write(Integer.toString(minutesToSave).getBytes());
-            fileOutputStream.write("\n".getBytes());
-            fileOutputStream.write(Integer.toString(secToSave).getBytes());
-            fileOutputStream.write("\n".getBytes());
-            fileOutputStream.write(Integer.toString(distance).getBytes());
-            fileOutputStream.write("\n".getBytes());
-            fileOutputStream.write((date).getBytes());
-            fileOutputStream.write("\n".getBytes());
-
             fileOutputStream.close();
+
+            FileOutputStream fileOutputStream2 = openFileOutput(runName, MODE_PRIVATE);
+
+            //Skickas: hour, new line, min, new line, sec, new line, distans, new line, date, new line
+            fileOutputStream2.write(Integer.toString(hourToSave).getBytes());
+            fileOutputStream2.write("\n".getBytes());
+            fileOutputStream2.write(Integer.toString(minutesToSave).getBytes());
+            fileOutputStream2.write("\n".getBytes());
+            fileOutputStream2.write(Integer.toString(secToSave).getBytes());
+            fileOutputStream2.write("\n".getBytes());
+            fileOutputStream2.write(Integer.toString(distance).getBytes());
+            fileOutputStream2.write("\n".getBytes());
+            fileOutputStream2.write((date).getBytes());
+            fileOutputStream2.write("\n".getBytes());
+
+            fileOutputStream2.close();
             Toast.makeText(getApplicationContext(), "Run saved", Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

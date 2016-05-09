@@ -8,11 +8,15 @@
     <string name="save_btn">Save</string>
     <string name="menu_btn">Menu</string>
     <string name="delete_btn">Delete</string>
-    <string name="title_activity_list_run">List</string>
+    <string name="title_activity_list_run">Choose a Ghost to compete with: </string>
     <string name="title_activity_ghost_compete">GhostRun</string>
     <string name="distance_title">Distance: </string>
     <string name="time_title">Time: </string>
     <string name="speed_title">Current pace: </string>
-    <string name="list_btn">Choose a Run</string>
+    <string name="list_btn">Choose a Ghost</string>
     <string name="new_run_btn">New Run</string>
+    <string name="nameOfRun">Name your Ghost</string>
+    <string name="update_btn">Update your Ghost</string>
+    <string name="save_ghost_compete_btn">Save a new Ghost</string>
+
 </resources>

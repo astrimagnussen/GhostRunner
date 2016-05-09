@@ -2,6 +2,8 @@ package mycompany.ghostrunner;
 // mycket kod från här: https://developer.android.com/training/location/retrieve-current.html
         import android.Manifest;
 
+        import android.app.AlertDialog;
+        import android.content.DialogInterface;
         import android.content.Intent;
         import android.graphics.Color;
         import android.media.MediaPlayer;
@@ -12,6 +14,7 @@ package mycompany.ghostrunner;
         import android.os.Vibrator;
         import android.support.v7.app.AppCompatActivity;
         import android.support.v7.widget.Toolbar;
+        import android.text.InputType;
         import android.view.View;
 
         import android.content.Context;
@@ -21,6 +24,7 @@ package mycompany.ghostrunner;
         import android.support.v4.content.ContextCompat;
 
         import android.widget.Button;
+        import android.widget.EditText;
         import android.widget.TextView;
         import android.widget.Toast;
 
@@ -94,6 +98,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     private Button startBtn;
     private Button menuBtn;
     private Button deleteBtn;
+    private Button updateBtn;
 
     private int avgPaceSec;
     private int avgPaceMin;
@@ -155,6 +160,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         deleteBtn = (Button) findViewById(R.id.deleteGhostCompeteBtn);
         pauseBtn = (Button) findViewById(R.id.pauseBtn);
         continueBtn = (Button) findViewById(R.id.continueBtn);
+        updateBtn = (Button) findViewById(R.id.updateGhostCompeteBtn);
 
 
         //Finds TextViews the objects by Id for person
@@ -197,6 +203,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         continueBtn.setVisibility(View.GONE);
         menuBtn.setVisibility(View.GONE);
         deleteBtn.setVisibility(View.GONE);
+        updateBtn.setVisibility(View.GONE);
 
         //Gets the locationManager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -446,6 +453,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     public void stopRun(View view) {
         saveBtn.setVisibility(View.VISIBLE);
         deleteBtn.setVisibility(View.VISIBLE);
+        updateBtn.setVisibility(View.VISIBLE);
         pauseBtn.setVisibility(View.GONE);
         continueBtn.setVisibility(View.GONE);
         stopBtn.setVisibility(View.GONE);
@@ -493,31 +501,83 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     public void saveRun(View view){
         saveBtn.setVisibility(View.GONE);
         deleteBtn.setVisibility(View.GONE);
+        updateBtn.setVisibility(View.GONE);
         menuBtn.setVisibility(View.VISIBLE);
+        //nameOfRun.setVisibility(View.VISIBLE);
 
         //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
-        //v.vibrate(500);
+        //v.vibrate(200);
 
+        //kod från https://stackoverflow.com/questions/10903754/input-text-dialog-android , taget 2016-05-06
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Well done! Please name this new run (leave blank for default)");
+
+        // Set up the input
+        final EditText input = new EditText(this);
+        // Specify the type of input expected;
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("Set name", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                saveAndContinue(input.getText().toString());
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                saveBtn.setVisibility(View.VISIBLE);
+                updateBtn.setVisibility(View.VISIBLE);
+                deleteBtn.setVisibility(View.VISIBLE);
+                menuBtn.setVisibility(View.GONE);
+            }
+        });
+
+        builder.show();
+    }
+
+    public void saveAndContinue(String runName) {
         date = getDateTime();
+
+        /*System.out.println("hourToSave = " + hourToSave);
+        System.out.println("minutesToSave = " + minutesToSave);
+        System.out.println("secToSave = " + secToSave);
+        System.out.println("distance = " + distance);
+        System.out.println("date = " + date);*/
+
+        //System.out.println("Given runName = " + runName);
 
         String file_name = "runs";
         try {
-            //Skickas: hour, new line, min, new line, sec, new line, distans, new line, date, new line
+            //Skriver till namnet på rundan i runs filen
             FileOutputStream fileOutputStream = openFileOutput(file_name, MODE_APPEND);
+            System.out.print("input when saved: ");
+            System.out.println(runName);
 
-            fileOutputStream.write(Integer.toString(hourToSave).getBytes());
+            fileOutputStream.write(runName.getBytes());
             fileOutputStream.write("\n".getBytes());
-            fileOutputStream.write(Integer.toString(minutesToSave).getBytes());
-            fileOutputStream.write("\n".getBytes());
-            fileOutputStream.write(Integer.toString(secToSave).getBytes());
-            fileOutputStream.write("\n".getBytes());
-            fileOutputStream.write(Integer.toString(distance).getBytes());
-            fileOutputStream.write("\n".getBytes());
-            fileOutputStream.write((date).getBytes());
-            fileOutputStream.write("\n".getBytes());
-
             fileOutputStream.close();
+
+            FileOutputStream fileOutputStream2 = openFileOutput(runName, MODE_PRIVATE);
+
+            //Skickas: hour, new line, min, new line, sec, new line, distans, new line, date, new line
+            fileOutputStream2.write(Integer.toString(hourToSave).getBytes());
+            fileOutputStream2.write("\n".getBytes());
+            fileOutputStream2.write(Integer.toString(minutesToSave).getBytes());
+            fileOutputStream2.write("\n".getBytes());
+            fileOutputStream2.write(Integer.toString(secToSave).getBytes());
+            fileOutputStream2.write("\n".getBytes());
+            fileOutputStream2.write(Integer.toString(distance).getBytes());
+            fileOutputStream2.write("\n".getBytes());
+            fileOutputStream2.write((date).getBytes());
+            fileOutputStream2.write("\n".getBytes());
+
+            fileOutputStream2.close();
             Toast.makeText(getApplicationContext(), "Run saved", Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -525,9 +585,11 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
             e.printStackTrace();
         }
         save.start();
-        Intent intent = new Intent(this, MainActivity.class);
+
+        Intent intent = new Intent(this, ListRun.class);
         startActivity(intent);
     }
+
     public void afterDelete(View view){
         //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
@@ -545,4 +607,16 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+    //Updates the ghost
+    public void updateGhost(View view){
+
+        saveBtn.setVisibility(View.GONE);
+        deleteBtn.setVisibility(View.GONE);
+        updateBtn.setVisibility(View.GONE);
+        menuBtn.setVisibility(View.VISIBLE);
+
+        saveAndContinue(ghost.getName());
+    }
+
 }

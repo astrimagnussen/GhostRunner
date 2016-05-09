@@ -25,6 +25,7 @@ import java.util.Collections;
 public class ListRun extends AppCompatActivity implements Serializable {
     private ListView listView;
     private RunListAdapter adapter;
+    private ArrayList<String> listOfRuns;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,12 +116,13 @@ public class ListRun extends AppCompatActivity implements Serializable {
             if (convertView == null) {
                 convertView = LayoutInflater.from(context).inflate(R.layout.row, parent, false);
             }
-
+            TextView nameText = (TextView) convertView.findViewById(R.id.nameTextGhost);
             TextView dateText = (TextView) convertView.findViewById(R.id.dateTextGhost);
             TextView distText = (TextView) convertView.findViewById(R.id.distTextGhost);
             TextView timeText = (TextView) convertView.findViewById(R.id.timeTextGhost);
 
             Run run = getItem(position);
+            nameText.setText(run.getName());
             dateText.setText(run.getDate().substring(0, 10));
             float distance = run.getDistance();
             int tenMeters = (int) (distance/10)%100;
@@ -138,78 +140,78 @@ public class ListRun extends AppCompatActivity implements Serializable {
     }
 
     public boolean read() {
+        listOfRuns = new ArrayList<>();
         try {
             String input;
             FileInputStream fileInputStream = openFileInput("runs");
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
 
+            //Reads all the names of files to read
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-            int counter = 0;
-            int hour = 0;
-            int min = 0;
-            int sec = 0;
-            int distance = 0;
-            String date = "";
-            ArrayList<Run> readRunList = new ArrayList<>();
-
             while ((input = bufferedReader.readLine()) != null) {
-                switch (counter % 5) {
-                    case 0:
-                        try {
-                            hour = Integer.parseInt(input);
-                        } catch (NumberFormatException e) {
-                            e.printStackTrace();
-                            return false;
-                        }
-                        break;
-                    case 1:
-                        try {
-                            min = Integer.parseInt(input);
-                        } catch (NumberFormatException e) {
-                            e.printStackTrace();
-                            return false;
-                        }
-                        break;
-                    case 2:
-                        try {
-                            sec = Integer.parseInt(input);
-                        } catch (NumberFormatException e) {
-                            e.printStackTrace();
-                            return false;
-                        }
-                        break;
-                    case 3:
-                        try {
-                            distance = Integer.parseInt(input);
-                        } catch (NumberFormatException e) {
-                            e.printStackTrace();
-                            return false;
-                        }
-                        break;
-                    case 4:
-                        byte[] bytes = input.getBytes("UTF-8");
+                System.out.print("input when read: ");
+                System.out.println(input);
+                listOfRuns.add(input);
+            }
+            fileInputStream.close();
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+        if(!listOfRuns.isEmpty()) {
+            ArrayList<Run> readRunList = new ArrayList<>();
+            for (String name : listOfRuns) {
+                String input2 = "";
+                try {
+                    FileInputStream fileInputStream2 = openFileInput(name);
+                    InputStreamReader inputStreamReader2 = new InputStreamReader(fileInputStream2);
+                    BufferedReader bufferedReader2 = new BufferedReader(inputStreamReader2);
+
+                    int hour = 0;
+                    int min = 0;
+                    int sec = 0;
+                    int distance = 0;
+                    String date = "";
+
+                    try {
+                        hour = Integer.parseInt(bufferedReader2.readLine());
+                        min = Integer.parseInt(bufferedReader2.readLine());
+                        sec = Integer.parseInt(bufferedReader2.readLine());
+                        distance = Integer.parseInt(bufferedReader2.readLine());
+                        byte[] bytes = bufferedReader2.readLine().getBytes("UTF-8");
                         date = new String(bytes, "UTF-8");
-                        break;
-                }
-                counter++;
-                if (counter % 5 == 0 && counter != 0) {
-                    /*System.out.println("hour = " + hour);
+
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        return false;
+                    }catch (IOException e) {
+                        e.printStackTrace();
+                        return false;
+                    }
+
+                    System.out.println("hour = " + hour);
                     System.out.println("min = " + min);
                     System.out.println("sec = " + sec);
                     System.out.println("distance = " + distance);
-                    System.out.println("date = " + date);*/
-                    readRunList.add(new Run(hour, min, sec, distance, date));
+                    System.out.println("date = " + date);
+
+
+                    readRunList.add(new Run(name ,hour, min, sec, distance, date));
+                    fileInputStream2.close();
+                    Collections.reverse(readRunList);
+                    adapter.updateRuns(readRunList);
+
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-            Collections.reverse(readRunList);
-            adapter.updateRuns(readRunList);
             return true;
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return false;
     }

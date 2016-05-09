@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ListRun extends AppCompatActivity implements Serializable {
     private ListView listView;
@@ -193,15 +194,15 @@ public class ListRun extends AppCompatActivity implements Serializable {
                 }
                 counter++;
                 if (counter % 5 == 0 && counter != 0) {
-                    System.out.println("hour = " + hour);
+                    /*System.out.println("hour = " + hour);
                     System.out.println("min = " + min);
                     System.out.println("sec = " + sec);
                     System.out.println("distance = " + distance);
-                    System.out.println("date = " + date);
+                    System.out.println("date = " + date);*/
                     readRunList.add(new Run(hour, min, sec, distance, date));
                 }
             }
-
+            Collections.reverse(readRunList);
             adapter.updateRuns(readRunList);
             return true;
 

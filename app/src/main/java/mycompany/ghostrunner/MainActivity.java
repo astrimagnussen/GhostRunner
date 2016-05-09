@@ -11,8 +11,6 @@ import android.view.View;
 import com.google.android.gms.common.ConnectionResult;
 
 public class MainActivity extends AppCompatActivity {
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,25 +18,22 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //getSupportActionBar().setTitle("GhostRunner");
-
-
     }
-
 
     //Goes from new run button view to (NewRun)
     public void newRun(View view){
-        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
-        v.vibrate(500);
+        //v.vibrate(500);
         Intent intent = new Intent(this, NewRun.class);
         startActivity(intent);
     }
 
     //Goes from ghost run button view
     public void listRun(View view){
-        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
-        v.vibrate(500);
+        //v.vibrate(500);
         Intent intent = new Intent(this, ListRun.class);
         startActivity(intent);
     }
@@ -54,6 +49,4 @@ public class MainActivity extends AppCompatActivity {
 
         // ...
     }
-
-
 }

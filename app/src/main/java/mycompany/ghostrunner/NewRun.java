@@ -43,7 +43,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class NewRun extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+import android.speech.tts.TextToSpeech;
+import java.util.Locale;
+
+public class NewRun extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, TextToSpeech.OnInitListener {
 
     //Used to access the API
     private GoogleApiClient mGoogleApiClient;
@@ -75,6 +78,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     Integer minutesToSave = 0;
     Integer secToSave = 0;
 
+    private TextToSpeech myTTS;
+
     private String date;
     private String m_Text = "";
 
@@ -85,6 +90,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     private Button continueBtn;
     private Button menuBtn;
     private Button deleteBtn;
+
+    private int MY_DATA_CHECK_CODE = 0;
 
     //for time calc from http://stackoverflow.com/questions/4597690/android-timer-how
     private long startTime = 0;
@@ -164,6 +171,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
         //Gets the locationManager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        //Text to speech
+        Intent checkTTSIntent = new Intent();
+        checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+        startActivityForResult(checkTTSIntent, MY_DATA_CHECK_CODE);
     }
 
     //Runs when GoogleApiClient connects
@@ -202,6 +214,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
         // ...
     }
+
 
     @Override
     public void onResume() {
@@ -260,15 +273,44 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             return;
         }
         //Requests for updates
-            LocationServices.FusedLocationApi.requestLocationUpdates(
-                    mGoogleApiClient, mLocationRequest, this);
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
     }
+
+    //Check if the user has TTS, otherwise tell them to install it on the phone
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == MY_DATA_CHECK_CODE){
+            if(resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS){
+                myTTS = new TextToSpeech(this, this);
+            }else{
+                Intent installTTSIntent = new Intent();
+                installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                startActivity(installTTSIntent);
+            }
+        }
+    }
+
+    public void onInit(int initStatus){
+        if(initStatus == TextToSpeech.SUCCESS){
+            myTTS.setLanguage(Locale.US);
+        }
+        else if(initStatus == TextToSpeech.ERROR){
+            Toast.makeText(this, "TTS not working", Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+
+
+
+
 
     public void startRun(View view) {
         stopBtn.setVisibility(View.VISIBLE);
         pauseBtn.setVisibility(View.VISIBLE);
         startBtn.setVisibility(View.GONE);
         calculateRun = true;
+        speakWords("Start running!");
 
         Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
@@ -335,13 +377,21 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         //for time calculation stop
         handler.removeCallbacks(runnable);
 
+        //turn off TextToSpeech
+        myTTS.shutdown();
+
         Toast.makeText(getApplicationContext(), "Run stopped", Toast.LENGTH_SHORT).show();
         //showTime.setText(Long.toString(stopTime));
     }
+
+
+
+
+
     public void calcDist () {
         distance += mCurrentLocation.distanceTo(startLocation);
         int tenMeters = (distance/10)%100;
-        int km = distance/1000;
+        int km = distance / 1000;
         startLocation = mCurrentLocation;
         distText.setText(String.format("%d.%02d %s", km, tenMeters, " km"));
     }
@@ -365,6 +415,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         Date date = new Date();
         return dateFormat.format(date);
     }
+
+
+
 
     //Spara till fil
     public void saveRun(View view){
@@ -463,5 +516,23 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         //v.vibrate(200);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+    }
+
+
+
+
+
+
+    public void giveFeedback(){
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(200);
+        String words = "hello";
+        speakWords(words);
+
+
+    }
+
+    public void speakWords(String speech){
+        myTTS.speak(speech, TextToSpeech.QUEUE_ADD, null, null);
     }
 }

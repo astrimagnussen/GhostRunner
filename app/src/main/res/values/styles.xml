@@ -6,7 +6,6 @@
         <item name="android:textColorPrimary">@color/colorTitle</item>
         <item name="android:windowBackground">@color/colorWindowBackground</item>
 
-        <item name="colorPrimaryDark">@color/colorStatusBar</item>
         <item name="android:statusBarColor">@color/colorStatusBar</item>
 
         <item name="colorAccent">@color/colorAccent</item>

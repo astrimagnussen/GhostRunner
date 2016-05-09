@@ -183,11 +183,21 @@
             android:buttonStyle="@style/myButtons"
             android:layout_marginBottom="20dp" />
 
-        <Button android:id="@+id/saveRunGhostCompeteBtn"
+        <Button android:id="@+id/updateGhostCompeteBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/update_btn"
+            android:onClick="updateGhost"
+            android:layout_above="@+id/saveRunGhostCompeteBtn"
+            android:buttonStyle="@style/myButtons"
+            android:layout_marginBottom="20dip"
+            android:background="@color/colorUpdateBtn"/>
+
+        <Button android:id="@id/saveRunGhostCompeteBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/deleteGhostCompeteBtn"
-            android:text="@string/save_btn"
+            android:text="@string/save_ghost_compete_btn"
             android:onClick="saveRun"
             android:buttonStyle="@style/myButtons"
             android:layout_marginBottom="20dip"
@@ -201,6 +211,7 @@
             android:layout_alignParentBottom ="true"
             android:buttonStyle="@style/myButtons"
             android:layout_marginBottom="20dip" />
+
 
         <Button android:id="@+id/deleteGhostCompeteBtn"
             android:layout_width="match_parent"

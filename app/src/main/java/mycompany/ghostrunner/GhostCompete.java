@@ -79,6 +79,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     private TextView paceTextPersonTitle;
 
     //Shows the distance and the saved values for ghost
+    private TextView nameTextGhost;
     private TextView distTextGhost;
     private TextView timeTextGhost;
     private TextView paceTextGhost;
@@ -181,6 +182,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 
 
         //Finds TextViews the objects by Id for ghost
+        nameTextGhost = (TextView) findViewById(R.id.nameTextGhost);
         timeTextGhost = (TextView) findViewById(R.id.showTimeGhost);
         distTextGhost = (TextView) findViewById(R.id.showDistanceGhost);
         paceTextGhost = (TextView) findViewById(R.id.showSpeedGhost);
@@ -211,6 +213,8 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         deleteBtn.setVisibility(View.GONE);
         updateBtn.setVisibility(View.GONE);
 
+        nameTextGhost.setVisibility(View.VISIBLE);
+        nameTextGhost.setText(ghost.getName());
         //Gets the locationManager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     }

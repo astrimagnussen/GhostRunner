@@ -2,6 +2,8 @@ package mycompany.ghostrunner;
 // mycket kod från här: https://developer.android.com/training/location/retrieve-current.html
 import android.Manifest;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
 
 import android.content.Context;
@@ -19,6 +22,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +78,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     Integer secToSave = 0;
 
     private String date;
+    private String m_Text = "";
 
     private Button saveBtn;
     private Button stopBtn;
@@ -207,7 +212,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         // ...
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -277,7 +281,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
         Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
-        v.vibrate(500);
+        v.vibrate(200);
 
         //Checks permissions
         if (locationManager != null) {
@@ -301,10 +305,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         handler.removeCallbacks(runnable);
         pausedTimeAt = SystemClock.elapsedRealtime();
 
-        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
-        v.vibrate(500);
-
+        //v.vibrate(200);
 
         Toast.makeText(getApplicationContext(), "Run paused", Toast.LENGTH_SHORT).show();
     }
@@ -318,10 +321,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         pausedTimeAt = 0;
         handler.postDelayed(runnable, 0);
 
-        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
-        v.vibrate(500);
-
+        //v.vibrate(200);
 
         Toast.makeText(getApplicationContext(), "Run continued", Toast.LENGTH_SHORT).show();
     }
@@ -336,7 +338,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         calculateRun = false;
         Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
-        v.vibrate(500);
+        v.vibrate(200);
 
 
         //for time calculation stop
@@ -345,14 +347,14 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         Toast.makeText(getApplicationContext(), "Run stopped", Toast.LENGTH_SHORT).show();
         //showTime.setText(Long.toString(stopTime));
     }
-    public void calcDist (){
+    public void calcDist () {
         distance += mCurrentLocation.distanceTo(startLocation);
         int tenMeters = (distance/10)%100;
         int km = distance/1000;
         startLocation = mCurrentLocation;
         distText.setText(String.format("%d.%02d %s", km, tenMeters, " km"));
     }
-    public void calcAvgPace (){
+    public void calcAvgPace () {
         int avgPaceSec;
         int avgPaceMin;
         if(distance != 0){
@@ -380,18 +382,51 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         menuBtn.setVisibility(View.VISIBLE);
         //nameOfRun.setVisibility(View.VISIBLE);
 
-        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
-        v.vibrate(500);
+        //v.vibrate(200);
 
+        //kod från https://stackoverflow.com/questions/10903754/input-text-dialog-android , taget 2016-05-06
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Well done! Please name this run (leave blank for default):");
 
+        // Set up the input
+        final EditText input = new EditText(this);
+        // Specify the type of input expected;
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("Set name", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                saveAndContinue(input.getText().toString());
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                saveBtn.setVisibility(View.VISIBLE);
+                deleteBtn.setVisibility(View.VISIBLE);
+                menuBtn.setVisibility(View.GONE);
+            }
+        });
+
+        builder.show();
+    }
+
+    public void saveAndContinue(String runName) {
         date = getDateTime();
 
-        System.out.println("hourToSave = " + hourToSave);
+        /*System.out.println("hourToSave = " + hourToSave);
         System.out.println("minutesToSave = " + minutesToSave);
         System.out.println("secToSave = " + secToSave);
         System.out.println("distance = " + distance);
-        System.out.println("date = " + date);
+        System.out.println("date = " + date);*/
+
+        System.out.println("Given runName = " + runName);
 
         String file_name = "runs";
         try {
@@ -417,13 +452,15 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             e.printStackTrace();
         }
         save.start();
+
         Intent intent = new Intent(this, ListRun.class);
         startActivity(intent);
     }
+
     public void afterDelete(View view){
-        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
-        v.vibrate(500);
+        //v.vibrate(200);
         Toast.makeText(getApplicationContext(), "Run deleted", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -431,9 +468,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     //Läser in från fil och visa stuff
     public void menu(View view){
-        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
-        v.vibrate(500);
+        //v.vibrate(200);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
     }

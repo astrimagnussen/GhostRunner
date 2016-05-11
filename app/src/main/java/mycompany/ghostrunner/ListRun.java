@@ -1,6 +1,8 @@
 package mycompany.ghostrunner;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,10 +14,13 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
@@ -39,7 +44,7 @@ public class ListRun extends AppCompatActivity implements Serializable {
 
         adapter = new RunListAdapter(this/*, R.layout.row, runList*/);
         listView.setAdapter(adapter);
-        if(!read()) {
+        if (!read()) {
             //inte bra
         }
 
@@ -49,7 +54,7 @@ public class ListRun extends AppCompatActivity implements Serializable {
                 final Run item = (Run) parent.getItemAtPosition(position);
 
                 Intent intent = new Intent(view.getContext(), GhostCompete.class);
-                intent.putExtra("Run" , item);
+                intent.putExtra("Run", item);
                 startActivity(intent);
 
                 /*view.animate().setDuration(2000).alpha(0).withEndAction(new Runnable() {
@@ -62,6 +67,39 @@ public class ListRun extends AppCompatActivity implements Serializable {
                         });*/
             }
         });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
+                final Run item = (Run) parent.getItemAtPosition(position);
+                boolean deleted = false;
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(ListRun.this);
+
+                builder.setTitle("Do you want to delete '" + item.getName() + "'?");
+
+                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(deleteRun(item.getName())){
+                            Toast.makeText(getApplicationContext(), item.getName()+" deleted", Toast.LENGTH_SHORT).show();
+                            read();
+                        }
+                    }
+                });
+
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(getApplicationContext(), item.getName()+" NOT deleted", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.show();
+                return deleted;
+            }
+        });
+
+
     }
 
     private class RunListAdapter extends BaseAdapter {
@@ -124,18 +162,19 @@ public class ListRun extends AppCompatActivity implements Serializable {
             nameText.setText(run.getName());
             dateText.setText(run.getDate().substring(0, 10));
             float distance = run.getDistance();
-            int tenMeters = (int) (distance/10)%100;
-            int km = (int) distance/1000;
+            int tenMeters = (int) (distance / 10) % 100;
+            int km = (int) distance / 1000;
             distText.setText(String.format("%d.%02d %s", km, tenMeters, " km"));
-            if (run.getHours() > 0){
+            if (run.getHours() > 0) {
                 timeText.setText(String.format("%d:%02d:%02d", run.getHours(), run.getMinutes(), run.getSeconds()));
-            }
-            else {
+            } else {
                 timeText.setText(String.format("%d:%02d", run.getMinutes(), run.getSeconds()));
             }
 
             return convertView;
         }
+
+
     }
 
     public boolean read() {
@@ -153,13 +192,13 @@ public class ListRun extends AppCompatActivity implements Serializable {
                 listOfRuns.add(input);
             }
             fileInputStream.close();
-        }catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        if(!listOfRuns.isEmpty()) {
+        if (!listOfRuns.isEmpty()) {
             ArrayList<Run> readRunList = new ArrayList<>();
             for (String name : listOfRuns) {
                 String input2 = "";
@@ -185,7 +224,7 @@ public class ListRun extends AppCompatActivity implements Serializable {
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                         return false;
-                    }catch (IOException e) {
+                    } catch (IOException e) {
                         e.printStackTrace();
                         return false;
                     }
@@ -197,7 +236,7 @@ public class ListRun extends AppCompatActivity implements Serializable {
                     System.out.println("date = " + date);
 
 
-                    readRunList.add(new Run(name ,hour, min, sec, distance, date));
+                    readRunList.add(new Run(name, hour, min, sec, distance, date));
                     fileInputStream2.close();
                     Collections.reverse(readRunList);
                     adapter.updateRuns(readRunList);
@@ -215,4 +254,30 @@ public class ListRun extends AppCompatActivity implements Serializable {
         return false;
     }
 
+    public Boolean deleteRun(String name) {
+        if (listOfRuns.contains(name)) {
+            listOfRuns.remove(name);
+
+            try {
+                //Skriver om filen med alla aktiva rundor med den deletade borttagen
+                FileOutputStream fileOutputStream;
+
+                fileOutputStream = openFileOutput("runs", MODE_PRIVATE);
+                for (String s : listOfRuns) {
+                    fileOutputStream.write(s.getBytes());
+                    fileOutputStream.write("\n".getBytes());
+                }
+
+                fileOutputStream.close();
+
+                File dir = getFilesDir();
+                File file = new File(dir, name);
+                boolean deleted = file.delete();
+                return deleted;
+            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
+            }
+        }
+        return false;
+    }
 }

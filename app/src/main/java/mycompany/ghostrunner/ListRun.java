@@ -72,7 +72,7 @@ public class ListRun extends AppCompatActivity implements Serializable {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
                 final Run item = (Run) parent.getItemAtPosition(position);
-                boolean deleted = false;
+                boolean deleted = true;
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(ListRun.this);
 
@@ -177,6 +177,7 @@ public class ListRun extends AppCompatActivity implements Serializable {
 
     public boolean read() {
         listOfRuns = new ArrayList<>();
+        ArrayList<Run> readRunList = new ArrayList<>();
         try {
             String input;
             FileInputStream fileInputStream = openFileInput("runs");
@@ -197,7 +198,6 @@ public class ListRun extends AppCompatActivity implements Serializable {
         }
 
         if (!listOfRuns.isEmpty()) {
-            ArrayList<Run> readRunList = new ArrayList<>();
             for (String name : listOfRuns) {
                 String input2 = "";
                 try {
@@ -249,6 +249,7 @@ public class ListRun extends AppCompatActivity implements Serializable {
             return true;
 
         }
+        adapter.updateRuns(readRunList);
         return false;
     }
 

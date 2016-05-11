@@ -34,7 +34,6 @@ public class ListRun extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_list_run);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("List");
 
         listView = (ListView) findViewById(R.id.listView);
 

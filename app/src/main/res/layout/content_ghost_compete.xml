@@ -86,10 +86,32 @@
         android:orientation="vertical" >
 
         <TextView
+            android:id="@+id/nameTitleGhost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name: "
+            android:textColor="@color/colorGhostGrey"
+            android:textStyle="bold"
+            />
+
+
+        <TextView
+            android:id="@+id/nameTextGhost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/colorGhostGrey"
+            android:textStyle="bold"
+            />
+
+
+        <TextView
             android:id="@+id/distanceTitleGhost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/distance_title"
+            android:layout_below="@id/nameTitleGhost"
             android:textViewStyle="@style/displayRun"
             android:textColor="@color/colorGhostGrey" />
 
@@ -98,6 +120,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight ="true"
+            android:layout_below="@id/nameTextGhost"
+
             android:text="0 km"
             android:textViewStyle="@style/displayRun"
             android:textColor="@color/colorGhostGrey" />

@@ -72,7 +72,7 @@ public class ListRun extends AppCompatActivity implements Serializable {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
                 final Run item = (Run) parent.getItemAtPosition(position);
-                boolean deleted = false;
+                boolean deleted = true;
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(ListRun.this);
 
@@ -82,7 +82,7 @@ public class ListRun extends AppCompatActivity implements Serializable {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if(deleteRun(item.getName())){
-                            Toast.makeText(getApplicationContext(), item.getName()+" deleted", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), item.getName() + " deleted", Toast.LENGTH_SHORT).show();
                             read();
                         }
                     }
@@ -173,12 +173,11 @@ public class ListRun extends AppCompatActivity implements Serializable {
 
             return convertView;
         }
-
-
     }
 
     public boolean read() {
         listOfRuns = new ArrayList<>();
+        ArrayList<Run> readRunList = new ArrayList<>();
         try {
             String input;
             FileInputStream fileInputStream = openFileInput("runs");
@@ -199,7 +198,6 @@ public class ListRun extends AppCompatActivity implements Serializable {
         }
 
         if (!listOfRuns.isEmpty()) {
-            ArrayList<Run> readRunList = new ArrayList<>();
             for (String name : listOfRuns) {
                 String input2 = "";
                 try {
@@ -251,6 +249,7 @@ public class ListRun extends AppCompatActivity implements Serializable {
             return true;
 
         }
+        adapter.updateRuns(readRunList);
         return false;
     }
 
@@ -279,5 +278,13 @@ public class ListRun extends AppCompatActivity implements Serializable {
             }
         }
         return false;
+    }
+
+    public void menu (View view){
+        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        //v.vibrate(500);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

@@ -82,7 +82,7 @@ public class ListRun extends AppCompatActivity implements Serializable {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if(deleteRun(item.getName())){
-                            Toast.makeText(getApplicationContext(), item.getName()+" deleted", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), item.getName() + " deleted", Toast.LENGTH_SHORT).show();
                             read();
                         }
                     }
@@ -173,8 +173,6 @@ public class ListRun extends AppCompatActivity implements Serializable {
 
             return convertView;
         }
-
-
     }
 
     public boolean read() {

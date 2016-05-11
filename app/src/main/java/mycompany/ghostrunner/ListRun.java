@@ -72,7 +72,7 @@ public class ListRun extends AppCompatActivity implements Serializable {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
                 final Run item = (Run) parent.getItemAtPosition(position);
-                boolean deleted = false;
+                boolean deleted = true;
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(ListRun.this);
 

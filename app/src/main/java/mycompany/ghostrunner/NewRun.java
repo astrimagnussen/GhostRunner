@@ -228,6 +228,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         // the failure silently
 
         // ...
+        System.out.print("connection failed!");
     }
 
 
@@ -242,7 +243,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     @Override
     protected void onPause() {
         super.onPause();
-        stopLocationUpdates();
+       // stopLocationUpdates();
     }
 
     protected void stopLocationUpdates() {

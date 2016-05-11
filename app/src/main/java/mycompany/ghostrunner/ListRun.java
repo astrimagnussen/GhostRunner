@@ -179,6 +179,7 @@ public class ListRun extends AppCompatActivity implements Serializable {
 
     public boolean read() {
         listOfRuns = new ArrayList<>();
+        ArrayList<Run> readRunList = new ArrayList<>();
         try {
             String input;
             FileInputStream fileInputStream = openFileInput("runs");
@@ -199,7 +200,6 @@ public class ListRun extends AppCompatActivity implements Serializable {
         }
 
         if (!listOfRuns.isEmpty()) {
-            ArrayList<Run> readRunList = new ArrayList<>();
             for (String name : listOfRuns) {
                 String input2 = "";
                 try {
@@ -251,6 +251,7 @@ public class ListRun extends AppCompatActivity implements Serializable {
             return true;
 
         }
+        adapter.updateRuns(readRunList);
         return false;
     }
 

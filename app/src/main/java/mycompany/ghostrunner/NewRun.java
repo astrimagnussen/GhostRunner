@@ -105,6 +105,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     private long startTime = 0;
     private long pausedTimeAt = 0;
     private long totalPauseTime = 0;
+    private int updateFeedback = 1; //1 minute between feedbacks (audio)
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
         @Override
@@ -125,6 +126,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             }
             else {
                 timeText.setText(String.format("%d:%02d", minutes, seconds));
+            }
+
+            if(minutes>=updateFeedback){
+                giveFeedback();
+                updateFeedback++;
             }
 
             handler.postDelayed(this, 500);
@@ -326,7 +332,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         pauseBtn.setVisibility(View.VISIBLE);
         startBtn.setVisibility(View.GONE);
         calculateRun = true;
-        speakWords("Start running!");
+        speakWords("Start running now!");
 
         Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
@@ -350,7 +356,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         pauseBtn.setVisibility(View.GONE);
         continueBtn.setVisibility(View.VISIBLE);
         calculateRun = false;
-
         handler.removeCallbacks(runnable);
         pausedTimeAt = SystemClock.elapsedRealtime();
 
@@ -592,8 +597,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     public void giveFeedback(){
         Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         v.vibrate(200);
-        String words = "hello";
-        speakWords(words);
+        speakWords("Distance " + distText.getText());
 
 
     }

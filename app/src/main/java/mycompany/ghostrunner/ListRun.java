@@ -281,4 +281,12 @@ public class ListRun extends AppCompatActivity implements Serializable {
         }
         return false;
     }
+
+    public void menu (View view){
+        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        //v.vibrate(500);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 }

@@ -12,6 +12,7 @@ package mycompany.ghostrunner;
         import android.os.Handler;
         import android.os.SystemClock;
         import android.os.Vibrator;
+        import android.speech.tts.TextToSpeech;
         import android.support.v7.app.AppCompatActivity;
         import android.support.v7.widget.Toolbar;
         import android.text.InputType;
@@ -50,8 +51,9 @@ package mycompany.ghostrunner;
         import java.text.SimpleDateFormat;
         import java.util.ArrayList;
         import java.util.Date;
+        import java.util.Locale;
 
-public class GhostCompete extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class GhostCompete extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, TextToSpeech.OnInitListener {
 
     //Used to access the API
     private GoogleApiClient mGoogleApiClient;
@@ -110,6 +112,10 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 
     private Run ghost;
     public Boolean secondTry = false;
+
+    private Vibrator vib;
+    private TextToSpeech myTTS;
+    private int MY_DATA_CHECK_CODE = 0;
 
 
     //All the timestuff!
@@ -187,6 +193,8 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         distTextGhost = (TextView) findViewById(R.id.showDistanceGhost);
         paceTextGhost = (TextView) findViewById(R.id.showSpeedGhost);
 
+        vib = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+
         showGhost(ghost);
 
         //Creates locationRequests
@@ -217,6 +225,12 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         nameTextGhost.setText(ghost.getName());
         //Gets the locationManager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        //Text to speech
+        Intent checkTTSIntent = new Intent();
+        checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+        startActivityForResult(checkTTSIntent, MY_DATA_CHECK_CODE);
+
     }
 
     public void showGhost(Run ghost) {
@@ -316,7 +330,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     @Override
     protected void onPause() {
         super.onPause();
-        stopLocationUpdates();
+//        stopLocationUpdates();
     }
 
     protected void stopLocationUpdates() {
@@ -402,15 +416,40 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
                 mGoogleApiClient, mLocationRequest, this);
     }
 
+    //Check if the user has TTS, otherwise tell them to install it on the phone
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == MY_DATA_CHECK_CODE){
+            if(resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS){
+                myTTS = new TextToSpeech(this, this);
+            }else{
+                Intent installTTSIntent = new Intent();
+                installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                startActivity(installTTSIntent);
+            }
+        }
+    }
+
+    public void onInit(int initStatus){
+        if(initStatus == TextToSpeech.SUCCESS){
+            myTTS.setLanguage(Locale.US);
+        }
+        else if(initStatus == TextToSpeech.ERROR){
+            Toast.makeText(this, "TTS not working", Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+
+
+
+
     public void startRun(View view) {
         stopBtn.setVisibility(View.VISIBLE);
         pauseBtn.setVisibility(View.VISIBLE);
         startBtn.setVisibility(View.GONE);
         calculateRun = true;
-
-        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        v.vibrate(500);
+        vibrateNow();
+        speakWords("Start running now!");
 
         //Checks permissions
         if (locationManager != null) {
@@ -430,11 +469,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         pauseBtn.setVisibility(View.GONE);
         continueBtn.setVisibility(View.VISIBLE);
         calculateRun = false;
-
-        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        //v.vibrate(500);
-
+        speakWords("Run paused");
 
         handler.removeCallbacks(runnable);
         pausedTimeAt = SystemClock.elapsedRealtime();
@@ -446,11 +481,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         continueBtn.setVisibility(View.GONE);
         pauseBtn.setVisibility(View.VISIBLE);
         calculateRun = true;
-
-        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        //v.vibrate(500);
-
+        speakWords("Continuing running");
 
         totalPauseTime += SystemClock.elapsedRealtime() - pausedTimeAt;
         pausedTimeAt = 0;
@@ -468,16 +499,17 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         continueBtn.setVisibility(View.GONE);
         stopBtn.setVisibility(View.GONE);
         calculateRun= false;
-
-        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        v.vibrate(500);
+        speakWords("Run stopped");
+        vibrateNow();
 
         //for time calculation stop
         handler.removeCallbacks(runnable);
 
         Toast.makeText(getApplicationContext(), "Run stopped", Toast.LENGTH_SHORT).show();
         //showTime.setText(Long.toString(stopTime));
+
+        //turn off TextToSpeech
+        myTTS.shutdown();
     }
     public void calcDist (){
         distance += mCurrentLocation.distanceTo(startLocation);
@@ -513,13 +545,6 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         deleteBtn.setVisibility(View.GONE);
         updateBtn.setVisibility(View.GONE);
         menuBtn.setVisibility(View.VISIBLE);
-
-
-        //nameOfRun.setVisibility(View.VISIBLE);
-
-        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        //v.vibrate(200);
 
         //kod från https://stackoverflow.com/questions/10903754/input-text-dialog-android , taget 2016-05-06
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -689,5 +714,22 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
             e.printStackTrace();
         }
         return false;
+    }
+
+    public void vibrateNow(){
+        if(Settings.vibration){
+            vib.vibrate(200);
+        }
+    }
+
+    public void speakWords(String speech){
+        if(Settings.sound) {
+            myTTS.speak(speech, TextToSpeech.QUEUE_ADD, null, null);
+        }
+    }
+
+    public void giveFeedback(){
+        vibrateNow();
+        speakWords("Distance " + distTextPerson.getText());
     }
 }

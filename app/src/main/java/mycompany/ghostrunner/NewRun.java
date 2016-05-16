@@ -101,11 +101,14 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     public Boolean secondTry = false;
 
+    private Vibrator vib;
+
     //for time calc from http://stackoverflow.com/questions/4597690/android-timer-how
     private long startTime = 0;
     private long pausedTimeAt = 0;
     private long totalPauseTime = 0;
-    private int updateFeedback = 1; //1 minute between feedbacks (audio)
+    private int feedbackInterval = Settings.feedback; //1 minute between feedbacks (audio)
+    private int nextFeedback;
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
         @Override
@@ -128,9 +131,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
                 timeText.setText(String.format("%d:%02d", minutes, seconds));
             }
 
-            if(minutes>=updateFeedback){
+            if(minutes>=nextFeedback){
                 giveFeedback();
-                updateFeedback++;
+                nextFeedback+=feedbackInterval;
             }
 
             handler.postDelayed(this, 500);
@@ -177,6 +180,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         deleteBtn.setVisibility(View.GONE);
 
         //nameOfRun.setVisibility(View.GONE);
+
+        vib = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
 
         //Creates locationRequests
         createLocationRequest();
@@ -333,10 +338,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         startBtn.setVisibility(View.GONE);
         calculateRun = true;
         speakWords("Start running now!");
+        vibrateNow();
 
-        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        v.vibrate(200);
 
         //Checks permissions
         if (locationManager != null) {
@@ -358,10 +361,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         calculateRun = false;
         handler.removeCallbacks(runnable);
         pausedTimeAt = SystemClock.elapsedRealtime();
-
-        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        //v.vibrate(200);
+        speakWords("Run paused");
 
         Toast.makeText(getApplicationContext(), "Run paused", Toast.LENGTH_SHORT).show();
     }
@@ -370,33 +370,28 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         continueBtn.setVisibility(View.GONE);
         pauseBtn.setVisibility(View.VISIBLE);
         calculateRun = true;
+        speakWords("Continuing running");
 
         totalPauseTime += SystemClock.elapsedRealtime() - pausedTimeAt;
         pausedTimeAt = 0;
         handler.postDelayed(runnable, 0);
-
-        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        //v.vibrate(200);
 
         Toast.makeText(getApplicationContext(), "Run continued", Toast.LENGTH_SHORT).show();
     }
 
     // spara saker globalt
     public void stopRun(View view) {
+        speakWords("Run stopped");
         saveBtn.setVisibility(View.VISIBLE);
         deleteBtn.setVisibility(View.VISIBLE);
         pauseBtn.setVisibility(View.GONE);
         continueBtn.setVisibility(View.GONE);
         stopBtn.setVisibility(View.GONE);
         calculateRun = false;
-        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        v.vibrate(200);
-
-
+        vibrateNow();
         //for time calculation stop
         handler.removeCallbacks(runnable);
+
 
         //turn off TextToSpeech
         myTTS.shutdown();
@@ -445,13 +440,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         saveBtn.setVisibility(View.GONE);
         deleteBtn.setVisibility(View.GONE);
         menuBtn.setVisibility(View.VISIBLE);
-
-
-        //nameOfRun.setVisibility(View.VISIBLE);
-
-        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        //v.vibrate(200);
 
         //kod från https://stackoverflow.com/questions/10903754/input-text-dialog-android , taget 2016-05-06
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -572,9 +560,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
 
     public void afterDelete(View view){
-        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        //v.vibrate(200);
+
         Toast.makeText(getApplicationContext(), "Run deleted", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -582,9 +568,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     //Läser in från fil och visa stuff
     public void menu(View view){
-        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        //v.vibrate(200);
+
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
     }
@@ -595,15 +579,14 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
 
     public void giveFeedback(){
-        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        v.vibrate(200);
+        vibrateNow();
         speakWords("Distance " + distText.getText());
-
-
     }
 
     public void speakWords(String speech){
-        myTTS.speak(speech, TextToSpeech.QUEUE_ADD, null, null);
+        if(Settings.sound) {
+            myTTS.speak(speech, TextToSpeech.QUEUE_ADD, null, null);
+        }
     }
 
     public Boolean checkIfExists(String name){
@@ -627,4 +610,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         }
         return false;
     }
+
+    public void vibrateNow(){
+        if(Settings.vibration){
+            vib.vibrate(200);
+        }
+    }
+
 }

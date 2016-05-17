@@ -6,7 +6,7 @@
 
 
     <color name="colorActionBar">#109401</color>
-    <color name="colorWindowBackground">#f4faf5</color>
+    <color name="colorWindowBackground">#e6e6e6</color>
     <color name="colorTitle">#fff</color>
     <color name="colorButtonText">#ffffff</color>
     <color name="colorDisplayRunText">#000000</color>

@@ -117,7 +117,7 @@
             android:onClick="saveRun"
             android:buttonStyle="@style/myButtons"
             android:layout_marginBottom="20dp"
-            android:background="@color/colorSaveBtn" />
+            android:background="@drawable/button_selector_blue" />
 
         <Button android:id="@+id/menuGhostCompeteBtn"
             android:layout_width="match_parent"
@@ -125,7 +125,7 @@
             android:text="@string/menu_btn"
             android:onClick="menu"
             android:layout_alignParentBottom ="true"
-            android:buttonStyle="@style/myButtons"
+            android:buttonStyle="@style/myButtons.green"
             android:layout_marginBottom="20dp" />
 
         <Button android:id="@+id/deleteGhostCompeteBtn"
@@ -136,7 +136,7 @@
             android:layout_alignParentBottom="true"
             android:buttonStyle="@style/myButtons"
             android:layout_marginBottom="20dp"
-            android:background="@color/colorDeleteBtn" />
+            android:background="@drawable/button_selector_red" />
 
     </RelativeLayout>
 </LinearLayout>

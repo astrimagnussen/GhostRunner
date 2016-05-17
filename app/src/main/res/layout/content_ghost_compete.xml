@@ -174,7 +174,7 @@
         <Button android:id="@+id/startGhostCompeteBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:buttonStyle="@style/myButtons"
+            android:buttonStyle="@style/myButtons.green"
             android:text="@string/start_btn"
             android:onClick="startRun"
             android:layout_alignParentBottom ="true"
@@ -186,7 +186,7 @@
             android:text="@string/stop_btn"
             android:onClick="stopRun"
             android:layout_alignParentBottom ="true"
-            android:buttonStyle="@style/myButtons"
+            android:buttonStyle="@style/myButtons.green"
             android:layout_marginBottom="20dip" />
 
         <Button android:id="@+id/pauseBtn"
@@ -195,7 +195,7 @@
             android:text="Pause"
             android:onClick="pauseRun"
             android:layout_above="@id/stopGhostCompeteBtn"
-            android:buttonStyle="@style/myButtons"
+            android:buttonStyle="@style/myButtons.green"
             android:layout_marginBottom="20dp" />
 
         <Button android:id="@+id/continueBtn"
@@ -204,7 +204,7 @@
             android:text="Continue"
             android:onClick="continueRun"
             android:layout_above="@id/stopGhostCompeteBtn"
-            android:buttonStyle="@style/myButtons"
+            android:buttonStyle="@style/myButtons.green"
             android:layout_marginBottom="20dp" />
 
         <Button android:id="@+id/updateGhostCompeteBtn"
@@ -213,9 +213,9 @@
             android:text="@string/update_btn"
             android:onClick="updateGhost"
             android:layout_above="@+id/saveRunGhostCompeteBtn"
-            android:buttonStyle="@style/myButtons"
+            android:background="@drawable/button_selector_purple"
             android:layout_marginBottom="20dip"
-            android:background="@color/colorUpdateBtn"/>
+            />
 
         <Button android:id="@id/saveRunGhostCompeteBtn"
             android:layout_width="match_parent"
@@ -223,9 +223,9 @@
             android:layout_above="@+id/deleteGhostCompeteBtn"
             android:text="@string/save_ghost_compete_btn"
             android:onClick="saveRun"
-            android:buttonStyle="@style/myButtons"
+            android:background="@drawable/button_selector_blue"
             android:layout_marginBottom="20dip"
-            android:background="@color/colorSaveBtn" />
+             />
 
         <Button android:id="@+id/menuGhostCompeteBtn"
             android:layout_width="match_parent"
@@ -233,7 +233,7 @@
             android:text="@string/menu_btn"
             android:onClick="menu"
             android:layout_alignParentBottom ="true"
-            android:buttonStyle="@style/myButtons"
+            android:buttonStyle="@style/myButtons.green"
             android:layout_marginBottom="20dip" />
 
 
@@ -243,9 +243,9 @@
             android:text="@string/delete_btn"
             android:onClick="afterDelete"
             android:layout_alignParentBottom="true"
-            android:buttonStyle="@style/myButtons"
+            android:background="@drawable/button_selector_red"
             android:layout_marginBottom="20dip"
-            android:background="@color/colorDeleteBtn" />
+            />
 
     </RelativeLayout>
 </LinearLayout>

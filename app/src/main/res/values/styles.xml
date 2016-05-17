@@ -23,16 +23,60 @@
 
     <!-- Customize your button theme here. -->
     <style name="myButtons" parent="android:style/Widget.Material.Light.Button">
-        <item name="android:textSize">25dp</item>
+        <item name="android:textSize">18dp</item>
         <item name="android:textColor">@color/colorButtonText</item>
-        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:layout_marginBottom">25dp</item>
+        <item name="android:background">@drawable/button_selector_green</item>
+        <!-- <item name="android:background">@drawable/round_shape_button</item>
+        <item name=" android:background=@drawable/dialog_holo_light_frame"/>
+
         <item name="android:background">@drawable/round_shape_button</item>
+
+ <item name="android:gravity" >center</item>
+        <item name="android:shadowColor" >@color/colorShadow</item>
+        <item name="android:shadowDx" >10</item>
+        <item name="android:shadowDy" >10</item>
+        <item name="android:shadowRadius">25</item>
+        -->
+
+
+
+    </style>
+
+    <style name="myButtons.green">
+
+    </style>
+
+    <style name="myButtons.red">
+        <item name="android:background">@drawable/button_selector_red</item>
+    </style>
+
+    <style name="myButtons.purple">
+        <item name="android:background">@drawable/button_selector_purple</item>
+    </style>
+
+    <style name="myButtons.blue">
+        <item name="android:background">@drawable/button_selector_blue</item>
     </style>
 
 
     <style name="displayRun" parent="android:style/Widget.Material.Light.TextView">
         <item name="android:textSize">25dp</item>
         <item name="android:textColor">@color/colorDisplayRunText</item>
+    </style>
+
+    <style name="button_text" >
+        <item name="android:layout_width" >fill_parent</item>
+        <item name="android:layout_height" >wrap_content</item>
+        <item name="android:textColor" >#ffffff</item>
+        <item name="android:gravity" >center</item>
+        <item name="android:layout_margin" >3dp</item>
+        <item name="android:textSize" >30dp</item>
+        <item name="android:textStyle" >bold</item>
+        <item name="android:shadowColor" >#000000</item>
+        <item name="android:shadowDx" >1</item>
+        <item name="android:shadowDy" >1</item>
+        <item name="android:shadowRadius" >2</item>
     </style>
 
 

@@ -492,6 +492,8 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 
     // spara saker globalt
     public void stopRun(View view) {
+        updateBtn.setText("Replace your ghost: " + ghost.getName());
+
         saveBtn.setVisibility(View.VISIBLE);
         deleteBtn.setVisibility(View.VISIBLE);
         updateBtn.setVisibility(View.VISIBLE);

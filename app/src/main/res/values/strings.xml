@@ -17,8 +17,8 @@
     <string name="list_btn">Choose a Ghost</string>
     <string name="new_run_btn">New Run</string>
     <string name="nameOfRun">Name your Ghost</string>
-    <string name="update_btn">Update your Ghost</string>
-    <string name="save_ghost_compete_btn">Save a new Ghost</string>
+    <string name="update_btn">Replace your Ghost</string>
+    <string name="save_ghost_compete_btn">Save as a new Ghost</string>
     <string name="title_activity_settings">Settings</string>
     <string name="vibration">Vibration</string>
     <string name="sound">Sound</string>

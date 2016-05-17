@@ -39,7 +39,6 @@ public class ListRun extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_list_run);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         listView = (ListView) findViewById(R.id.listView);
 
         adapter = new RunListAdapter(this/*, R.layout.row, runList*/);
@@ -154,6 +153,7 @@ public class ListRun extends AppCompatActivity implements Serializable {
                 convertView = LayoutInflater.from(context).inflate(R.layout.row, parent, false);
             }
             TextView nameText = (TextView) convertView.findViewById(R.id.nameTextGhost);
+            nameText.setTextSize(25);
             TextView dateText = (TextView) convertView.findViewById(R.id.dateTextGhost);
             TextView distText = (TextView) convertView.findViewById(R.id.distTextGhost);
             TextView timeText = (TextView) convertView.findViewById(R.id.timeTextGhost);
@@ -186,8 +186,6 @@ public class ListRun extends AppCompatActivity implements Serializable {
             //Reads all the names of files to read
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             while ((input = bufferedReader.readLine()) != null) {
-                System.out.print("input when read: ");
-                System.out.println(input);
                 listOfRuns.add(input);
             }
             fileInputStream.close();
@@ -226,12 +224,6 @@ public class ListRun extends AppCompatActivity implements Serializable {
                         e.printStackTrace();
                         return false;
                     }
-
-                    System.out.println("hour = " + hour);
-                    System.out.println("min = " + min);
-                    System.out.println("sec = " + sec);
-                    System.out.println("distance = " + distance);
-                    System.out.println("date = " + date);
 
 
                     readRunList.add(new Run(name, hour, min, sec, distance, date));

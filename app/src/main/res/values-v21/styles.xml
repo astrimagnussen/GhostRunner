@@ -61,7 +61,7 @@
 
 
     <style name="displayRun" parent="android:style/Widget.Material.Light.TextView">
-        <item name="android:textSize">25dp</item>
+        <item name="android:textSize">18dp</item>
         <item name="android:textColor">@color/colorDisplayRunText</item>
     </style>
 

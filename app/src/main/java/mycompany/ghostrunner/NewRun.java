@@ -326,20 +326,13 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         }
     }
 
-
-
-
-
-
-
     public void startRun(View view) {
         stopBtn.setVisibility(View.VISIBLE);
         pauseBtn.setVisibility(View.VISIBLE);
         startBtn.setVisibility(View.GONE);
         calculateRun = true;
-        speakWords("Start running now!");
+        speakWords("Run started!");
         vibrateNow();
-
 
         //Checks permissions
         if (locationManager != null) {
@@ -370,7 +363,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         continueBtn.setVisibility(View.GONE);
         pauseBtn.setVisibility(View.VISIBLE);
         calculateRun = true;
-        speakWords("Continuing running");
+        speakWords("Run continued");
 
         totalPauseTime += SystemClock.elapsedRealtime() - pausedTimeAt;
         pausedTimeAt = 0;
@@ -400,10 +393,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         //showTime.setText(Long.toString(stopTime));
     }
 
-
-
-
-
     public void calcDist () {
         distance += mCurrentLocation.distanceTo(startLocation);
         int tenMeters = (distance/10)%100;
@@ -432,9 +421,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         return dateFormat.format(date);
     }
 
-
-
-
     //Spara till fil
     public void saveRun(final View view){
         saveBtn.setVisibility(View.GONE);
@@ -444,10 +430,10 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         //kod från https://stackoverflow.com/questions/10903754/input-text-dialog-android , taget 2016-05-06
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        if(secondTry){
+        if (secondTry) {
             builder.setTitle("Sorry, your name was not unique, choose another name");
-        }else{
-            builder.setTitle("Well done! Please name this new run (leave blank for default)");
+        } else {
+            builder.setTitle("Well done! Please name this new run:");
         }
 
         // Set up the input
@@ -469,8 +455,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
                     menuBtn.setVisibility(View.GONE);
                     secondTry = true;
                     saveAndContinue("Wrongnamen", false);
-                }else {
-                    secondTry= false;
+                } else if (input.getText().toString() == "") {
+
+                }
+                else {
+                    secondTry = false;
                     saveAndContinue(input.getText().toString(), false);
                 }
             }
@@ -493,21 +482,12 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         date = getDateTime();
         if(secondTry){
             saveBtn.performClick();
-        }else {
-
-        /*System.out.println("hourToSave = " + hourToSave);
-        System.out.println("minutesToSave = " + minutesToSave);
-        System.out.println("secToSave = " + secToSave);
-        System.out.println("distance = " + distance);
-        System.out.println("date = " + date);*/
-
-            //System.out.println("Given runName = " + runName);
+        } else {
+            System.out.println("Given runName = " + runName);
 
             String file_name = "runs";
 
             try {
-
-
                 //Skriver till namnet på rundan i runs filen
                 FileOutputStream fileOutputStream;
                 if (!update) {
@@ -517,10 +497,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
                     fileOutputStream.close();
                 }
 
-
                 System.out.print("input when saved: ");
                 System.out.println(runName);
-
 
                 FileOutputStream fileOutputStream2 = openFileOutput(runName, MODE_PRIVATE);
 
@@ -544,11 +522,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
                     save.start();
                 }
 
-
                 Intent intent = new Intent(this, ListRun.class);
                 startActivity(intent);
-
-
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

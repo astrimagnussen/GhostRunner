@@ -72,7 +72,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-
         <Button android:id="@+id/startGhostCompeteBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -137,6 +136,5 @@
             android:buttonStyle="@style/myButtons"
             android:layout_marginBottom="20dp"
             android:background="@drawable/button_selector_red" />
-
     </RelativeLayout>
 </LinearLayout>

@@ -444,18 +444,13 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
-
-
-
-
-
     public void startRun(View view) {
         stopBtn.setVisibility(View.VISIBLE);
         pauseBtn.setVisibility(View.VISIBLE);
         startBtn.setVisibility(View.GONE);
         calculateRun = true;
         vibrateNow();
-        speakWords("Start running now!");
+        speakWords("Run started!");
 
         //Checks permissions
         if (locationManager != null) {
@@ -487,7 +482,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         continueBtn.setVisibility(View.GONE);
         pauseBtn.setVisibility(View.VISIBLE);
         calculateRun = true;
-        speakWords("Continuing running");
+        speakWords("Run continued");
 
         totalPauseTime += SystemClock.elapsedRealtime() - pausedTimeAt;
         pausedTimeAt = 0;
@@ -526,7 +521,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         startLocation = mCurrentLocation;
         distTextPerson.setText(String.format("%d.%02d %s", km, tenMeters, " km"));
     }
-    public void calcAvgPace (){
+    public void calcAvgPace () {
 
         if(distance!=0){
         avgPaceSec = milliSeconds/distance;

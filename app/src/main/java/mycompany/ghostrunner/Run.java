@@ -35,6 +35,9 @@ public class Run implements Serializable {
         return runSeconds;
     }
 
+    /**
+     * Returns distance in meters.
+     */
     public float getDistance() {
         return runDistance;
     }

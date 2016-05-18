@@ -240,19 +240,21 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public void showGhost(Run ghost) {
-        int hour = ghost.getHours();
+        float hour = ghost.getHours();
         if(hour != 0) {
-            timeTextGhost.setText(String.format("%d:%02d:%02d", hour, ghost.getMinutes(), ghost.getSeconds()));
+            timeTextGhost.setText(String.format("%d:%02d:%02d", hour, (int)ghost.getMinutes(), (int)ghost.getSeconds()));
         }else{
-            timeTextGhost.setText(String.format("%d:%02d", ghost.getMinutes(), ghost.getSeconds()));
+            timeTextGhost.setText(String.format("%d:%02d", (int)ghost.getMinutes(), (int)ghost.getSeconds()));
         }
-        distTextGhost.setText(Float.toString(ghost.getDistance()));
+        float km = ghost.getDistance()/1000;
+        String dist =  Float.toString(km) + "0000";
+        distTextGhost.setText(dist.substring(0,4));
 
-        int avgPaceSec;
-        int avgPaceMin;
-        int totSeconds = ghost.getSeconds() + 60 * (ghost.getMinutes() + (ghost.getHours() * 60));
+        float avgPaceSec;
+        float avgPaceMin;
+        float totSeconds = ghost.getSeconds() + 60 * (ghost.getMinutes() + (ghost.getHours() * 60));
         if(ghost.getDistance() != 0) {
-            avgPaceSec = totSeconds/Float.floatToIntBits(ghost.getDistance());
+            avgPaceSec = totSeconds/km;
             avgPaceMin = avgPaceSec/60;
             avgPaceSec = avgPaceSec%60;
         }
@@ -260,7 +262,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
             avgPaceMin = 0;
             avgPaceSec = 0;
         }
-        paceTextGhost.setText(String.format("%d:%02d %s", avgPaceMin, avgPaceSec, " min/km"));
+        paceTextGhost.setText(String.format("%d:%02d %s", (int)avgPaceMin, (int)avgPaceSec, " min/km"));
     }
 
     //Runs when GoogleApiClient connects
@@ -354,10 +356,13 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
             calcDist();
             calcAvgPace();
 
-            ghostPaceSec = ghost.getSeconds()/ghost.getDistance();
+            ghostPaceSec = ghost.getSeconds()/(ghost.getDistance()/1000);
             ghostPaceMin = ghostPaceSec/60;
 
-            if(avgPaceMin > ghostPaceMin){
+            System.out.println("ghostpacemin = "+ ghostPaceMin);
+            System.out.println("avgPaveMin = " + avgPaceMin);
+
+            if(avgPaceMin < ghostPaceMin || avgPaceMin == ghostPaceMin && avgPaceSec < ghostPaceSec ){
                 setPersonFasterThanGhost(true);
             }else{
                 setPersonFasterThanGhost(false);
@@ -521,8 +526,8 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         startLocation = mCurrentLocation;
         distTextPerson.setText(String.format("%d.%02d %s", km, tenMeters, " km"));
     }
-    public void calcAvgPace () {
 
+    public void calcAvgPace () {
         if(distance!=0){
         avgPaceSec = milliSeconds/distance;
         avgPaceMin = avgPaceSec/60;
@@ -555,7 +560,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         if(secondTry){
             builder.setTitle("Sorry, your name was not unique, choose another name");
         }else{
-            builder.setTitle("Well done! Please name this new run (leave blank for default)");
+            builder.setTitle("Well done! Please name this new run");
         }
 
         // Set up the input

@@ -1,5 +1,6 @@
 package mycompany.ghostrunner;
 // mycket kod från här: https://developer.android.com/training/location/retrieve-current.html
+
 import android.Manifest;
 
 import android.app.AlertDialog;
@@ -9,6 +10,7 @@ import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
@@ -30,12 +32,19 @@ import android.widget.Toast;
 import android.location.Location;
 import android.location.LocationManager;
 
+import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -46,14 +55,14 @@ import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import android.speech.tts.TextToSpeech;
 import java.util.Locale;
 
-public class NewRun extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, TextToSpeech.OnInitListener {
-
-    //Used to access the API
+public class NewRun extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMapReadyCallback, TextToSpeech.OnInitListener {
+    //Used in the mapview
+    private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
+    private Location mapLocation;
 
     private Location mCurrentLocation;
 
@@ -72,15 +81,13 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     private TextView timeText;
     private TextView paceText;
 
-   // private TextView nameOfRun;
-
     //The audio for save
     private MediaPlayer save;
     private boolean calculateRun;
-    
+
     //for the time counting
-   private Integer milliSeconds;
-    Integer hourToSave= 0;
+    private Integer milliSeconds;
+    Integer hourToSave = 0;
     Integer minutesToSave = 0;
     Integer secToSave = 0;
 
@@ -151,6 +158,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         //Creates the mediaPlayer
         save = MediaPlayer.create(getApplicationContext(), R.raw.saved);
 
+        //for the map
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+     //   mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
         //Finds TextViews the objects by Id
         timeText = (TextView) findViewById(R.id.showTime);
         distText = (TextView) findViewById(R.id.showDistance);
@@ -168,8 +180,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         pauseBtn = (Button) findViewById(R.id.pauseBtn);
         continueBtn = (Button) findViewById(R.id.continueBtn);
 
-
-
         //Sets visibility for buttons
         saveBtn.setVisibility(View.GONE);
         stopBtn.setVisibility(View.GONE);
@@ -186,6 +196,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         //Creates locationRequests
         createLocationRequest();
 
+        //Gets the locationManager
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
         // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -194,10 +207,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
                     .addApi(LocationServices.API)
                     .build();
         }
-
-        //Gets the locationManager
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
         //Text to speech
         Intent checkTTSIntent = new Intent();
         checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
@@ -205,6 +214,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     }
 
     //Runs when GoogleApiClient connects
+    @Override
     public void onConnected(Bundle connectionHint) {
         //checks the locationManager
         if (locationManager != null) {
@@ -220,13 +230,36 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         if (mRequestingLocationUpdates) {
             startLocationUpdates();
         }
+
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        //for the map
+        mMap = googleMap;
+        //Gets the locationManager
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mapLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        LatLng latLng = new LatLng(mapLocation.getLatitude(), mapLocation.getLongitude());
+        mMap.setMyLocationEnabled(true);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+    }
+    @Override
     protected void onStart() {
         mGoogleApiClient.connect();
         super.onStart();
     }
-
+    @Override
     protected void onStop() {
         mGoogleApiClient.disconnect();
         super.onStop();
@@ -242,7 +275,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         System.out.print("connection failed!");
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -254,7 +286,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     @Override
     protected void onPause() {
         super.onPause();
-       // stopLocationUpdates();
     }
 
     protected void stopLocationUpdates() {
@@ -265,10 +296,14 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     //When the location is changed
     public void onLocationChanged(Location location) {
         //updates the currentLocation
+        LatLng latLngBefore = new LatLng(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude());
         mCurrentLocation = location;
-        if(calculateRun) {
-            calcDist();
+        LatLng latLngAfter = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+          if(calculateRun) {
+              PolylineOptions polylineOptions = new PolylineOptions().add(latLngBefore).add(latLngAfter).width(5).color(Color.GREEN).geodesic(true);
+              calcDist();
             calcAvgPace();
+
         }
     }
 
@@ -546,11 +581,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
     }
-
-
-
-
-
 
     public void giveFeedback(){
         vibrateNow();

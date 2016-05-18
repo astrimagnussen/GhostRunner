@@ -166,9 +166,9 @@ public class ListRun extends AppCompatActivity implements Serializable {
             int km = (int) distance / 1000;
             distText.setText(String.format("%d.%02d %s", km, tenMeters, " km"));
             if (run.getHours() > 0) {
-                timeText.setText(String.format("%d:%02d:%02d", run.getHours(), run.getMinutes(), run.getSeconds()));
+                timeText.setText(String.format("%d:%02d:%02d", (int)run.getHours(), (int)run.getMinutes(), (int)run.getSeconds()));
             } else {
-                timeText.setText(String.format("%d:%02d", run.getMinutes(), run.getSeconds()));
+                timeText.setText(String.format("%d:%02d", (int)run.getMinutes(), (int)run.getSeconds()));
             }
 
             return convertView;

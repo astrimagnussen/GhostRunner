@@ -29,4 +29,5 @@
     <color name="colorButtonPurpleDarkBackground">#86078f</color>
     <color name="colorButtonPurpleLightBackground">#dc43e7</color>
 
+    <color name="colorPrimaryDark">#303F9F</color>
 </resources>

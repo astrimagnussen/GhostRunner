@@ -420,9 +420,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         //for time calculation stop
         handler.removeCallbacks(runnable);
 
-
         //turn off TextToSpeech
-        myTTS.shutdown();
+        if (!myTTS.isSpeaking()) myTTS.shutdown();
 
         Toast.makeText(getApplicationContext(), "Run stopped", Toast.LENGTH_SHORT).show();
         //showTime.setText(Long.toString(stopTime));
@@ -435,6 +434,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         startLocation = mCurrentLocation;
         distText.setText(String.format("%d.%02d %s", km, tenMeters, " km"));
     }
+
     public void calcAvgPace () {
         int avgPaceSec;
         int avgPaceMin;
@@ -484,6 +484,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if(checkIfExists(input.getText().toString())){
+                    if (!myTTS.isSpeaking()) myTTS.shutdown();
                     Toast.makeText(getApplicationContext(), "Name not unique", Toast.LENGTH_LONG).show();
                     saveBtn.setVisibility(View.VISIBLE);
                     deleteBtn.setVisibility(View.VISIBLE);
@@ -494,6 +495,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
                 }
                 else {
+                    if (!myTTS.isSpeaking()) myTTS.shutdown();
                     secondTry = false;
                     saveAndContinue(input.getText().toString(), false);
                 }

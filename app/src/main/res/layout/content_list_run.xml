@@ -19,22 +19,6 @@
         android:layout_width="match_parent"
         android:dividerHeight="5dp" />
 
-<<<<<<< HEAD
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button android:id="@+id/menuGhostCompeteBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/menu_btn"
-            android:onClick="menu"
-            android:layout_alignParentBottom ="true"
-            android:buttonStyle="@style/myButtons"
-            android:layout_marginBottom="20dip" />
-    </RelativeLayout>
-</FrameLayout>
-=======
     <Button android:id="@+id/menuGhostCompeteBtn"
         android:layout_height="wrap_content"
         android:text="@string/menu_btn"
@@ -43,7 +27,6 @@
         android:buttonStyle="@style/myButtons"
         android:layout_width="150dp"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="20dip"
-       />
+        android:layout_marginBottom="20dip" />
 </RelativeLayout>
->>>>>>> 38cea1686c874755cde649e5cd6fccd8a921f2f0
+

@@ -447,7 +447,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         if(secondTry){
             builder.setTitle("Sorry, your name was not unique, choose another name");
         }else{
-            builder.setTitle("Well done! Please name this new run (leave blank for default)");
+            builder.setTitle("Well done! Please name this new run");
         }
 
         // Set up the input

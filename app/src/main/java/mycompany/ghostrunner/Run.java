@@ -7,14 +7,14 @@ import java.io.Serializable;
  *
  */
 public class Run implements Serializable {
-    private int runHours;
-    private int runMinutes;
-    private int runSeconds;
+    private float runHours;
+    private float runMinutes;
+    private float runSeconds;
     private float runDistance;
     private String runDate;
     private String runName;
 
-    public Run(String name, int hours, int minutes, int seconds, int distance, String date) {
+    public Run(String name, float hours, float minutes, float seconds, float distance, String date) {
         runName = name;
         runHours = hours;
         runMinutes = minutes;
@@ -23,15 +23,15 @@ public class Run implements Serializable {
         runDate = date;
     }
 
-    public int getHours() {
+    public float getHours() {
         return runHours;
     }
 
     public String getName() { return runName; }
 
-    public int getMinutes() { return runMinutes; }
+    public float getMinutes() { return runMinutes; }
 
-    public int getSeconds() {
+    public float getSeconds() {
         return runSeconds;
     }
 

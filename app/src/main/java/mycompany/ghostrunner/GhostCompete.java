@@ -247,7 +247,8 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
             timeTextGhost.setText(String.format("%d:%02d", (int)ghost.getMinutes(), (int)ghost.getSeconds()));
         }
         float km = ghost.getDistance()/1000;
-        distTextGhost.setText(Float.toString(km).substring(0,4));
+        String dist =  Float.toString(km) + "0000";
+        distTextGhost.setText(dist.substring(0,4));
 
         float avgPaceSec;
         float avgPaceMin;
@@ -358,7 +359,10 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
             ghostPaceSec = ghost.getSeconds()/(ghost.getDistance()/1000);
             ghostPaceMin = ghostPaceSec/60;
 
-            if(avgPaceMin < ghostPaceMin){
+            System.out.println("ghostpacemin = "+ ghostPaceMin);
+            System.out.println("avgPaveMin = " + avgPaceMin);
+
+            if(avgPaceMin < ghostPaceMin || avgPaceMin == ghostPaceMin && avgPaceSec < ghostPaceSec ){
                 setPersonFasterThanGhost(true);
             }else{
                 setPersonFasterThanGhost(false);
@@ -528,6 +532,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         distTextPerson.setText(String.format("%d.%02d %s", km, tenMeters, " km"));
     }
     public void calcAvgPace (){
+        int km = distance/1000;
 
         if(distance!=0){
         avgPaceSec = milliSeconds/distance;

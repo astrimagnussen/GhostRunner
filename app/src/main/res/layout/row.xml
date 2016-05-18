@@ -1,21 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/nameTitleGhost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name: " />
+
+    <TextView
+        android:id="@+id/nameTextGhost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:layout_alignParentRight="true" />
     <TextView
         android:id="@+id/dateTitleGhost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Date: " />
+        android:text="Date: "
+        android:layout_below="@id/nameTitleGhost"/>
 
     <TextView
         android:id="@+id/dateTextGhost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/nameTextGhost"/>
 
     <TextView
         android:id="@+id/distTitleGhost"

@@ -14,51 +14,40 @@
     tools:showIn="@layout/activity_new_run"
     android:orientation="vertical">
 
-
-    <RelativeLayout android:id="@+id/linearLayout2"
+    <RelativeLayout android:id="@+id/RelativeLayoutInfoGhostCompetePerson"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical" >
 
-
-        <TextView
-            android:id="@+id/distanceTitle"
+        <TextView android:id="@+id/distanceTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/distance_title"
             android:layout_marginTop="20dp"
-            android:textViewStyle="@style/displayRun">
-        </TextView>
+            android:textViewStyle="@style/displayRun" />
 
-        <TextView
-            android:id="@+id/showDistance"
+        <TextView android:id="@+id/showDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_alignParentRight ="true"
             android:text="0 km"
-            android:textViewStyle="@style/displayRun">
-        </TextView>
+            android:textViewStyle="@style/displayRun" />
 
-        <TextView
-            android:id="@+id/timeTitle"
+        <TextView android:id="@+id/timeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/time_title"
             android:layout_below="@id/distanceTitle"
-            android:textViewStyle="@style/displayRun" >
-        </TextView>
+            android:textViewStyle="@style/displayRun" />
 
-        <TextView
-            android:id="@+id/showTime"
+        <TextView android:id="@+id/showTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight ="true"
             android:layout_below="@id/showDistance"
             android:text="0"
-            android:textViewStyle="@style/displayRun" >
-        </TextView>
+            android:textViewStyle="@style/displayRun" />
 
         <TextView
             android:id="@+id/speedTitle"
@@ -66,95 +55,87 @@
             android:layout_height="wrap_content"
             android:text="@string/speed_title"
             android:layout_below="@id/timeTitle"
-            android:textViewStyle="@style/displayRun" >
-        </TextView>
+            android:textViewStyle="@style/displayRun" />
 
-        <TextView
-            android:id="@+id/showSpeed"
+        <TextView android:id="@+id/showSpeed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight ="true"
             android:layout_below="@id/showTime"
             android:text="0 min/km"
-            android:textViewStyle="@style/displayRun" >
-        </TextView>
+            android:textViewStyle="@style/displayRun" />
 
         <fragment android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_below="@id/showSpeed"
-            />
+            android:layout_below="@id/showSpeed" />
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/relativeLayout3"
+        android:id="@+id/relativeLayoutButtonsGhostCompete"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical" >
 
-        <Button android:id="@+id/startBtn"
+
+        <Button android:id="@+id/startGhostCompeteBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:buttonStyle="@style/myButtons"
             android:text="@string/start_btn"
             android:onClick="startRun"
             android:layout_alignParentBottom ="true"
-            android:layout_marginBottom="20dp"
-            />
+            android:layout_marginBottom="20dp" />
 
-        <Button android:id="@+id/stopBtn"
+        <Button android:id="@+id/stopGhostCompeteBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/stop_btn"
             android:onClick="stopRun"
             android:layout_alignParentBottom="true"
             android:buttonStyle="@style/myButtons"
-            android:layout_marginBottom="20dp"
-            />
+            android:layout_marginBottom="20dp" />
 
         <Button android:id="@+id/pauseBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Pause"
             android:onClick="pauseRun"
-            android:layout_above="@id/stopBtn"
+            android:layout_above="@id/stopGhostCompeteBtn"
             android:buttonStyle="@style/myButtons"
-            android:layout_marginBottom="20dp"
-            />
+            android:layout_marginBottom="20dp" />
 
         <Button android:id="@+id/continueBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Continue"
             android:onClick="continueRun"
-            android:layout_above="@id/stopBtn"
+            android:layout_above="@id/stopGhostCompeteBtn"
             android:buttonStyle="@style/myButtons"
-            android:layout_marginBottom="20dp"
-            />
+            android:layout_marginBottom="20dp" />
 
-        <Button android:id="@+id/saveRunBtn"
+        <Button android:id="@+id/saveRunGhostCompeteBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/deleteBtn"
+            android:layout_above="@+id/deleteGhostCompeteBtn"
             android:text="@string/save_btn"
             android:onClick="saveRun"
             android:buttonStyle="@style/myButtons"
             android:layout_marginBottom="20dp"
-            android:background="@color/colorSaveBtn"
-            />
+            android:background="@drawable/button_selector_blue" />
 
-        <Button android:id="@+id/menuBtn"
+        <Button android:id="@+id/menuGhostCompeteBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/menu_btn"
             android:onClick="menu"
             android:layout_alignParentBottom ="true"
-            android:buttonStyle="@style/myButtons"
-            android:layout_marginBottom="20dp"
-            />
-        <Button android:id="@+id/deleteBtn"
+            android:buttonStyle="@style/myButtons.green"
+            android:layout_marginBottom="20dp" />
+
+        <Button android:id="@+id/deleteGhostCompeteBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/delete_btn"
@@ -162,8 +143,7 @@
             android:layout_alignParentBottom="true"
             android:buttonStyle="@style/myButtons"
             android:layout_marginBottom="20dp"
-            android:background="@color/colorDeleteBtn"
-            />
+            android:background="@drawable/button_selector_red" />
 
     </RelativeLayout>
 </LinearLayout>

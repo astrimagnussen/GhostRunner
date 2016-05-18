@@ -9,6 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/colorWindowBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="mycompany.ghostrunner.MainActivity"
 
@@ -18,30 +19,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="newRun"
-        android:buttonStyle="@style/myButtons"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
+        android:buttonStyle="@style/myButtons.green"
         android:layout_marginTop="134dp"
-        android:text="New Run"
-
-        android:contextClickable="true"
-        android:background="@drawable/round_shape_button"/>
+        android:text="@string/new_run_btn"
+        android:contextClickable="true"/>
 
 
     <Button
         android:id="@+id/ghost_run_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:buttonStyle="@style/myButtons"
-        android:hint="Coordinate"
-        android:onClick="ghostRun"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:text="Ghost Run"
+        android:buttonStyle="@style/myButtons.green"
+        android:onClick="listRun"
+        android:text="@string/list_btn"
         android:contextClickable="true"
-        android:background="@drawable/round_shape_button"/>
+        android:layout_below="@id/new_run_button"
+        android:layout_marginTop="25dp"/>
+
+    <Button
+        android:id="@+id/settings_button"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:buttonStyle="@style/myButtons.green"
+        android:layout_centerInParent="true"
+        android:onClick="settings"
+        android:text="@string/title_activity_settings"
+        android:contextClickable="true"
+        android:layout_alignParentBottom="true"
+        android:textSize="15dp"
+
+
+        />
 
 
 </RelativeLayout>

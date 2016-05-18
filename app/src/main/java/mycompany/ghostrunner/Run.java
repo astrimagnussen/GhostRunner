@@ -1,16 +1,21 @@
 package mycompany.ghostrunner;
 
+import java.io.Serializable;
+
 /**
  * Created by rolofzon on 2016-04-25.
+ *
  */
-public class Run {
-    public int runHours;
-    public int runMinutes;
-    public int runSeconds;
-    public float runDistance;
-    public String runDate;
+public class Run implements Serializable {
+    private float runHours;
+    private float runMinutes;
+    private float runSeconds;
+    private float runDistance;
+    private String runDate;
+    private String runName;
 
-    public Run(int hours, int minutes, int seconds, int distance, String date) {
+    public Run(String name, float hours, float minutes, float seconds, float distance, String date) {
+        runName = name;
         runHours = hours;
         runMinutes = minutes;
         runSeconds = seconds;
@@ -18,15 +23,15 @@ public class Run {
         runDate = date;
     }
 
-    public int getHours() {
+    public float getHours() {
         return runHours;
     }
 
-    public int getMinutes() {
-        return runMinutes;
-    }
+    public String getName() { return runName; }
 
-    public int getSeconds() {
+    public float getMinutes() { return runMinutes; }
+
+    public float getSeconds() {
         return runSeconds;
     }
 
@@ -38,5 +43,5 @@ public class Run {
         return runDate;
     }
 
-    //Kanske bör lägga in en toString() här?
+    //Todo: Kanske bör lägga in en toString() här?
 }

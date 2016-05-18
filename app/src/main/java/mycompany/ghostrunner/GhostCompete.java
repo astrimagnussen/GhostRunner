@@ -123,6 +123,8 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     private long startTime = 0;
     private long pausedTimeAt = 0;
     private long totalPauseTime = 0;
+    private int feedbackInterval = Settings.feedback; //1 minute between feedbacks (audio)
+    private int nextFeedback = feedbackInterval;
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
         @Override
@@ -143,6 +145,10 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
             }
             else {
                 timeTextPerson.setText(String.format("%d:%02d", minutes, seconds));
+            }
+            if(minutes>=nextFeedback){
+                giveFeedback();
+                nextFeedback+=feedbackInterval;
             }
 
             handler.postDelayed(this, 500);
@@ -732,6 +738,6 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 
     public void giveFeedback(){
         vibrateNow();
-        speakWords("Distance " + distTextPerson.getText());
+        speakWords("Time " + timeTextPerson.getText() + " Total distance " + distTextPerson.getText() + " Average Pace " + paceTextPerson.getText());
     }
 }

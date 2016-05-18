@@ -13,7 +13,7 @@
     <string name="title_activity_ghost_compete">GhostRun</string>
     <string name="distance_title">Distance: </string>
     <string name="time_title">Time: </string>
-    <string name="speed_title">Current pace: </string>
+    <string name="speed_title">Average pace: </string>
     <string name="list_btn">Choose a Ghost</string>
     <string name="new_run_btn">New Run</string>
     <string name="nameOfRun">Name your Ghost</string>

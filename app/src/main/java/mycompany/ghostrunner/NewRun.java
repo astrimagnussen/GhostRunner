@@ -108,7 +108,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     private long pausedTimeAt = 0;
     private long totalPauseTime = 0;
     private int feedbackInterval = Settings.feedback; //1 minute between feedbacks (audio)
-    private int nextFeedback;
+    private int nextFeedback = feedbackInterval;
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
         @Override
@@ -568,7 +568,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     //Läser in från fil och visa stuff
     public void menu(View view){
-
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
     }
@@ -580,7 +579,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     public void giveFeedback(){
         vibrateNow();
-        speakWords("Distance " + distText.getText());
+        speakWords("Time " + timeText.getText() + " Total distance " + distText.getText() + " Average Pace " + paceText.getText());
     }
 
     public void speakWords(String speech){

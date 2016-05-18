@@ -1,11 +1,13 @@
 package mycompany.ghostrunner;
 // mycket kod från här: https://developer.android.com/training/location/retrieve-current.html
+
 import android.Manifest;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -23,12 +25,18 @@ import android.widget.Toast;
 import android.location.Location;
 import android.location.LocationManager;
 
+import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -37,10 +45,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class NewRun extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class NewRun extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMapReadyCallback {
 
-    //Used to access the API
+    //Used in the mapview
+    private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
+    private Location mapLocation;
 
     private Location mCurrentLocation;
 
@@ -58,15 +68,15 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     private TextView distText;
     private TextView timeText;
     private TextView paceText;
-   // private TextView showsaved;
+    // private TextView showsaved;
 
     //The audio for save
     private MediaPlayer save;
     private boolean calculateRun;
-    
+
     //for the time counting
-   private Integer milliSeconds;
-    Integer hourToSave= 0;
+    private Integer milliSeconds;
+    Integer hourToSave = 0;
     Integer minutesToSave = 0;
     Integer secToSave = 0;
 
@@ -93,20 +103,19 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             } else {
                 millis = System.nanoTime() - startTime;
             }
-            milliSeconds =  (int) millis;
-            int seconds = (int) (millis/1000);
-            int minutes = seconds/60;
-            seconds = seconds%60;
-            int hour = minutes/60;
+            milliSeconds = (int) millis;
+            int seconds = (int) (millis / 1000);
+            int minutes = seconds / 60;
+            seconds = seconds % 60;
+            int hour = minutes / 60;
 
             hourToSave = hour;
             minutesToSave = minutes;
             secToSave = seconds;
 
-            if (hour>0){
+            if (hour > 0) {
                 timeText.setText(String.format("%d:%02d:%03d", hour, minutes, seconds));
-            }
-            else {
+            } else {
                 timeText.setText(String.format("%d:%02d", minutes, seconds));
             }
 
@@ -125,6 +134,10 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         //Creates the mediaPlayer
         save = MediaPlayer.create(getApplicationContext(), R.raw.saved);
 
+        //for the map
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+        mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
         //Finds TextViews the objects by Id
         timeText = (TextView) findViewById(R.id.showTime);
@@ -153,20 +166,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         //Creates locationRequests
         createLocationRequest();
 
-        // Create an instance of GoogleAPIClient.
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        }
 
-        //Gets the locationManager
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     }
 
     //Runs when GoogleApiClient connects
+    @Override
     public void onConnected(Bundle connectionHint) {
         //checks the locationManager
         if (locationManager != null) {
@@ -182,13 +186,36 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         if (mRequestingLocationUpdates) {
             startLocationUpdates();
         }
+
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        //for the map
+        mMap = googleMap;
+        //Gets the locationManager
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mapLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        LatLng latLng = new LatLng(mapLocation.getLatitude(), mapLocation.getLongitude());
+        mMap.setMyLocationEnabled(true);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+    }
+    @Override
     protected void onStart() {
         mGoogleApiClient.connect();
         super.onStart();
     }
-
+    @Override
     protected void onStop() {
         mGoogleApiClient.disconnect();
         super.onStop();
@@ -215,7 +242,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     @Override
     protected void onPause() {
         super.onPause();
-        stopLocationUpdates();
+//        stopLocationUpdates();
     }
 
     protected void stopLocationUpdates() {

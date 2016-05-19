@@ -58,7 +58,9 @@ import java.util.Date;
 import android.speech.tts.TextToSpeech;
 import java.util.Locale;
 
-public class NewRun extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMapReadyCallback, TextToSpeech.OnInitListener {
+// denna ska implementeras av new run sen OnMapReadyCallback
+
+public class NewRun extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,  TextToSpeech.OnInitListener {
     //Used in the mapview
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
@@ -159,8 +161,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         save = MediaPlayer.create(getApplicationContext(), R.raw.saved);
 
         //for the map
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        //SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        //mapFragment.getMapAsync(this);
+
      //   mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
         //Finds TextViews the objects by Id
@@ -233,9 +236,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     }
 
-    @Override
+    //@Override
     public void onMapReady(GoogleMap googleMap) {
-        //for the map
+       /* //for the map
         mMap = googleMap;
         //Gets the locationManager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -252,7 +255,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         mapLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         LatLng latLng = new LatLng(mapLocation.getLatitude(), mapLocation.getLongitude());
         mMap.setMyLocationEnabled(true);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));*/
     }
     @Override
     protected void onStart() {
@@ -420,11 +423,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         //for time calculation stop
         handler.removeCallbacks(runnable);
 
+        Toast.makeText(getApplicationContext(), "Run stopped", Toast.LENGTH_SHORT).show();
 
         //turn off TextToSpeech
         myTTS.shutdown();
 
-        Toast.makeText(getApplicationContext(), "Run stopped", Toast.LENGTH_SHORT).show();
         //showTime.setText(Long.toString(stopTime));
     }
 

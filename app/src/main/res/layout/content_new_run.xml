@@ -64,12 +64,12 @@
             android:layout_below="@id/showTime"
             android:text="0 min/km"
             android:textViewStyle="@style/displayRun" />
-
+<!--
         <fragment android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_below="@id/showSpeed" />
+            android:layout_below="@id/showSpeed" /> -->
 
     </RelativeLayout>
 

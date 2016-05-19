@@ -140,6 +140,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
                 timeText.setText(String.format("%d:%02d", minutes, seconds));
             }
 
+            calcAvgPace();
+
             if(minutes>=nextFeedback){
                 giveFeedback();
                 nextFeedback+=feedbackInterval;
@@ -305,8 +307,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
           if(calculateRun) {
               PolylineOptions polylineOptions = new PolylineOptions().add(latLngBefore).add(latLngAfter).width(5).color(Color.GREEN).geodesic(true);
               calcDist();
-            calcAvgPace();
-
         }
     }
 

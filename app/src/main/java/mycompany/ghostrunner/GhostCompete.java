@@ -148,6 +148,27 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
             else {
                 timeTextPerson.setText(String.format("%d:%02d", minutes, seconds));
             }
+            calcAvgPace();
+
+            float ghostPaceSec = ghost.getSeconds()/(ghost.getDistance()/1000);
+            float ghostPaceMin = ghostPaceSec/60;
+
+            if(avgPaceMin < ghostPaceMin || avgPaceMin == ghostPaceMin && avgPaceSec < ghostPaceSec ){
+                if(!statusIsGreen){
+                    setPersonFasterThanGhost(true);
+                    speakWords("You just passed your ghost, good job!");
+                    ghostBusters.start();
+                    statusIsGreen = true;
+                }
+            }else{
+                if(statusIsGreen) {
+                    setPersonFasterThanGhost(false);
+                    speakWords("The ghost ran past you, keep running!");
+                    statusIsGreen = false;
+
+                }
+            }
+
             if(minutes>=nextFeedback){
                 giveFeedback();
                 nextFeedback+=feedbackInterval;
@@ -170,9 +191,10 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         Intent intent = getIntent();
         ghost = (Run) intent.getSerializableExtra("Run");
 
+
         //Creates the mediaPlayer
         save = MediaPlayer.create(getApplicationContext(), R.raw.saved);
-        ghostBusters = MediaPlayer.create(getApplicationContext(), R.raw.ghostBustersSound);
+        ghostBusters = MediaPlayer.create(getApplicationContext(), R.raw.ghost);
 
         //Find Buttons from id
         saveBtn = (Button) findViewById(R.id.saveRunGhostCompeteBtn);
@@ -354,34 +376,13 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     //When the location is changed
     public void onLocationChanged(Location location) {
         //updates the currentLocation
-        float ghostPaceMin = 0;
-        float ghostPaceSec = 0;
+
         mCurrentLocation = location;
         if(calculateRun) {
             calcDist();
-            calcAvgPace();
 
-            ghostPaceSec = ghost.getSeconds()/(ghost.getDistance()/1000);
-            ghostPaceMin = ghostPaceSec/60;
 
-            System.out.println("ghostpacemin = "+ ghostPaceMin);
-            System.out.println("avgPaveMin = " + avgPaceMin);
 
-            if(avgPaceMin < ghostPaceMin || avgPaceMin == ghostPaceMin && avgPaceSec < ghostPaceSec ){
-                if(!statusIsGreen){
-                    setPersonFasterThanGhost(true);
-                    speakWords("You just passed your ghost, good job!");
-                    ghostBusters.start();
-                    statusIsGreen = true;
-                }
-            }else{
-                if(statusIsGreen) {
-                    setPersonFasterThanGhost(false);
-                    speakWords("The ghost ran past you, keep running!");
-                    statusIsGreen = false;
-
-                }
-            }
         }
     }
 
@@ -641,11 +642,6 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
                     fileOutputStream.close();
                 }
 
-
-                System.out.print("input when saved: ");
-                System.out.println(runName);
-
-
                 FileOutputStream fileOutputStream2 = openFileOutput(runName, MODE_PRIVATE);
 
                 //Skickas: hour, new line, min, new line, sec, new line, distans, new line, date, new line
@@ -683,9 +679,6 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public void afterDelete(View view){
-        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        //v.vibrate(500);
         Toast.makeText(getApplicationContext(), "Run deleted", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -693,9 +686,6 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 
     //Läser in från fil och visa stuff
     public void menu (View view){
-        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        //v.vibrate(500);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

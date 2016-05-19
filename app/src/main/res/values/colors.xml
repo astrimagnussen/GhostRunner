@@ -12,22 +12,33 @@
     <color name="colorDisplayRunText">#000000</color>
     <color name="colorGhostGrey">#868686</color>
 
+    <color name="colorShadow">#585958</color>
+    <color name="colorShadowPressed">#b8b9b8</color>
+
     <color name="colorButtonBackground">#109401</color>
     <color name="colorButtonGreenDarkBackground">#0b6301</color>
     <color name="colorButtonGreenLightBackground">#12ac01</color>
-    <color name="colorShadow">#585958</color>
+    <color name="colorButtonGreenDarkPressed">#61ac59</color>
+    <color name="colorButtonGreenLightPressed">#9ee497</color>
+
 
     <color name="colorButtonRedBackground">#cf0e14</color>
     <color name="colorButtonRedDarkBackground">#a10409</color>
     <color name="colorButtonRedLightBackground">#f42229</color>
+    <color name="colorButtonRedDarkPressed">#c24145</color>
+    <color name="colorButtonRedLightPressed">#e28285</color>
 
     <color name="colorButtonBlueBackground">#0982ce</color>
     <color name="colorButtonBlueDarkBackground">#0667a4</color>
     <color name="colorButtonBlueLightBackground">#229be7</color>
+    <color name="colorButtonBlueDarkPressed">#4e90b9</color>
+    <color name="colorButtonBlueLightPressed">#a3c8df</color>
 
     <color name="colorButtonPurpleBackground">#a903b6</color>
     <color name="colorButtonPurpleDarkBackground">#86078f</color>
     <color name="colorButtonPurpleLightBackground">#dc43e7</color>
+    <color name="colorButtonPurpleDarkPressed">#a55bab</color>
+    <color name="colorButtonPurpleLightPressed">#d3abd6</color>
 
     <color name="colorPrimaryDark">#303F9F</color>
 </resources>

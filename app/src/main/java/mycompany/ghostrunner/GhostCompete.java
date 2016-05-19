@@ -248,7 +248,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         }
         float km = ghost.getDistance()/1000;
         String dist =  Float.toString(km) + "0000";
-        distTextGhost.setText(dist.substring(0,4));
+        distTextGhost.setText(dist.substring(0, 4));
 
         float avgPaceSec;
         float avgPaceMin;
@@ -374,23 +374,23 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         //sets the color
         Color color;
         if(green){
-            timeTextPersonTitle.setTextColor(Color.GREEN);
-            timeTextPerson.setTextColor(Color.GREEN);
+            timeTextPersonTitle.setTextColor(ContextCompat.getColor(this, R.color.colorButtonGreenLightBackground));
+            timeTextPerson.setTextColor(ContextCompat.getColor(this, R.color.colorButtonGreenLightBackground));
 
-            distTextPersonTitle.setTextColor(Color.GREEN);
-            distTextPerson.setTextColor(Color.GREEN);
+            distTextPersonTitle.setTextColor(ContextCompat.getColor(this, R.color.colorButtonGreenLightBackground));
+            distTextPerson.setTextColor(ContextCompat.getColor(this, R.color.colorButtonGreenLightBackground));
 
-            paceTextPersonTitle.setTextColor(Color.GREEN);
-            paceTextPerson.setTextColor(Color.GREEN);
+            paceTextPersonTitle.setTextColor(ContextCompat.getColor(this, R.color.colorButtonGreenLightBackground));
+            paceTextPerson.setTextColor(ContextCompat.getColor(this, R.color.colorButtonGreenLightBackground));
         } else{
-            timeTextPersonTitle.setTextColor(Color.RED);
-            timeTextPerson.setTextColor(Color.RED);
+            timeTextPersonTitle.setTextColor(ContextCompat.getColor(this, R.color.colorButtonRedLightBackground));
+            timeTextPerson.setTextColor(ContextCompat.getColor(this, R.color.colorButtonRedLightBackground));
 
-            distTextPersonTitle.setTextColor(Color.RED);
-            distTextPerson.setTextColor(Color.RED);
+            distTextPersonTitle.setTextColor(ContextCompat.getColor(this, R.color.colorButtonRedLightBackground));
+            distTextPerson.setTextColor(ContextCompat.getColor(this, R.color.colorButtonRedLightBackground));
 
-            paceTextPersonTitle.setTextColor(Color.RED);
-            paceTextPerson.setTextColor(Color.RED);
+            paceTextPersonTitle.setTextColor(ContextCompat.getColor(this, R.color.colorButtonRedLightBackground));
+            paceTextPerson.setTextColor(ContextCompat.getColor(this, R.color.colorButtonRedLightBackground));
         }
 
     }

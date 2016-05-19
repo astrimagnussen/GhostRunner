@@ -88,6 +88,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 
     //The audio for save
     private MediaPlayer save;
+    private MediaPlayer ghostBusters;
     private boolean calculateRun;
 
     //for the time counting
@@ -112,6 +113,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 
     private Run ghost;
     public Boolean secondTry = false;
+    private Boolean statusIsGreen;
 
     private Vibrator vib;
     private TextToSpeech myTTS;
@@ -170,6 +172,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 
         //Creates the mediaPlayer
         save = MediaPlayer.create(getApplicationContext(), R.raw.saved);
+        ghostBusters = MediaPlayer.create(getApplicationContext(), R.raw.ghostBustersSound);
 
         //Find Buttons from id
         saveBtn = (Button) findViewById(R.id.saveRunGhostCompeteBtn);
@@ -202,6 +205,8 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         vib = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
 
         showGhost(ghost);
+        statusIsGreen = true;
+        setPersonFasterThanGhost(true);
 
         //Creates locationRequests
         createLocationRequest();
@@ -363,14 +368,26 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
             System.out.println("avgPaveMin = " + avgPaceMin);
 
             if(avgPaceMin < ghostPaceMin || avgPaceMin == ghostPaceMin && avgPaceSec < ghostPaceSec ){
-                setPersonFasterThanGhost(true);
+                if(!statusIsGreen){
+                    setPersonFasterThanGhost(true);
+                    speakWords("You just passed your ghost, good job!");
+                    ghostBusters.start();
+                    statusIsGreen = true;
+                }
             }else{
-                setPersonFasterThanGhost(false);
+                if(statusIsGreen) {
+                    setPersonFasterThanGhost(false);
+                    speakWords("The ghost ran past you, keep running!");
+                    statusIsGreen = false;
+
+                }
             }
         }
     }
 
     public void setPersonFasterThanGhost(Boolean green){
+
+
         //sets the color
         Color color;
         if(green){
@@ -610,16 +627,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         if(secondTry){
             saveBtn.performClick();
         }else {
-
-        /*System.out.println("hourToSave = " + hourToSave);
-        System.out.println("minutesToSave = " + minutesToSave);
-        System.out.println("secToSave = " + secToSave);
-        System.out.println("distance = " + distance);
-        System.out.println("date = " + date);*/
-
-            //System.out.println("Given runName = " + runName);
-
-            String file_name = "runs";
+    String file_name = "runs";
 
             try {
 
@@ -739,6 +747,6 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 
     public void giveFeedback(){
         vibrateNow();
-        speakWords("Time " + timeTextPerson.getText() + " Total distance " + distTextPerson.getText() + " Average Pace " + paceTextPerson.getText());
+        speakWords("Time " + timeTextPerson.getText() + "       Total distance  " + distTextPerson.getText() + "     Average Pace  " + paceTextPerson.getText());
     }
 }

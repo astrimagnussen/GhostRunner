@@ -435,6 +435,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         distance += mCurrentLocation.distanceTo(startLocation);
         int tenMeters = (distance/10)%100;
         int km = distance / 1000;
+
         startLocation = mCurrentLocation;
         distText.setText(String.format("%d.%02d %s", km, tenMeters, " km"));
     }

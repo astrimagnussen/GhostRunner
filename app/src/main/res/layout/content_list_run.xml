@@ -19,10 +19,6 @@
         android:layout_width="match_parent"
         android:dividerHeight="5dp" />
 
-<<<<<<< HEAD
-
-=======
->>>>>>> ac7cd11e4cd0b9cf316c2261b567ff28cb014291
     <Button android:id="@+id/menuGhostCompeteBtn"
         android:layout_height="wrap_content"
         android:text="@string/menu_btn"

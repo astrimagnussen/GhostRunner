@@ -426,7 +426,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         Toast.makeText(getApplicationContext(), "Run stopped", Toast.LENGTH_SHORT).show();
 
         //turn off TextToSpeech
-        myTTS.shutdown();
+        if (!myTTS.isSpeaking()) myTTS.shutdown();
 
         //showTime.setText(Long.toString(stopTime));
     }
@@ -438,6 +438,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         startLocation = mCurrentLocation;
         distText.setText(String.format("%d.%02d %s", km, tenMeters, " km"));
     }
+
     public void calcAvgPace () {
         int avgPaceSec;
         int avgPaceMin;
@@ -497,6 +498,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
                 }
                 else {
+                    myTTS.shutdown();
                     secondTry = false;
                     saveAndContinue(input.getText().toString(), false);
                 }
@@ -575,14 +577,16 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     public void afterDelete(View view){
 
         Toast.makeText(getApplicationContext(), "Run deleted", Toast.LENGTH_SHORT).show();
+        //turn off TextToSpeech
+        myTTS.shutdown();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
     //Läser in från fil och visa stuff
     public void menu(View view){
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     public void giveFeedback(){

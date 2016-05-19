@@ -517,7 +517,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         //showTime.setText(Long.toString(stopTime));
 
         //turn off TextToSpeech
-        myTTS.shutdown();
+        if (!myTTS.isSpeaking()) myTTS.shutdown();
     }
     public void calcDist (){
         distance += mCurrentLocation.distanceTo(startLocation);
@@ -585,6 +585,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
                     saveAndContinue("Wrongnamen", false);
                 }else {
                     secondTry= false;
+                    myTTS.shutdown();
                     saveAndContinue(input.getText().toString(), false);
                 }
             }

@@ -97,8 +97,6 @@ public class ListRun extends AppCompatActivity implements Serializable {
                 return deleted;
             }
         });
-
-
     }
 
     private class RunListAdapter extends BaseAdapter {
@@ -225,7 +223,6 @@ public class ListRun extends AppCompatActivity implements Serializable {
                         return false;
                     }
 
-
                     readRunList.add(new Run(name, hour, min, sec, distance, date));
                     fileInputStream2.close();
                     Collections.reverse(readRunList);
@@ -239,7 +236,6 @@ public class ListRun extends AppCompatActivity implements Serializable {
                 }
             }
             return true;
-
         }
         adapter.updateRuns(readRunList);
         return false;

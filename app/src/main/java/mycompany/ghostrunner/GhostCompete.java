@@ -88,6 +88,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 
     //The audio for save
     private MediaPlayer save;
+    private MediaPlayer ghostBusters;
     private boolean calculateRun;
 
     //for the time counting
@@ -112,6 +113,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 
     private Run ghost;
     public Boolean secondTry = false;
+    private Boolean statusIsGreen;
 
     private Vibrator vib;
     private TextToSpeech myTTS;
@@ -147,6 +149,25 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
                 timeTextPerson.setText(String.format("%d:%02d", minutes, seconds));
             }
             calcAvgPace();
+
+            float ghostPaceSec = ghost.getSeconds()/(ghost.getDistance()/1000);
+            float ghostPaceMin = ghostPaceSec/60;
+
+            if(avgPaceMin < ghostPaceMin || avgPaceMin == ghostPaceMin && avgPaceSec < ghostPaceSec ){
+                if(!statusIsGreen){
+                    setPersonFasterThanGhost(true);
+                    speakWords("You just passed your ghost, good job!");
+                    ghostBusters.start();
+                    statusIsGreen = true;
+                }
+            }else{
+                if(statusIsGreen) {
+                    setPersonFasterThanGhost(false);
+                    speakWords("The ghost ran past you, keep running!");
+                    statusIsGreen = false;
+
+                }
+            }
             if(minutes>=nextFeedback){
                 giveFeedback();
                 nextFeedback+=feedbackInterval;
@@ -169,8 +190,10 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         Intent intent = getIntent();
         ghost = (Run) intent.getSerializableExtra("Run");
 
+
         //Creates the mediaPlayer
         save = MediaPlayer.create(getApplicationContext(), R.raw.saved);
+        ghostBusters = MediaPlayer.create(getApplicationContext(), R.raw.ghost);
 
         //Find Buttons from id
         saveBtn = (Button) findViewById(R.id.saveRunGhostCompeteBtn);
@@ -203,6 +226,8 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         vib = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
 
         showGhost(ghost);
+        statusIsGreen = true;
+        setPersonFasterThanGhost(true);
 
         //Creates locationRequests
         createLocationRequest();
@@ -249,7 +274,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         }
         float km = ghost.getDistance()/1000;
         String dist =  Float.toString(km) + "0000";
-        distTextGhost.setText(dist.substring(0,4));
+        distTextGhost.setText(dist.substring(0, 4));
 
         float avgPaceSec;
         float avgPaceMin;
@@ -350,48 +375,37 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     //When the location is changed
     public void onLocationChanged(Location location) {
         //updates the currentLocation
-        float ghostPaceMin = 0;
-        float ghostPaceSec = 0;
+
         mCurrentLocation = location;
         if(calculateRun) {
             calcDist();
-            //calcAvgPace();
 
-            ghostPaceSec = ghost.getSeconds()/(ghost.getDistance()/1000);
-            ghostPaceMin = ghostPaceSec/60;
-
-            System.out.println("ghostpacemin = "+ ghostPaceMin);
-            System.out.println("avgPaveMin = " + avgPaceMin);
-
-            if(avgPaceMin < ghostPaceMin || avgPaceMin == ghostPaceMin && avgPaceSec < ghostPaceSec ){
-                setPersonFasterThanGhost(true);
-            }else{
-                setPersonFasterThanGhost(false);
-            }
         }
     }
 
     public void setPersonFasterThanGhost(Boolean green){
+
+
         //sets the color
         Color color;
         if(green){
-            timeTextPersonTitle.setTextColor(Color.GREEN);
-            timeTextPerson.setTextColor(Color.GREEN);
+            timeTextPersonTitle.setTextColor(ContextCompat.getColor(this, R.color.colorButtonGreenLightBackground));
+            timeTextPerson.setTextColor(ContextCompat.getColor(this, R.color.colorButtonGreenLightBackground));
 
-            distTextPersonTitle.setTextColor(Color.GREEN);
-            distTextPerson.setTextColor(Color.GREEN);
+            distTextPersonTitle.setTextColor(ContextCompat.getColor(this, R.color.colorButtonGreenLightBackground));
+            distTextPerson.setTextColor(ContextCompat.getColor(this, R.color.colorButtonGreenLightBackground));
 
-            paceTextPersonTitle.setTextColor(Color.GREEN);
-            paceTextPerson.setTextColor(Color.GREEN);
+            paceTextPersonTitle.setTextColor(ContextCompat.getColor(this, R.color.colorButtonGreenLightBackground));
+            paceTextPerson.setTextColor(ContextCompat.getColor(this, R.color.colorButtonGreenLightBackground));
         } else{
-            timeTextPersonTitle.setTextColor(Color.RED);
-            timeTextPerson.setTextColor(Color.RED);
+            timeTextPersonTitle.setTextColor(ContextCompat.getColor(this, R.color.colorButtonRedLightBackground));
+            timeTextPerson.setTextColor(ContextCompat.getColor(this, R.color.colorButtonRedLightBackground));
 
-            distTextPersonTitle.setTextColor(Color.RED);
-            distTextPerson.setTextColor(Color.RED);
+            distTextPersonTitle.setTextColor(ContextCompat.getColor(this, R.color.colorButtonRedLightBackground));
+            distTextPerson.setTextColor(ContextCompat.getColor(this, R.color.colorButtonRedLightBackground));
 
-            paceTextPersonTitle.setTextColor(Color.RED);
-            paceTextPerson.setTextColor(Color.RED);
+            paceTextPersonTitle.setTextColor(ContextCompat.getColor(this, R.color.colorButtonRedLightBackground));
+            paceTextPerson.setTextColor(ContextCompat.getColor(this, R.color.colorButtonRedLightBackground));
         }
 
     }
@@ -518,7 +532,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         //showTime.setText(Long.toString(stopTime));
 
         //turn off TextToSpeech
-        myTTS.shutdown();
+        if (!myTTS.isSpeaking()) myTTS.shutdown();
     }
     public void calcDist (){
         distance += mCurrentLocation.distanceTo(startLocation);
@@ -586,6 +600,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
                     saveAndContinue("Wrongnamen", false);
                 }else {
                     secondTry= false;
+                    myTTS.shutdown();
                     saveAndContinue(input.getText().toString(), false);
                 }
             }
@@ -610,16 +625,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         if(secondTry){
             saveBtn.performClick();
         }else {
-
-        /*System.out.println("hourToSave = " + hourToSave);
-        System.out.println("minutesToSave = " + minutesToSave);
-        System.out.println("secToSave = " + secToSave);
-        System.out.println("distance = " + distance);
-        System.out.println("date = " + date);*/
-
-            //System.out.println("Given runName = " + runName);
-
-            String file_name = "runs";
+    String file_name = "runs";
 
             try {
 
@@ -632,11 +638,6 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
                     fileOutputStream.write("\n".getBytes());
                     fileOutputStream.close();
                 }
-
-
-                System.out.print("input when saved: ");
-                System.out.println(runName);
-
 
                 FileOutputStream fileOutputStream2 = openFileOutput(runName, MODE_PRIVATE);
 
@@ -675,19 +676,12 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public void afterDelete(View view){
-        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        //v.vibrate(500);
         Toast.makeText(getApplicationContext(), "Run deleted", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
+        startActivity(intent);}
 
     //Läser in från fil och visa stuff
     public void menu (View view){
-        //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        //v.vibrate(500);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
@@ -739,6 +733,11 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 
     public void giveFeedback(){
         vibrateNow();
-        speakWords("Time " + timeTextPerson.getText() + " Total distance " + distTextPerson.getText() + " Average Pace " + paceTextPerson.getText());
+        speakWords("Time " + timeTextPerson.getText() + "       Total distance  " + distTextPerson.getText() + "     Average Pace  " + paceTextPerson.getText());
+    }
+
+    public void settings(View view){
+        Intent intent = new Intent(this, Settings.class);
+        startActivity(intent);
     }
 }

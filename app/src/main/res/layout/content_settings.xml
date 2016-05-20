@@ -27,7 +27,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginTop="20dp"
             android:text="@string/sound"
-            android:textSize="25dp"
+            android:textSize="18dp"
             />
 
         <Switch
@@ -38,7 +38,7 @@
             android:layout_marginTop="20dp"
             android:text="@string/vibration"
             android:layout_below="@id/sound"
-            android:textSize="25dp"/>
+            android:textSize="18dp"/>
 
         <TextView
             android:id="@+id/feedback"
@@ -48,7 +48,7 @@
             android:layout_marginTop="20dp"
             android:text="@string/feedback"
             android:layout_below="@id/vibration"
-            android:textSize="25dp" />
+            android:textViewStyle="@style/displayRun" />
 
 
         <RadioGroup
@@ -64,69 +64,63 @@
                 android:layout_height="wrap_content"
                 android:text="None"
                 android:id="@+id/radioButton1"
-                android:textSize="25dp" />
+                android:textSize="18dp" />
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1 Minute"
+                android:text="1  Minute"
                 android:id="@+id/radioButton2"
-                android:textSize="25dp"/>
+                android:textSize="18dp" />
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2 Minutes"
+                android:text="2  Minutes"
                 android:id="@+id/radioButton3"
-                android:textSize="25dp" />
+                android:textSize="18dp" />
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3 Minutes"
+                android:text="3  Minutes"
                 android:id="@+id/radioButton4"
-                android:textSize="25dp" />
+                android:textSize="18dp" />
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4 Minutes"
+                android:text="4  Minutes"
                 android:id="@+id/radioButton5"
-                android:textSize="25dp"/>
+                android:textSize="18dp"/>
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5 Minutes"
+                android:text="5  Minutes"
                 android:id="@+id/radioButton6"
-                android:textSize="25dp" />
+                android:textSize="18dp" />
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10 Minutes"
                 android:id="@+id/radioButton7"
-                android:textSize="25dp" />
+                android:textSize="18dp" />
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="15 Minutes"
                 android:id="@+id/radioButton8"
-                android:textSize="25dp" />
+                android:textSize="18dp" />
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="20 Minutes"
                 android:id="@+id/radioButton9"
-                android:textSize="25dp"/>
+                android:textSize="18dp"/>
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="30 Minutes"
                 android:id="@+id/radioButton10"
-                android:textSize="25dp"/>
+                android:textSize="18dp"/>
         </RadioGroup>
-
-
     </RelativeLayout>
-
-
-
-
 
 </LinearLayout>
 

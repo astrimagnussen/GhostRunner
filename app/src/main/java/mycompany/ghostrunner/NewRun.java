@@ -3,6 +3,7 @@ package mycompany.ghostrunner;
 
 import android.Manifest;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -58,7 +59,9 @@ import java.util.Date;
 import android.speech.tts.TextToSpeech;
 import java.util.Locale;
 
-public class NewRun extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMapReadyCallback, TextToSpeech.OnInitListener {
+// denna ska implementeras av new run sen OnMapReadyCallback
+
+public class NewRun extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,  TextToSpeech.OnInitListener {
     //Used in the mapview
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
@@ -138,6 +141,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
                 timeText.setText(String.format("%d:%02d", minutes, seconds));
             }
             calcAvgPace();
+
             if(minutes>=nextFeedback){
                 giveFeedback();
                 nextFeedback+=feedbackInterval;
@@ -153,14 +157,17 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         setContentView(R.layout.activity_new_run);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+
         calculateRun = false;
 
         //Creates the mediaPlayer
         save = MediaPlayer.create(getApplicationContext(), R.raw.saved);
 
         //for the map
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        //SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        //mapFragment.getMapAsync(this);
+
      //   mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
         //Finds TextViews the objects by Id
@@ -233,9 +240,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     }
 
-    @Override
+    //@Override
     public void onMapReady(GoogleMap googleMap) {
-        //for the map
+       /* //for the map
         mMap = googleMap;
         //Gets the locationManager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -252,7 +259,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         mapLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         LatLng latLng = new LatLng(mapLocation.getLatitude(), mapLocation.getLongitude());
         mMap.setMyLocationEnabled(true);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));*/
     }
     @Override
     protected void onStart() {
@@ -303,8 +310,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
               PolylineOptions polylineOptions = new PolylineOptions().add(latLngBefore).add(latLngAfter).width(5).color(Color.GREEN).geodesic(true);
               mMap.addPolyline(polylineOptions);
               calcDist();
-           // calcAvgPace();
-
         }
     }
 
@@ -421,11 +426,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         //for time calculation stop
         handler.removeCallbacks(runnable);
 
+        Toast.makeText(getApplicationContext(), "Run stopped", Toast.LENGTH_SHORT).show();
 
         //turn off TextToSpeech
-        myTTS.shutdown();
+        if (!myTTS.isSpeaking()) myTTS.shutdown();
 
-        Toast.makeText(getApplicationContext(), "Run stopped", Toast.LENGTH_SHORT).show();
         //showTime.setText(Long.toString(stopTime));
     }
 
@@ -433,9 +438,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         distance += mCurrentLocation.distanceTo(startLocation);
         int tenMeters = (distance/10)%100;
         int km = distance / 1000;
+
         startLocation = mCurrentLocation;
         distText.setText(String.format("%d.%02d %s", km, tenMeters, " km"));
     }
+
     public void calcAvgPace () {
         int avgPaceSec;
         int avgPaceMin;
@@ -495,6 +502,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
                 }
                 else {
+                    myTTS.shutdown();
                     secondTry = false;
                     saveAndContinue(input.getText().toString(), false);
                 }
@@ -573,14 +581,16 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     public void afterDelete(View view){
 
         Toast.makeText(getApplicationContext(), "Run deleted", Toast.LENGTH_SHORT).show();
+        //turn off TextToSpeech
+        myTTS.shutdown();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
     //Läser in från fil och visa stuff
     public void menu(View view){
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     public void giveFeedback(){
@@ -621,5 +631,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             vib.vibrate(200);
         }
     }
-
+    public void settings(View view){
+        Intent intent = new Intent(this, Settings.class);
+        startActivity(intent);
+    }
 }

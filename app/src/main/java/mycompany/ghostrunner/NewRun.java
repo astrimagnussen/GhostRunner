@@ -137,7 +137,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             else {
                 timeText.setText(String.format("%d:%02d", minutes, seconds));
             }
-
+            calcAvgPace();
             if(minutes>=nextFeedback){
                 giveFeedback();
                 nextFeedback+=feedbackInterval;
@@ -301,8 +301,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         LatLng latLngAfter = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
           if(calculateRun) {
               PolylineOptions polylineOptions = new PolylineOptions().add(latLngBefore).add(latLngAfter).width(5).color(Color.GREEN).geodesic(true);
+              mMap.addPolyline(polylineOptions);
               calcDist();
-            calcAvgPace();
+           // calcAvgPace();
 
         }
     }

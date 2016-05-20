@@ -146,6 +146,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
             else {
                 timeTextPerson.setText(String.format("%d:%02d", minutes, seconds));
             }
+            calcAvgPace();
             if(minutes>=nextFeedback){
                 giveFeedback();
                 nextFeedback+=feedbackInterval;
@@ -354,7 +355,7 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         mCurrentLocation = location;
         if(calculateRun) {
             calcDist();
-            calcAvgPace();
+            //calcAvgPace();
 
             ghostPaceSec = ghost.getSeconds()/(ghost.getDistance()/1000);
             ghostPaceMin = ghostPaceSec/60;

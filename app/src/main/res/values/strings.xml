@@ -23,6 +23,7 @@
     <string name="vibration">Vibration</string>
     <string name="sound">Sound</string>
     <string name="feedback">Feedback Interval</string>
+    <string name="ghostRunner">GhostRunner</string>
 
 
 </resources>

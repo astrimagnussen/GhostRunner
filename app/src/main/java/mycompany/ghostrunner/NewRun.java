@@ -3,6 +3,7 @@ package mycompany.ghostrunner;
 
 import android.Manifest;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -155,6 +156,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         setContentView(R.layout.activity_new_run);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+
         calculateRun = false;
 
         //Creates the mediaPlayer
@@ -628,5 +631,8 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             vib.vibrate(200);
         }
     }
-
+    public void settings(View view){
+        Intent intent = new Intent(this, Settings.class);
+        startActivity(intent);
+    }
 }

@@ -741,4 +741,9 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         vibrateNow();
         speakWords("Time " + timeTextPerson.getText() + " Total distance " + distTextPerson.getText() + " Average Pace " + paceTextPerson.getText());
     }
+
+    public void settings(View view){
+        Intent intent = new Intent(this, Settings.class);
+        startActivity(intent);
+    }
 }

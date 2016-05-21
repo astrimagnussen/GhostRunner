@@ -2,41 +2,33 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:orientation="vertical"
+    android:background="@drawable/customshapeduplicate">
 
-    <TextView
-        android:id="@+id/nameTitleGhost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name: " />
 
     <TextView
         android:id="@+id/nameTextGhost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
-        android:layout_alignParentRight="true" />
-    <TextView
-        android:id="@+id/dateTitleGhost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Date: "
-        android:layout_below="@id/nameTitleGhost"/>
+        android:text="0" />
 
     <TextView
         android:id="@+id/dateTextGhost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/nameTextGhost"/>
+        android:layout_alignParentRight="true" />
 
     <TextView
         android:id="@+id/distTitleGhost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Distance: "
-        android:layout_below="@id/dateTitleGhost" />
+        android:layout_below="@id/nameTextGhost" />
 
     <TextView
         android:id="@+id/distTextGhost"
@@ -44,7 +36,7 @@
         android:layout_height="wrap_content"
         android:text="0 km"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/dateTextGhost"/>
+        android:layout_below="@id/nameTextGhost"/>
 
     <TextView
         android:id="@+id/timeTitleGhost"

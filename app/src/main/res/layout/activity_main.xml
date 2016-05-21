@@ -27,7 +27,6 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="15dp"
                 android:onClick="settings"
-                android:layout_marginRight="10dp"
                 android:contextClickable="true"
                 />
             <TextView

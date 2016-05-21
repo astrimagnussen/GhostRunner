@@ -10,23 +10,20 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:background="@color/colorWindowBackground"
     tools:context=".ListRun"
     tools:showIn="@layout/activity_list_run"
     android:orientation="vertical">
 
     <ListView android:id="@+id/listView"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:dividerHeight="5dp" />
-
-    <Button android:id="@+id/menuGhostCompeteBtn"
         android:layout_height="wrap_content"
-        android:text="@string/menu_btn"
-        android:onClick="menu"
-        android:layout_alignParentBottom ="true"
-        android:buttonStyle="@style/myButtons"
-        android:layout_width="150dp"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="20dip" />
+        android:layout_width="match_parent"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@color/colorWindowBackground"
+        android:dividerHeight="7dp"
+
+        android:smoothScrollbar="true"
+
+        android:scrollbars="none"/>
 </RelativeLayout>
 

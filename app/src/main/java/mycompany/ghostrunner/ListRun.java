@@ -1,10 +1,18 @@
 package mycompany.ghostrunner;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -15,6 +23,15 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,6 +48,13 @@ public class ListRun extends AppCompatActivity implements Serializable {
     private ListView listView;
     private RunListAdapter adapter;
     private ArrayList<String> listOfRuns;
+   //for the map
+   //Used in the mapview
+   //private GoogleMap mMap;
+   // private GoogleApiClient mGoogleApiClient;
+   // private Location mapLocation;
+   // ArrayList<LatLng> locations = new ArrayList<LatLng>();
+   // private LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +64,23 @@ public class ListRun extends AppCompatActivity implements Serializable {
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         listView = (ListView) findViewById(R.id.listView);
+        listView.setBackgroundResource(R.drawable.round_shape_button);
+
 
         adapter = new RunListAdapter(this/*, R.layout.row, runList*/);
         listView.setAdapter(adapter);
         if (!read()) {
             //inte bra
         }
+
+        //for the map
+       // SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapList);
+        //mapFragment.getMapAsync(this);
+        //locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        // Create an instance of GoogleAPIClient.
+       // mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        //   mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -98,6 +133,27 @@ public class ListRun extends AppCompatActivity implements Serializable {
             }
         });
     }
+
+   /* @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        //Gets the locationManager
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mapLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        LatLng latLng = new LatLng(mapLocation.getLatitude(), mapLocation.getLongitude());
+        mMap.setMyLocationEnabled(true);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+    }*/
 
     private class RunListAdapter extends BaseAdapter {
         private ArrayList<Run> runList;
@@ -275,4 +331,15 @@ public class ListRun extends AppCompatActivity implements Serializable {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+   /* public void loadArray(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        ArrayList<String> strings = new ArrayList<String>();
+        int size = sharedPreferences.getInt("Status_size", 0);
+        for (int i=0; i<size; i++){
+            strings.add(sharedPreferences.getString("Status_" + i, null));
+            String[] split = strings.get(i).split(" ");
+            LatLng latLng = new LatLng(Double.parseDouble(split[0]),Double.parseDouble(split[1]));
+            locations.add(latLng);
+        }
+    }*/
 }

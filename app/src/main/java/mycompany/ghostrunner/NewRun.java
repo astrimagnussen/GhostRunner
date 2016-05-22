@@ -7,10 +7,12 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.SystemClock;
 import android.os.Vibrator;
@@ -55,6 +57,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import android.speech.tts.TextToSpeech;
 import java.util.Locale;
@@ -63,9 +66,12 @@ import java.util.Locale;
 
 public class NewRun extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,  TextToSpeech.OnInitListener {
     //Used in the mapview
-    private GoogleMap mMap;
-    private GoogleApiClient mGoogleApiClient;
+   /* private GoogleMap mMap;
+
     private Location mapLocation;
+    ArrayList<String> coordinates;
+    SharedPreferences someData;*/
+    private GoogleApiClient mGoogleApiClient;
 
     private Location mCurrentLocation;
 
@@ -140,7 +146,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
             else {
                 timeText.setText(String.format("%d:%02d", minutes, seconds));
             }
-
             calcAvgPace();
 
             if(minutes>=nextFeedback){
@@ -166,10 +171,11 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         save = MediaPlayer.create(getApplicationContext(), R.raw.saved);
 
         //for the map
-        //SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        //mapFragment.getMapAsync(this);
+        /*SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+        coordinates = new ArrayList<String>();*/
 
-     //   mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        // mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
         //Finds TextViews the objects by Id
         timeText = (TextView) findViewById(R.id.showTime);
@@ -241,9 +247,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     }
 
-    //@Override
+   /* @Override
     public void onMapReady(GoogleMap googleMap) {
-       /* //for the map
+       //for the map
         mMap = googleMap;
         //Gets the locationManager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -260,8 +266,9 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         mapLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         LatLng latLng = new LatLng(mapLocation.getLatitude(), mapLocation.getLongitude());
         mMap.setMyLocationEnabled(true);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));*/
-    }
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+    }*/
+
     @Override
     protected void onStart() {
         mGoogleApiClient.connect();
@@ -304,11 +311,15 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     //When the location is changed
     public void onLocationChanged(Location location) {
         //updates the currentLocation
+//        coordinates.add(location);
         LatLng latLngBefore = new LatLng(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude());
         mCurrentLocation = location;
         LatLng latLngAfter = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+
           if(calculateRun) {
-              PolylineOptions polylineOptions = new PolylineOptions().add(latLngBefore).add(latLngAfter).width(5).color(Color.GREEN).geodesic(true);
+             //   coordinates.add(location.getLatitude() + " " + location.getLongitude());
+             // PolylineOptions polylineOptions = new PolylineOptions().add(latLngBefore).add(latLngAfter).width(5).color(Color.GREEN).geodesic(true);
+             // mMap.addPolyline(polylineOptions);
               calcDist();
         }
     }
@@ -546,6 +557,10 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
                 FileOutputStream fileOutputStream2 = openFileOutput(runName, MODE_PRIVATE);
 
+                //for the saving of the map coordinates
+               // saveArray();
+
+
                 //Skickas: hour, new line, min, new line, sec, new line, distans, new line, date, new line
                 fileOutputStream2.write(Integer.toString(hourToSave).getBytes());
                 fileOutputStream2.write("\n".getBytes());
@@ -635,4 +650,16 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         Intent intent = new Intent(this, Settings.class);
         startActivity(intent);
     }
+
+    /*public boolean saveArray(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("Status_size", coordinates.size());
+        for (int i =0; i< coordinates.size();i++){
+        editor.remove("Status_" + i);
+            editor.putString("Status_" + i, coordinates.get(i));
+
+        }
+        return editor.commit();
+    }*/
 }

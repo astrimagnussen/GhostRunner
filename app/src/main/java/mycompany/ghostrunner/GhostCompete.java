@@ -5,6 +5,7 @@ package mycompany.ghostrunner;
         import android.app.AlertDialog;
         import android.content.DialogInterface;
         import android.content.Intent;
+        import android.content.SharedPreferences;
         import android.graphics.Color;
         import android.media.MediaPlayer;
         import android.net.Uri;
@@ -12,6 +13,7 @@ package mycompany.ghostrunner;
         import android.os.Handler;
         import android.os.SystemClock;
         import android.os.Vibrator;
+        import android.preference.PreferenceManager;
         import android.speech.tts.TextToSpeech;
         import android.support.v7.app.AppCompatActivity;
         import android.support.v7.widget.Toolbar;
@@ -40,6 +42,7 @@ package mycompany.ghostrunner;
         import com.google.android.gms.location.LocationListener;
         import com.google.android.gms.common.ConnectionResult;
         import com.google.android.gms.common.api.GoogleApiClient;
+        import com.google.android.gms.maps.model.LatLng;
 
         import java.io.BufferedReader;
         import java.io.FileInputStream;
@@ -168,7 +171,6 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 
                 }
             }
-
             if(minutes>=nextFeedback){
                 giveFeedback();
                 nextFeedback+=feedbackInterval;
@@ -380,8 +382,6 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         mCurrentLocation = location;
         if(calculateRun) {
             calcDist();
-
-
 
         }
     }
@@ -743,4 +743,5 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         Intent intent = new Intent(this, Settings.class);
         startActivity(intent);
     }
+
 }

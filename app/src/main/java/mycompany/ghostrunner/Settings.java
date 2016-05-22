@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ public class Settings extends AppCompatActivity {
     public static boolean vibration = true;
     public static boolean sound = true;
     public static int feedback = 1;
+    public Button settingsBtn;
 
     //http://www.mysamplecode.com/2013/04/android-switch-button-example.html
     private Switch vibText;
@@ -31,6 +33,8 @@ public class Settings extends AppCompatActivity {
         soundText = (Switch) findViewById(R.id.sound);
         radioGroup=(RadioGroup)findViewById(R.id.radioGroup);
 
+        settingsBtn = (Button) findViewById(R.id.settingsBtn);
+        settingsBtn.setVisibility(View.GONE);
 
         if(vibration){
             vibText.setChecked(true);
@@ -127,6 +131,7 @@ public class Settings extends AppCompatActivity {
         //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
         //v.vibrate(500);
+        settingsBtn.setVisibility(View.VISIBLE);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

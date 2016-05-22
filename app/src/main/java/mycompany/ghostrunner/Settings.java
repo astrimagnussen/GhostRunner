@@ -33,8 +33,8 @@ public class Settings extends AppCompatActivity {
         soundText = (Switch) findViewById(R.id.sound);
         radioGroup=(RadioGroup)findViewById(R.id.radioGroup);
 
-        settingsBtn = (Button) findViewById(R.id.settingsBtn);
-        settingsBtn.setVisibility(View.GONE);
+        //settingsBtn = (Button) findViewById(R.id.settingsBtn);
+        //settingsBtn.setVisibility(View.GONE);
 
         if(vibration){
             vibText.setChecked(true);
@@ -131,7 +131,7 @@ public class Settings extends AppCompatActivity {
         //Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
         //v.vibrate(500);
-        settingsBtn.setVisibility(View.VISIBLE);
+        //settingsBtn.setVisibility(View.VISIBLE);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

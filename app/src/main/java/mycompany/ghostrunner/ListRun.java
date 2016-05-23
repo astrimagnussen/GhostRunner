@@ -46,6 +46,7 @@ import java.util.Collections;
 
 public class ListRun extends AppCompatActivity implements Serializable {
     private ListView listView;
+    private TextView hint;
     private RunListAdapter adapter;
     private ArrayList<String> listOfRuns;
    //for the map
@@ -64,6 +65,7 @@ public class ListRun extends AppCompatActivity implements Serializable {
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         listView = (ListView) findViewById(R.id.listView);
+        hint = (TextView) findViewById(R.id.chooseGhostHint);
         listView.setBackgroundResource(R.drawable.round_shape_button);
 
 
@@ -211,6 +213,9 @@ public class ListRun extends AppCompatActivity implements Serializable {
             TextView dateText = (TextView) convertView.findViewById(R.id.dateTextGhost);
             TextView distText = (TextView) convertView.findViewById(R.id.distTextGhost);
             TextView timeText = (TextView) convertView.findViewById(R.id.timeTextGhost);
+            TextView titleSpeed = (TextView) findViewById(R.id.paceTitleGhost);
+            TextView textSpeed = (TextView) convertView.findViewById(R.id.paceTextGhost);
+
 
             Run run = getItem(position);
             nameText.setText(run.getName());
@@ -224,7 +229,20 @@ public class ListRun extends AppCompatActivity implements Serializable {
             } else {
                 timeText.setText(String.format("%d:%02d", (int)run.getMinutes(), (int)run.getSeconds()));
             }
-
+            float avgPaceSec;
+            float avgPaceMin;
+            float avgkm = distance/1000;
+            float totSeconds = run.getSeconds() + 60 * (run.getMinutes() + (run.getHours() * 60));
+            if(distance != 0) {
+                avgPaceSec = totSeconds/avgkm;
+                avgPaceMin = avgPaceSec/60;
+                avgPaceSec = avgPaceSec%60;
+            }
+            else {
+                avgPaceMin = 0;
+                avgPaceSec = 0;
+            }
+            textSpeed.setText(String.format("%d:%02d %s", (int) avgPaceMin, (int) avgPaceSec, " min/km"));
             return convertView;
         }
     }

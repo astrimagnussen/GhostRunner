@@ -19,7 +19,7 @@
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-            <Button
+           <!-- <Button
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@drawable/settings"
@@ -27,16 +27,16 @@
                 android:onClick="settings"
                 android:layout_marginRight="10dp"
                 android:contextClickable="true"
-                />
+                />-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/colorButtonBackground"
                 android:textColor="@color/colorButtonText"
-                android:text="@string/title_activity_settings"
+                android:text="@string/app_name"
                 android:layout_gravity="left"
                 android:onClick="menu"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="15dp"
                 android:contextClickable="true"
                 />
         </android.support.v7.widget.Toolbar>

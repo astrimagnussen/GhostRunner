@@ -122,7 +122,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     private long startTime = 0;
     private long pausedTimeAt = 0;
     private long totalPauseTime = 0;
-    private int feedbackInterval = Settings.feedback; //1 minute between feedbacks (audio)
+    private int feedbackInterval = Settings.feedback; //default: 1 minute between feedbacks (audio)
     private int nextFeedback = feedbackInterval;
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {

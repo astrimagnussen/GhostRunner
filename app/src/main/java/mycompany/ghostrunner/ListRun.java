@@ -331,6 +331,12 @@ public class ListRun extends AppCompatActivity implements Serializable {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+    public void settings(View view){
+        Intent intent = new Intent(this, Settings.class);
+        startActivity(intent);
+    }
+
    /* public void loadArray(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         ArrayList<String> strings = new ArrayList<String>();

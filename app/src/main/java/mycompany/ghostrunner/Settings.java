@@ -112,16 +112,16 @@ public class Settings extends AppCompatActivity {
                 RadioButton rb = (RadioButton) group.findViewById(checkedId);
                 if(null!=rb && checkedId > -1){
                     switch (checkedId){
-                        case 2131558586 : feedback = 0; break;
-                        case 2131558587 : feedback = 1; break;
-                        case 2131558588 : feedback = 2; break;
-                        case 2131558589 : feedback = 3; break;
-                        case 2131558590 : feedback = 4; break;
-                        case 2131558591 : feedback = 5; break;
-                        case 2131558592 : feedback = 10; break;
-                        case 2131558593 : feedback = 15; break;
-                        case 2131558594 : feedback = 20; break;
-                        case 2131558595 : feedback = 30; break;
+                        case 2131558587 : feedback = 0; break;
+                        case 2131558588 : feedback = 1; break;
+                        case 2131558589 : feedback = 2; break;
+                        case 2131558590 : feedback = 3; break;
+                        case 2131558591 : feedback = 4; break;
+                        case 2131558592 : feedback = 5; break;
+                        case 2131558593 : feedback = 10; break;
+                        case 2131558594 : feedback = 15; break;
+                        case 2131558595 : feedback = 20; break;
+                        case 2131558596 : feedback = 30; break;
                     }
                 }
             }

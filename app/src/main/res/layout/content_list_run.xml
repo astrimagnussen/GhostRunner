@@ -15,15 +15,20 @@
     tools:showIn="@layout/activity_list_run"
     android:orientation="vertical">
 
+    <TextView android:id="@+id/chooseGhostHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_activity_list_run"
+        android:paddingBottom="7dp"
+        />
     <ListView android:id="@+id/listView"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:cacheColorHint="@android:color/transparent"
         android:divider="@color/colorWindowBackground"
         android:dividerHeight="7dp"
-
+        android:layout_below="@id/chooseGhostHint"
         android:smoothScrollbar="true"
-
         android:scrollbars="none"/>
 </RelativeLayout>
 

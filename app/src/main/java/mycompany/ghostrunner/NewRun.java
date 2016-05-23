@@ -110,7 +110,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     private Button startBtn;
     private Button pauseBtn;
     private Button continueBtn;
-    private Button menuBtn;
     private Button deleteBtn;
 
     private int MY_DATA_CHECK_CODE = 0;
@@ -189,7 +188,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         saveBtn = (Button) findViewById(R.id.saveRunGhostCompeteBtn);
         stopBtn = (Button) findViewById(R.id.stopGhostCompeteBtn);
         startBtn = (Button) findViewById(R.id.startGhostCompeteBtn);
-        menuBtn = (Button) findViewById(R.id.menuGhostCompeteBtn);
         deleteBtn = (Button) findViewById(R.id.deleteGhostCompeteBtn);
         pauseBtn = (Button) findViewById(R.id.pauseBtn);
         continueBtn = (Button) findViewById(R.id.continueBtn);
@@ -200,7 +198,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         pauseBtn.setVisibility(View.GONE);
         continueBtn.setVisibility(View.GONE);
         startBtn.setVisibility(View.VISIBLE);
-        menuBtn.setVisibility(View.GONE);
         deleteBtn.setVisibility(View.GONE);
 
         //nameOfRun.setVisibility(View.GONE);
@@ -485,7 +482,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     public void saveRun(final View view){
         saveBtn.setVisibility(View.GONE);
         deleteBtn.setVisibility(View.GONE);
-        menuBtn.setVisibility(View.VISIBLE);
 
         //kod från https://stackoverflow.com/questions/10903754/input-text-dialog-android , taget 2016-05-06
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -512,7 +508,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
                     Toast.makeText(getApplicationContext(), "Name not unique", Toast.LENGTH_LONG).show();
                     saveBtn.setVisibility(View.VISIBLE);
                     deleteBtn.setVisibility(View.VISIBLE);
-                    menuBtn.setVisibility(View.GONE);
                     secondTry = true;
                     saveAndContinue("Wrongnamen", false);
                 } else if (input.getText().toString() == "") {
@@ -532,7 +527,6 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
                 dialog.cancel();
                 saveBtn.setVisibility(View.VISIBLE);
                 deleteBtn.setVisibility(View.VISIBLE);
-                menuBtn.setVisibility(View.GONE);
             }
         });
 

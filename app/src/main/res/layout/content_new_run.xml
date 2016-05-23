@@ -120,14 +120,14 @@
             android:layout_marginBottom="20dp"
             android:background="@drawable/button_selector_blue" />
 
-        <Button android:id="@+id/menuGhostCompeteBtn"
+        <!-- <Button android:id="@+id/menuGhostCompeteBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/menu_btn"
             android:onClick="menu"
             android:layout_alignParentBottom ="true"
             android:buttonStyle="@style/myButtons.green"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginBottom="20dp" /> -->
 
         <Button android:id="@+id/deleteGhostCompeteBtn"
             android:layout_width="match_parent"

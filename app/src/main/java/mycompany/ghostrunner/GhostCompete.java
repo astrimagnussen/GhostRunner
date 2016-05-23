@@ -107,7 +107,6 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     private Button continueBtn;
     private Button stopBtn;
     private Button startBtn;
-    private Button menuBtn;
     private Button deleteBtn;
     private Button updateBtn;
 
@@ -202,7 +201,6 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         saveBtn = (Button) findViewById(R.id.saveRunGhostCompeteBtn);
         stopBtn = (Button) findViewById(R.id.stopGhostCompeteBtn);
         startBtn = (Button) findViewById(R.id.startGhostCompeteBtn);
-        menuBtn = (Button) findViewById(R.id.menuGhostCompeteBtn);
         deleteBtn = (Button) findViewById(R.id.deleteGhostCompeteBtn);
         pauseBtn = (Button) findViewById(R.id.pauseBtn);
         continueBtn = (Button) findViewById(R.id.continueBtn);
@@ -252,7 +250,6 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         startBtn.setVisibility(View.VISIBLE);
         pauseBtn.setVisibility(View.GONE);
         continueBtn.setVisibility(View.GONE);
-        menuBtn.setVisibility(View.GONE);
         deleteBtn.setVisibility(View.GONE);
         updateBtn.setVisibility(View.GONE);
 
@@ -573,7 +570,6 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         saveBtn.setVisibility(View.GONE);
         deleteBtn.setVisibility(View.GONE);
         updateBtn.setVisibility(View.GONE);
-        menuBtn.setVisibility(View.VISIBLE);
 
         //kod från https://stackoverflow.com/questions/10903754/input-text-dialog-android , taget 2016-05-06
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -601,7 +597,6 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
                     saveBtn.setVisibility(View.VISIBLE);
                     updateBtn.setVisibility(View.VISIBLE);
                     deleteBtn.setVisibility(View.VISIBLE);
-                    menuBtn.setVisibility(View.GONE);
                     secondTry = true;
                     saveAndContinue("Wrongnamen", false);
                 }else {
@@ -619,7 +614,6 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
                 saveBtn.setVisibility(View.VISIBLE);
                 updateBtn.setVisibility(View.VISIBLE);
                 deleteBtn.setVisibility(View.VISIBLE);
-                menuBtn.setVisibility(View.GONE);
             }
         });
 

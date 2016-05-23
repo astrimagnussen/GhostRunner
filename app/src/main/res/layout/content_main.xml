@@ -15,8 +15,6 @@
 
     tools:showIn="@layout/activity_main">
 
-
-
     <Button android:id="@+id/new_run_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

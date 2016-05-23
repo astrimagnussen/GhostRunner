@@ -280,6 +280,12 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
         super.onStop();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        myTTS.shutdown();
+    }
+
     // @Override
     public void onConnectionFailed(ConnectionResult result) {
         // An unresolvable error has occurred and a connection to Google APIs
@@ -535,6 +541,7 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
 
     public void saveAndContinue(String runName, Boolean update) {
         date = getDateTime();
+        myTTS.shutdown();
         if(secondTry){
             saveBtn.performClick();
         } else {
@@ -593,13 +600,32 @@ public class NewRun extends AppCompatActivity implements GoogleApiClient.Connect
     }
 
 
-    public void afterDelete(View view){
+    public void deleteClick(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Are you sure you want to delete this run?");
 
-        Toast.makeText(getApplicationContext(), "Run deleted", Toast.LENGTH_SHORT).show();
-        //turn off TextToSpeech
-        myTTS.shutdown();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        // Set up the buttons
+        builder.setPositiveButton("Yes, delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), "Run deleted", Toast.LENGTH_SHORT).show();
+                //turn off TextToSpeech
+                myTTS.shutdown();
+                Intent intent = new Intent(NewRun.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                saveBtn.setVisibility(View.VISIBLE);
+                deleteBtn.setVisibility(View.VISIBLE);
+            }
+        });
+
+        builder.show();
     }
 
     //Läser in från fil och visa stuff

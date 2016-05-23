@@ -370,6 +370,12 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 //        stopLocationUpdates();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        myTTS.shutdown();
+    }
+
     protected void stopLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(
                 mGoogleApiClient, this);
@@ -387,8 +393,6 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public void setPersonFasterThanGhost(Boolean green){
-
-
         //sets the color
         Color color;
         if(green){
@@ -556,7 +560,6 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
             avgPaceSec = 0;
         }
         paceTextPerson.setText(String.format("%d:%02d %s", avgPaceMin, avgPaceSec, " min/km"));
-
     }
 
     private String getDateTime() {
@@ -628,11 +631,9 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         if(secondTry){
             saveBtn.performClick();
         }else {
-    String file_name = "runs";
+        String file_name = "runs";
 
             try {
-
-
                 //Skriver till namnet på rundan i runs filen
                 FileOutputStream fileOutputStream;
                 if (!update) {
@@ -678,10 +679,33 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 
     }
 
-    public void afterDelete(View view){
-        Toast.makeText(getApplicationContext(), "Run deleted", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);}
+    public void deleteClick(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Are you sure you want to delete this run?");
+
+        // Set up the buttons
+        builder.setPositiveButton("Yes, delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), "Run deleted", Toast.LENGTH_SHORT).show();
+                //turn off TextToSpeech
+                myTTS.shutdown();
+                Intent intent = new Intent(GhostCompete.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                saveBtn.setVisibility(View.VISIBLE);
+                deleteBtn.setVisibility(View.VISIBLE);
+            }
+        });
+
+        builder.show();
+    }
 
     //Läser in från fil och visa stuff
     public void menu (View view){
@@ -691,13 +715,31 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
 
     //Updates the ghost
     public void updateGhost(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Are you sure you want to replace '" + ghost.getName() + "'?");
 
-        saveBtn.setVisibility(View.GONE);
-        deleteBtn.setVisibility(View.GONE);
-        updateBtn.setVisibility(View.GONE);
-        menuBtn.setVisibility(View.VISIBLE);
+        //builder.setView(input);
 
-        saveAndContinue(ghost.getName(), true);
+        // Set up the buttons
+        builder.setPositiveButton("Yes, replace", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                saveBtn.setVisibility(View.GONE);
+                deleteBtn.setVisibility(View.GONE);
+                updateBtn.setVisibility(View.GONE);
+
+                saveAndContinue(ghost.getName(), true);
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 
     public Boolean checkIfExists(String name){
@@ -743,5 +785,4 @@ public class GhostCompete extends AppCompatActivity implements GoogleApiClient.C
         Intent intent = new Intent(this, Settings.class);
         startActivity(intent);
     }
-
 }

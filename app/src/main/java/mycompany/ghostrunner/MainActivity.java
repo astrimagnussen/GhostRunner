@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
+        setTitle("");
 
         //getSupportActionBar().setTitle("GhostRunner");
     }
